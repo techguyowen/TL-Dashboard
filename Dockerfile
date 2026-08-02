@@ -47,7 +47,7 @@ RUN apt-get update && apt-get install -y \
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
     PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium \
     NODE_ENV=production \
-    PORT=3001
+    PORT=8419
 
 WORKDIR /app
 
@@ -59,7 +59,7 @@ RUN npm ci --only=production
 COPY . .
 
 # Expose port
-EXPOSE 3001
+EXPOSE 8419
 
 # Start server
 CMD ["node", "server.js"]

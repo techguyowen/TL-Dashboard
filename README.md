@@ -20,12 +20,12 @@ services:
     container_name: tl-auction-dashboard
     restart: unless-stopped
     ports:
-      - "3001:3001"
+      - "8419:8419"
     environment:
-      - PORT=3001
+      - PORT=8419
       - NODE_ENV=production
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001/api/progress"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8419/api/progress"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -38,7 +38,7 @@ services:
 docker compose up -d
 ```
 
-Access the dashboard at `http://localhost:3001`.
+Access the dashboard at `http://localhost:8419`.
 
 ---
 
@@ -47,7 +47,7 @@ Access the dashboard at `http://localhost:3001`.
 ```bash
 docker run -d \
   --name tl-auction-dashboard \
-  -p 3001:3001 \
+  -p 8419:8419 \
   --restart unless-stopped \
   ghcr.io/techguyowen/tl-dashboard:latest
 ```
@@ -69,12 +69,12 @@ services:
     container_name: tl-auction-dashboard
     restart: unless-stopped
     ports:
-      - "3001:3001"
+      - "8419:8419"
     environment:
-      - PORT=3001
+      - PORT=8419
       - NODE_ENV=production
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3001/api/progress"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8419/api/progress"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -99,4 +99,4 @@ npm install
 npm start
 ```
 
-Access the dashboard at `http://localhost:3001`.
+Access the dashboard at `http://localhost:8419`.

@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs');
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 8419;
 const CACHE_FILE_PATH = path.join(__dirname, 'catalog_cache.json');
 let lastCatalogUpdateTime = Date.now();
 
@@ -58,6 +58,11 @@ let scraperProgress = {
 function loadDiskCache() {
   try {
     if (fs.existsSync(CACHE_FILE_PATH)) {
+      const stat = fs.statSync(CACHE_FILE_PATH);
+      if (!stat.isFile()) {
+        console.warn(`[DISK CACHE] ${CACHE_FILE_PATH} is a directory. Skipping load.`);
+        return;
+      }
       const raw = fs.readFileSync(CACHE_FILE_PATH, 'utf8');
       const savedItems = JSON.parse(raw);
       if (Array.isArray(savedItems) && savedItems.length > 0) {
@@ -77,6 +82,10 @@ function loadDiskCache() {
 
 function saveDiskCache() {
   try {
+    if (fs.existsSync(CACHE_FILE_PATH) && !fs.statSync(CACHE_FILE_PATH).isFile()) {
+      console.warn(`[DISK CACHE] ${CACHE_FILE_PATH} is a directory. Skipping save.`);
+      return;
+    }
     pruneExpiredCatalogCache();
     const itemsArr = Array.from(masterCatalogMap.values());
     const tmpPath = `${CACHE_FILE_PATH}.tmp`;
@@ -1268,10 +1277,10 @@ app.post('/api/watchlist/remote-watch', async (req, res) => {
 });
 
 if (require.main === module) {
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {
     console.log(`====================================================`);
     console.log(`🚀 Triangle Liquidators Auction Tracker Running`);
-    console.log(`📍 URL: http://localhost:${PORT}`);
+    console.log(`📍 URL: http://0.0.0.0:${PORT}`);
     console.log(`====================================================`);
   });
 }

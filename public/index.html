@@ -2633,11 +2633,11 @@
 
     function calcFin(bid, retail) {
       const b = parseFloat(bid) || 0;
-      const bp = b * 0.15;
-      const sub = b + bp;
-      const tax = sub * 0.0725;
-      const cc = (sub + tax) * 0.03;
-      const tot = sub + tax + cc;
+      const bp = Math.round(b * 0.15 * 100) / 100;
+      const sub = Math.round((b + bp) * 100) / 100;
+      const tax = Math.round(sub * 0.0725 * 100) / 100;
+      const cc = Math.round((sub + tax) * 0.03 * 100) / 100;
+      const tot = Math.round((sub + tax + cc) * 100) / 100;
       const ret = parseFloat(retail) || null;
       let sav = null;
       if (ret && ret > tot) {

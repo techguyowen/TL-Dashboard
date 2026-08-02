@@ -221,7 +221,7 @@ scraperProgress.totalIndexed = masterCatalogMap.size;
 /**
  * Fast Fast-Streaming Multi-Page Crawler with Progressive Real-Time UI Broadcasting
  */
-async function crawlDeepAuctionPages(maxCatalogsToScan = 6, maxPagesPerCatalog = 10) {
+async function crawlDeepAuctionPages(maxCatalogsToScan = 10, maxPagesPerCatalog = 60) {
   if (isBackgroundScraping) return;
   isBackgroundScraping = true;
   scraperProgress.isScraping = true;
@@ -374,30 +374,38 @@ async function crawlDeepAuctionPages(maxCatalogsToScan = 6, maxPagesPerCatalog =
               if (!titleClean || titleClean.length < 3) titleClean = a.innerText.trim();
 
               let category = 'General Merchandise';
-              const tLower = titleClean.toLowerCase();
+              const tLower = (titleClean + ' ' + text).toLowerCase();
 
-              if (tLower.includes('tool') || tLower.includes('drill') || tLower.includes('saw') || tLower.includes('dewalt') || tLower.includes('milwaukee') || tLower.includes('craftsman') || tLower.includes('ryobi') || tLower.includes('impact') || tLower.includes('wrench') || tLower.includes('kobalt') || tLower.includes('socket') || tLower.includes('compressor')) {
+              if (/\b(shoe|shoes|sneaker|sneakers|boot|boots|sandal|sandals|heel|heels|pump|pumps|dress|dresses|gown|gowns|shirt|shirts|pant|pants|jean|jeans|jacket|jackets|coat|coats|hoodie|hoodies|sweater|sweaters|sock|socks|hat|hats|bag|bags|purse|purses|backpack|apparel|clothing|womens|mens|size)\b/i.test(tLower)) {
+                category = 'Apparel, Shoes & Accessories';
+              } else if (/\b(massager|shaver|razor|skincare|lotion|serum|makeup|cosmetic|hair|dryer|straightener|perfume|cologne|vitamin|supplement|toothbrush|oral|health|beauty)\b/i.test(tLower)) {
+                category = 'Health, Beauty & Skincare';
+              } else if (/\b(stroller|car seat|baby|toddler|nursery|toy|toys|lego|doll|action figure|playpen|crib|puzzle|board game|kids)\b/i.test(tLower)) {
+                category = 'Toys, Baby & Kids';
+              } else if (/\b(vanity|towel|towels|sheet|sheets|pillow|pillows|blanket|blankets|comforter|duvet|mattress pad|shower|curtain|curtains|bath mat|rug|rugs|linens)\b/i.test(tLower)) {
+                category = 'Bedding, Bath & Linens';
+              } else if (/\b(tool|tools|drill|drills|saw|saws|dewalt|milwaukee|craftsman|ryobi|impact|wrench|wrenches|kobalt|socket|sockets|compressor|sander|router|welder)\b/i.test(tLower)) {
                 category = 'Tools & Equipment';
-              } else if (tLower.includes('tv') || tLower.includes('nintendo') || tLower.includes('switch') || tLower.includes('gaming') || tLower.includes('playstation') || tLower.includes('xbox') || tLower.includes('laptop') || tLower.includes('desktop') || tLower.includes('tablet') || tLower.includes('ipad') || tLower.includes('monitor') || tLower.includes('headphone') || tLower.includes('audio') || tLower.includes('camera') || tLower.includes('speaker')) {
+              } else if (/\b(tv|tvs|nintendo|switch|gaming|playstation|xbox|laptop|laptops|desktop|tablet|tablets|ipad|monitor|monitors|headphone|headphones|audio|camera|speaker|speakers|phone|earbud|earbuds|wireless)\b/i.test(tLower)) {
                 category = 'Electronics & Gaming';
-              } else if ((tLower.includes('washer') && !tLower.includes('pressure washer')) || tLower.includes('dryer') || tLower.includes('refrigerator') || tLower.includes('fridge') || tLower.includes('freezer') || tLower.includes('dishwasher') || tLower.includes('mini split') || tLower.includes('air conditioner') || tLower.includes('water heater')) {
-                category = 'Major Appliances';
-              } else if (tLower.includes('patio') || tLower.includes('trimmer') || tLower.includes('lawn') || tLower.includes('mower') || tLower.includes('pressure washer') || tLower.includes('hose') || tLower.includes('tiller') || tLower.includes('chainsaw') || tLower.includes('grill') || tLower.includes('smoker') || tLower.includes('traeger')) {
-                category = 'Lawn & Garden';
-              } else if (tLower.includes('ninja') || tLower.includes('kitchen') || tLower.includes('cooker') || tLower.includes('fryer') || tLower.includes('blender') || tLower.includes('instant pot') || tLower.includes('coffee') || tLower.includes('espresso') || tLower.includes('toaster') || tLower.includes('cookware') || tLower.includes('ice maker')) {
+              } else if ((/\b(washer|dryer|refrigerator|fridge|freezer|dishwasher|mini split|air conditioner|water heater|range|oven|microwave)\b/i.test(tLower)) && !tLower.includes('pressure washer')) {
+                category = 'Major Appliances & HVAC';
+              } else if (/\b(ninja|kitchen|cooker|fryer|blender|instant pot|coffee|espresso|toaster|cookware|ice maker|pot|pots|pan|pans|knife|dish)\b/i.test(tLower)) {
                 category = 'Kitchen & Dining';
-              } else if (tLower.includes('sofa') || tLower.includes('couch') || tLower.includes('bed') || tLower.includes('mattress') || tLower.includes('desk') || tLower.includes('chair') || tLower.includes('table') || tLower.includes('cabinet') || tLower.includes('shelf') || tLower.includes('rug') || tLower.includes('recliner') || tLower.includes('furniture') || tLower.includes('ottoman')) {
+              } else if (/\b(sofa|couch|bed|mattress|desk|chair|table|cabinet|shelf|recliner|furniture|ottoman|lamp|lamps|sconce|chandelier|mirror|wall art|decor)\b/i.test(tLower)) {
                 category = 'Furniture & Home Decor';
-              } else if (tLower.includes('generator') || tLower.includes('power') || tLower.includes('inverter') || tLower.includes('solar') || tLower.includes('eco-flow') || tLower.includes('jackery') || tLower.includes('watt')) {
+              } else if (/\b(patio|trimmer|lawn|mower|pressure washer|hose|tiller|chainsaw|grill|smoker|traeger|gazebo|umbrella|planter)\b/i.test(tLower)) {
+                category = 'Lawn & Garden';
+              } else if (/\b(generator|power station|inverter|solar|eco-flow|jackery|watt|battery)\b/i.test(tLower)) {
                 category = 'Generators & Solar Power';
-              } else if (tLower.includes('tire') || tLower.includes('jack') || tLower.includes('battery charger') || tLower.includes('jump starter') || tLower.includes('winch') || tLower.includes('automotive') || tLower.includes('trailer') || tLower.includes('hitch')) {
+              } else if (/\b(tire|tires|jack|obd2|scanner|battery charger|jump starter|winch|automotive|trailer|hitch|car cover)\b/i.test(tLower)) {
                 category = 'Automotive & Marine';
-              } else if (tLower.includes('bike') || tLower.includes('bicycle') || tLower.includes('scooter') || tLower.includes('e-bike') || tLower.includes('treadmill') || tLower.includes('exercise') || tLower.includes('fitness') || tLower.includes('kayak') || tLower.includes('tent') || tLower.includes('camping') || tLower.includes('cooler') || tLower.includes('yeti')) {
+              } else if (/\b(bike|bicycle|scooter|e-bike|treadmill|exercise|fitness|kayak|tent|camping|cooler|yeti|golf|fishing|dumbbell)\b/i.test(tLower)) {
                 category = 'Sports, Fitness & Outdoors';
-              } else if (tLower.includes('pump') || tLower.includes('sink') || tLower.includes('faucet') || tLower.includes('toilet') || tLower.includes('shower') || tLower.includes('plumbing') || tLower.includes('hardware') || tLower.includes('flooring') || tLower.includes('tile')) {
+              } else if (/\b(pump|sink|faucet|toilet|plumbing|hardware|flooring|tile|pipe|valve)\b/i.test(tLower)) {
                 category = 'Hardware & Plumbing';
-              } else if (tLower.includes('pallet') || tLower.includes('bulk') || tLower.includes('wholesale') || tLower.includes('mystery box') || tLower.includes('liquidation')) {
-                category = 'Pallets & Bulk Merchandise';
+              } else if (/\b(pallet|bulk|wholesale|mystery box|liquidation)\b/i.test(tLower)) {
+                category = 'Pallets & Bulk Lots';
               }
 
               let closingDate = new Date().toISOString().split('T')[0];
@@ -405,7 +413,7 @@ async function crawlDeepAuctionPages(maxCatalogsToScan = 6, maxPagesPerCatalog =
               let closingTimeStr = null;
 
               // 1. Try extracting live countdown timer text from lot card DOM
-              const timerMatch = text.match(/\b(?:(\d+)\s*d\s*)?(?:(\d+)\s*h\s*)?(\d+)\s*m(?:\s*(\d+)\s*s)?\b/i);
+              const timerMatch = text.match(/\b(?:(\d+)\s*D[,\s]*)?(?:(\d+)\s*H[,\s]*)?(\d+)\s*M(?:[,\s]*(\d+)\s*S)?\b/i);
               if (timerMatch) {
                 const hasD = timerMatch[1] !== undefined;
                 const hasH = timerMatch[2] !== undefined;
@@ -543,7 +551,6 @@ async function crawlDeepAuctionPages(maxCatalogsToScan = 6, maxPagesPerCatalog =
  */
 function pruneExpiredCatalogCache() {
   const nowMs = Date.now();
-  const twelveHoursMs = 12 * 60 * 60 * 1000;
   let prunedCount = 0;
 
   for (const [id, item] of masterCatalogMap.entries()) {
@@ -554,18 +561,18 @@ function pruneExpiredCatalogCache() {
       continue;
     }
 
-    // 1. Check if auction ended > 12 hours ago
+    // 1. Check if auction ended
     const endsAtMs = item.endsAt ? new Date(item.endsAt).getTime() : NaN;
-    if (!isNaN(endsAtMs) && (nowMs - endsAtMs > twelveHoursMs)) {
+    if (!isNaN(endsAtMs) && endsAtMs < nowMs) {
       masterCatalogMap.delete(id);
       prunedCount++;
       continue;
     }
 
-    // 2. Fallback check for closingDate older than 12h
+    // 2. Fallback check for closingDate
     if (item.closingDate) {
       const closingMs = new Date(`${item.closingDate}T23:59:59-04:00`).getTime();
-      if (!isNaN(closingMs) && (nowMs - closingMs > twelveHoursMs)) {
+      if (!isNaN(closingMs) && closingMs < nowMs) {
         masterCatalogMap.delete(id);
         prunedCount++;
       }
@@ -616,18 +623,21 @@ function updateCrawlerSchedule(intervalSec) {
   return crawlerIntervalSec;
 }
 
-// Initial scheduler init (only crawl on boot if catalog cache is completely empty)
+// Initial scheduler init (only crawl on boot if server.js is run directly and catalog cache is empty)
 pruneExpiredCatalogCache();
-if (masterCatalogMap.size === 0) {
-  console.log('[DEEP CRAWLER] Empty catalog cache detected. Initializing first-run catalog crawl...');
-  crawlDeepAuctionPages(6, 8);
-} else {
-  console.log(`[DEEP CRAWLER] Master catalog ready with ${masterCatalogMap.size} cached items.`);
-}
-updateCrawlerSchedule(60);
+if (require.main === module) {
+  if (masterCatalogMap.size === 0) {
+    console.log('[DEEP CRAWLER] Empty catalog cache detected. Initializing first-run catalog crawl...');
+    crawlDeepAuctionPages(10, 60);
+  } else {
+    console.log(`[DEEP CRAWLER] Master catalog ready with ${masterCatalogMap.size} cached items.`);
+  }
+  updateCrawlerSchedule(60);
 
-// Run cache pruning every 30 minutes
-setInterval(pruneExpiredCatalogCache, 30 * 60 * 1000);
+  // Run cache pruning every 30 minutes
+  const pruneInterval = setInterval(pruneExpiredCatalogCache, 30 * 60 * 1000);
+  pruneInterval.unref();
+}
 
 // API Endpoint for Live Scraper Progress
 app.get('/api/progress', (req, res) => {
@@ -636,6 +646,37 @@ app.get('/api/progress', (req, res) => {
     totalIndexed: masterCatalogMap.size,
     crawlerIntervalSec
   });
+});
+
+// Financial Calculation & Rate Breakdown Endpoint
+app.get('/api/financials', (req, res) => {
+  const bid = parseFloat(req.query.bid) || 0;
+  const msrp = parseFloat(req.query.msrp) || null;
+  const result = calculateFinancials(bid, msrp);
+  res.json({
+    ...result,
+    rates: {
+      buyerPremiumRate: 0.15,
+      salesTaxRate: 0.0725,
+      ccFeeRate: 0.03
+    }
+  });
+});
+
+// Clear Full Catalog Cache Endpoint
+app.post('/api/clear-cache', (req, res) => {
+  try {
+    masterCatalogMap.clear();
+    if (fs.existsSync(CACHE_FILE_PATH)) {
+      fs.unlinkSync(CACHE_FILE_PATH);
+    }
+    lastCatalogUpdateTime = Date.now();
+    scraperProgress.totalIndexed = 0;
+    broadcastEvent('catalog_cleared', { items: [] });
+    res.json({ success: true, message: 'Catalog cache cleared successfully.' });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 // API Endpoints for Crawler Settings Synchronization
@@ -1226,9 +1267,13 @@ app.post('/api/watchlist/remote-watch', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`====================================================`);
-  console.log(`🚀 Triangle Liquidators Auction Tracker Running`);
-  console.log(`📍 URL: http://localhost:${PORT}`);
-  console.log(`====================================================`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`====================================================`);
+    console.log(`🚀 Triangle Liquidators Auction Tracker Running`);
+    console.log(`📍 URL: http://localhost:${PORT}`);
+    console.log(`====================================================`);
+  });
+}
+
+module.exports = { calculateFinancials, app };

@@ -1,6 +1,16 @@
 node_modules
-npm-debug.log
+catalog_cache.json
+catalog_cache.json.tmp
+*.tmp
+*.log
+npm-debug.log*
 .git
 .gitignore
+.dockerignore
 .DS_Store
+Thumbs.db
 *.md
+.agents
+.vscode
+.idea
+test

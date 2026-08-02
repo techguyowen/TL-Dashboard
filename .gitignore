@@ -1,2 +1,26 @@
+# Dependencies
+node_modules/
+
+# Cache & Local Data
 catalog_cache.json
-catalog_cache.json
+catalog_cache.json.tmp
+*.tmp
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment & IDE
+.env
+.env.local
+.vscode/
+.idea/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Agent Metadata
+.agents/

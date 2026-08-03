@@ -15,6 +15,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
 /**
+ * Helper to get YYYY-MM-DD in EDT (America/New_York) timezone
+ * Prevents evening UTC rollover bugs past 8:00 PM EDT (00:00 UTC).
+ */
+function getEDTDateString(d = new Date()) {
+  try {
+    return d.toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+  } catch (_) {
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+}
+
+/**
  * Financial Calculation Utility with Retail MSRP & Savings %
  */
 function calculateFinancials(rawBid, rawRetail) {
@@ -72,7 +87,9 @@ function loadDiskCache() {
         pruneExpiredCatalogCache();
         lastCatalogUpdateTime = Date.now();
         scraperProgress.totalIndexed = masterCatalogMap.size;
-        console.log(`[DISK CACHE] Loaded ${masterCatalogMap.size} auction items from ./catalog_cache.json in <0.05s!`);
+        if (process.env.NODE_ENV !== 'test' && !process.env.NODE_TEST_CONTEXT) {
+          console.log(`[DISK CACHE] Loaded ${masterCatalogMap.size} auction items from ./catalog_cache.json in <0.05s!`);
+        }
       }
     }
   } catch (e) {
@@ -119,9 +136,9 @@ function broadcastEvent(type, extraData = {}) {
 
 // Seed initial items with dynamic endsAt ISO timestamps
 const now = new Date();
-const todayStr = now.toISOString().split('T')[0];
+const todayStr = getEDTDateString(now);
 const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-const tomorrowStr = tomorrow.toISOString().split('T')[0];
+const tomorrowStr = getEDTDateString(tomorrow);
 
 const FALLBACK_ITEMS = [
   {
@@ -417,30 +434,38 @@ async function crawlDeepAuctionPages(maxCatalogsToScan = 10, maxPagesPerCatalog 
                 category = 'Pallets & Bulk Lots';
               }
 
-              let closingDate = new Date().toISOString().split('T')[0];
+              let closingDate = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
               let endsAtISO = null;
               let closingTimeStr = null;
 
               // 1. Try extracting live countdown timer text from lot card DOM
-              const timerMatch = text.match(/\b(?:(\d+)\s*D[,\s]*)?(?:(\d+)\s*H[,\s]*)?(\d+)\s*M(?:[,\s]*(\d+)\s*S)?\b/i);
+              const timerMatch = text.match(/\b(?:(\d+)\s*D[,\s]*)?(?:(\d+)\s*H[,\s]*)?(\d+)\s*(?:M|MIN|MINS|MINUTES)\b(?:[,\s]*(\d+)\s*S)?/i) ||
+                                 text.match(/\b(?:(\d{1,2}):)?(\d{1,2}):(\d{2})\b/);
+
               if (timerMatch) {
-                const hasD = timerMatch[1] !== undefined;
-                const hasH = timerMatch[2] !== undefined;
-                const hasM = timerMatch[3] !== undefined;
-                const hasS = timerMatch[4] !== undefined;
-
-                if ((hasH && hasM) || (hasM && hasS) || (hasD && hasH)) {
-                  const days = hasD ? parseInt(timerMatch[1], 10) : 0;
-                  const hours = hasH ? parseInt(timerMatch[2], 10) : 0;
-                  const mins = hasM ? parseInt(timerMatch[3], 10) : 0;
-                  const secs = hasS ? parseInt(timerMatch[4], 10) : 0;
-
-                  if (hours <= 72 && mins < 60 && secs < 60) {
+                if (timerMatch[0].includes(':')) {
+                  const parts = timerMatch[0].split(':').map(n => parseInt(n, 10));
+                  let hours = 0, mins = 0, secs = 0;
+                  if (parts.length === 3) {
+                    hours = parts[0]; mins = parts[1]; secs = parts[2];
+                  } else if (parts.length === 2) {
+                    mins = parts[0]; secs = parts[1];
+                  }
+                  const totalMs = (hours * 3600 + mins * 60 + secs) * 1000;
+                  if (totalMs > 0) {
                     closingTimeStr = timerMatch[0];
-                    const totalMs = ((days * 24 + hours) * 3600 + mins * 60 + secs) * 1000;
-                    if (totalMs > 0) {
-                      endsAtISO = new Date(Date.now() + totalMs).toISOString();
-                    }
+                    endsAtISO = new Date(Date.now() + totalMs).toISOString();
+                  }
+                } else {
+                  const days = timerMatch[1] ? parseInt(timerMatch[1], 10) : 0;
+                  const hours = timerMatch[2] ? parseInt(timerMatch[2], 10) : 0;
+                  const mins = timerMatch[3] ? parseInt(timerMatch[3], 10) : 0;
+                  const secs = timerMatch[4] ? parseInt(timerMatch[4], 10) : 0;
+
+                  closingTimeStr = timerMatch[0];
+                  const totalMs = ((days * 24 + hours) * 3600 + mins * 60 + secs) * 1000;
+                  if (totalMs > 0) {
+                    endsAtISO = new Date(Date.now() + totalMs).toISOString();
                   }
                 }
               }
@@ -453,7 +478,7 @@ async function crawlDeepAuctionPages(maxCatalogsToScan = 10, maxPagesPerCatalog 
                 const y = dateMatch[3];
                 closingDate = `${y}-${m}-${d}`;
                 if (!endsAtISO) {
-                  const targetDate = new Date(`${y}-${m}-${d}T19:00:00-04:00`);
+                  const targetDate = new Date(`${y}-${m}-${d}T23:59:59-04:00`);
                   if (!isNaN(targetDate.getTime())) {
                     endsAtISO = targetDate.toISOString();
                   }
@@ -461,8 +486,8 @@ async function crawlDeepAuctionPages(maxCatalogsToScan = 10, maxPagesPerCatalog 
               }
 
               if (!endsAtISO) {
-                const fallbackDate = new Date();
-                fallbackDate.setHours(19, 0, 0, 0);
+                const edtTodayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+                const fallbackDate = new Date(`${edtTodayStr}T23:59:59-04:00`);
                 if (fallbackDate.getTime() <= Date.now()) {
                   fallbackDate.setDate(fallbackDate.getDate() + 1);
                 }
@@ -562,6 +587,8 @@ function pruneExpiredCatalogCache() {
   const nowMs = Date.now();
   let prunedCount = 0;
 
+  const REMOVAL_BUFFER_MS = 2 * 60 * 60 * 1000; // 2-hour grace period buffer
+
   for (const [id, item] of masterCatalogMap.entries()) {
     // 0. Purge any legacy synthetic stub items
     if (item.auctionName === 'Synced Watchlist Auction' || item.category === 'Watched Items' || id.startsWith('watched-')) {
@@ -570,21 +597,25 @@ function pruneExpiredCatalogCache() {
       continue;
     }
 
-    // 1. Check if auction ended
+    let isPast = true;
+
+    // Check 1: exact endsAt with removal buffer
     const endsAtMs = item.endsAt ? new Date(item.endsAt).getTime() : NaN;
-    if (!isNaN(endsAtMs) && endsAtMs < nowMs) {
-      masterCatalogMap.delete(id);
-      prunedCount++;
-      continue;
+    if (!isNaN(endsAtMs) && (endsAtMs + REMOVAL_BUFFER_MS > nowMs)) {
+      isPast = false;
     }
 
-    // 2. Fallback check for closingDate
+    // Check 2: closingDate buffer (keep active until 11:59:59 PM EDT on closing date)
     if (item.closingDate) {
-      const closingMs = new Date(`${item.closingDate}T23:59:59-04:00`).getTime();
-      if (!isNaN(closingMs) && closingMs < nowMs) {
-        masterCatalogMap.delete(id);
-        prunedCount++;
+      const closingEndMs = new Date(`${item.closingDate}T23:59:59-04:00`).getTime();
+      if (!isNaN(closingEndMs) && closingEndMs >= nowMs) {
+        isPast = false;
       }
+    }
+
+    if (isPast) {
+      masterCatalogMap.delete(id);
+      prunedCount++;
     }
   }
 
@@ -625,6 +656,7 @@ function updateCrawlerSchedule(intervalSec) {
       pruneExpiredCatalogCache();
       crawlDeepAuctionPages(6, 8);
     }, ms);
+    crawlerTimer.unref();
   } else {
     console.log(`[DEEP CRAWLER SCHEDULER] Background crawler automatic loop paused (Manual Sync mode).`);
   }
@@ -742,18 +774,19 @@ function ensureEndsAt(item) {
   if (item && item.endsAt) return item.endsAt;
   
   if (item && item.closingDate) {
-    const target = new Date(`${item.closingDate}T19:00:00-04:00`);
+    const target = new Date(`${item.closingDate}T23:59:59-04:00`);
     if (!isNaN(target.getTime())) {
       return target.toISOString();
     }
   }
 
   const fallback = new Date();
-  fallback.setHours(19, 0, 0, 0);
-  if (fallback.getTime() <= Date.now()) {
-    fallback.setDate(fallback.getDate() + 1);
+  const edtTodayStr = getEDTDateString(fallback);
+  const targetDate = new Date(`${edtTodayStr}T23:59:59-04:00`);
+  if (targetDate.getTime() <= Date.now()) {
+    targetDate.setDate(targetDate.getDate() + 1);
   }
-  return fallback.toISOString();
+  return targetDate.toISOString();
 }
 
 // API Endpoint for Live Items with ETag Caching & Incremental Delta Support
@@ -1079,15 +1112,20 @@ app.post('/api/watchlist/sync', async (req, res) => {
       }
 
       if (catalogItem) {
-        // Exclude past/ended items from sync
+        // Exclude past/ended items from sync using 2-hour buffer and 11:59:59 PM closing date
+        const BUFFER_MS = 2 * 60 * 60 * 1000;
+        let isPast = true;
         const endsMs = catalogItem.endsAt ? new Date(catalogItem.endsAt).getTime() : NaN;
-        if (!isNaN(endsMs) && endsMs <= nowMs) {
-          continue; // Skip past item
+        if (!isNaN(endsMs) && (endsMs + BUFFER_MS > nowMs)) {
+          isPast = false;
         }
         if (catalogItem.closingDate) {
-          const closingMs = new Date(`${catalogItem.closingDate}T23:59:59-04:00`).getTime();
-          if (!isNaN(closingMs) && closingMs < nowMs) continue; // Skip past item
+          const closingEndMs = new Date(`${catalogItem.closingDate}T23:59:59-04:00`).getTime();
+          if (!isNaN(closingEndMs) && closingEndMs >= nowMs) {
+            isPast = false;
+          }
         }
+        if (isPast) continue;
         remoteItems.push(catalogItem);
       } else {
         // Fetch real lot HTML on-demand so item has real title, real image, real location & real data position
@@ -1127,7 +1165,7 @@ app.post('/api/watchlist/sync', async (req, res) => {
               address: realAddress,
               category: realCategory,
               auctionName: realAuctionName,
-              closingDate: now.toISOString().split('T')[0],
+              closingDate: getEDTDateString(now),
               endsAt: new Date(now.getTime() + 12 * 3600 * 1000).toISOString(),
               financials: calculateFinancials(remote.currentBid || 0, remote.retailPrice)
             };
@@ -1191,18 +1229,24 @@ app.post(['/api/watchlist/clear-past', '/api/catalog/clear-past'], (req, res) =>
   const nowMs = Date.now();
   let clearedCount = 0;
 
+  const BUFFER_MS = 2 * 60 * 60 * 1000;
   for (const [id, item] of masterCatalogMap.entries()) {
     let isPast = false;
     if (id.startsWith('watched-')) {
       isPast = true;
     }
-    if (!isPast && item.endsAt) {
-      const endsMs = new Date(item.endsAt).getTime();
-      if (!isNaN(endsMs) && endsMs <= nowMs) isPast = true;
-    }
-    if (!isPast && item.closingDate) {
-      const closingMs = new Date(`${item.closingDate}T23:59:59-04:00`).getTime();
-      if (!isNaN(closingMs) && closingMs < nowMs) isPast = true;
+    if (!isPast) {
+      isPast = true;
+      const endsMs = item.endsAt ? new Date(item.endsAt).getTime() : NaN;
+      if (!isNaN(endsMs) && (endsMs + BUFFER_MS > nowMs)) {
+        isPast = false;
+      }
+      if (item.closingDate) {
+        const closingEndMs = new Date(`${item.closingDate}T23:59:59-04:00`).getTime();
+        if (!isNaN(closingEndMs) && closingEndMs >= nowMs) {
+          isPast = false;
+        }
+      }
     }
 
     if (isPast) {

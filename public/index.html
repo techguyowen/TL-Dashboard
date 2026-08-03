@@ -2433,17 +2433,25 @@
     async function clearStaleFavorites() {
       let purgedCount = 0;
 
+      const nowMs = Date.now();
+      const BUFFER_MS = 2 * 60 * 60 * 1000;
+
       // 1. Clear ended/stale items from saved favorites
       Array.from(savedFavoriteUrls).forEach(url => {
         const matchItem = allItems.find(i => i.url === url);
-        let isStale = false;
+        let isStale = true;
 
         if (matchItem) {
-          const info = formatTimeRemaining(matchItem.endsAt, matchItem.closingDate);
-          if (info.seconds <= 0) isStale = true;
-        } else {
-          // No longer in current live catalog pull
-          isStale = true;
+          const endsMs = matchItem.endsAt ? new Date(matchItem.endsAt).getTime() : NaN;
+          if (!isNaN(endsMs) && (endsMs + BUFFER_MS > nowMs)) {
+            isStale = false;
+          }
+          if (matchItem.closingDate) {
+            const closingEndMs = new Date(`${matchItem.closingDate}T23:59:59-04:00`).getTime();
+            if (!isNaN(closingEndMs) && closingEndMs >= nowMs) {
+              isStale = false;
+            }
+          }
         }
 
         if (isStale) {
@@ -2455,8 +2463,18 @@
       // 2. Clear ended items from in-memory allItems array
       const initialItemCount = allItems.length;
       allItems = allItems.filter(item => {
-        const info = formatTimeRemaining(item.endsAt, item.closingDate);
-        return info.seconds > 0;
+        let isPast = true;
+        const endsMs = item.endsAt ? new Date(item.endsAt).getTime() : NaN;
+        if (!isNaN(endsMs) && (endsMs + BUFFER_MS > nowMs)) {
+          isPast = false;
+        }
+        if (item.closingDate) {
+          const closingEndMs = new Date(`${item.closingDate}T23:59:59-04:00`).getTime();
+          if (!isNaN(closingEndMs) && closingEndMs >= nowMs) {
+            isPast = false;
+          }
+        }
+        return !isPast;
       });
       const removedItemsCount = initialItemCount - allItems.length;
 
@@ -2722,12 +2740,12 @@
       let target = endsAtISO ? new Date(endsAtISO).getTime() : NaN;
 
       if (isNaN(target) && closingDateStr) {
-        target = new Date(`${closingDateStr}T19:00:00-04:00`).getTime();
+        target = new Date(`${closingDateStr}T23:59:59-04:00`).getTime();
       }
 
       if (isNaN(target)) {
         const fallback = new Date();
-        fallback.setHours(19, 0, 0, 0);
+        fallback.setHours(23, 59, 59, 999);
         if (fallback.getTime() <= Date.now()) {
           fallback.setDate(fallback.getDate() + 1);
         }
@@ -2773,6 +2791,8 @@
     function autoCleanEndedFavorites() {
       if (savedFavoriteUrls.size === 0 || allItems.length === 0) return;
       let removedCount = 0;
+      const nowMs = Date.now();
+      const BUFFER_MS = 2 * 60 * 60 * 1000;
 
       const itemMap = new Map();
       allItems.forEach(item => itemMap.set(item.url, item));
@@ -2784,8 +2804,18 @@
           savedFavoriteUrls.delete(url);
           removedCount++;
         } else {
-          const info = formatTimeRemaining(item.endsAt, item.closingDate);
-          if (info.seconds <= 0) {
+          let isPast = true;
+          const endsMs = item.endsAt ? new Date(item.endsAt).getTime() : NaN;
+          if (!isNaN(endsMs) && (endsMs + BUFFER_MS > nowMs)) {
+            isPast = false;
+          }
+          if (item.closingDate) {
+            const closingEndMs = new Date(`${item.closingDate}T23:59:59-04:00`).getTime();
+            if (!isNaN(closingEndMs) && closingEndMs >= nowMs) {
+              isPast = false;
+            }
+          }
+          if (isPast) {
             // Auction has closed/ended -> purge
             savedFavoriteUrls.delete(url);
             removedCount++;

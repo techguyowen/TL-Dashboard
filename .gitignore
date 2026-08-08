@@ -1,10 +1,13 @@
 # Dependencies
 node_modules/
+.npm/
 
-# Cache & Local Data
+# Cache & Local Runtime Data
 catalog_cache.json
 catalog_cache.json.tmp
 *.tmp
+.cache/
+coverage/
 
 # Logs
 *.log
@@ -14,13 +17,17 @@ yarn-error.log*
 
 # Environment & IDE
 .env
-.env.local
+.env.*
+!.env.example
 .vscode/
 .idea/
+*.swp
+*.swo
 
 # OS Files
 .DS_Store
 Thumbs.db
 
-# Agent Metadata
+# Agent Metadata & Workspace Diagnostics
 .agents/
+.gemini/

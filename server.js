@@ -11,7 +11,10 @@ let lastCatalogUpdateTime = Date.now();
 
 app.set('trust proxy', 1);
 app.use(compression());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: process.env.NODE_ENV === 'production' ? '1d' : 0,
+  etag: true
+}));
 app.use(express.json());
 
 /**
@@ -1318,6 +1321,14 @@ app.post('/api/watchlist/remote-watch', async (req, res) => {
     if (browser) await browser.close();
     return res.json({ success: true, url, watch, error: err.message });
   }
+});
+
+// Custom 404 Handler for undefined routes
+app.use((req, res) => {
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ success: false, error: 'Endpoint Not Found' });
+  }
+  res.status(404).sendFile(path.join(__dirname, 'public', '404.html'));
 });
 
 if (require.main === module) {

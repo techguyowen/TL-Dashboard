@@ -1,0 +1,14 @@
+# Triangle Liquidators Live Auction Dashboard
+
+> Real-time lot indexing, out-of-pocket total cost calculation, savings estimates, and custom watchlist management.
+
+## Overview
+The Triangle Liquidators Live Auction Dashboard indexes active items from Triangle Liquidators auctions across Raleigh and South Carolina locations, providing automated total financial calculations (buyer's premium, NC/SC sales tax, credit card fees, out-of-pocket totals) and catalog filtering.
+
+## Usage Policy & Crawler Guidelines
+- Automated indexing of auction lots for user interface display is managed by the application backend.
+- Automated data harvesting or training datasets via AI bots is not permitted without explicit authorization (see robots.txt).
+
+## System API & Data Access
+- Official website: https://auction.triangleliquidators.com/
+- Contact & Support: Triangle Liquidators Support

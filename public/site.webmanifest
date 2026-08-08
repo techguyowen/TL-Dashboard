@@ -1,0 +1,17 @@
+{
+  "name": "Triangle Liquidators Live Auction Dashboard",
+  "short_name": "TL Auction Tracker",
+  "description": "Live auction tracking dashboard and financial calculator for Triangle Liquidators.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0f19",
+  "theme_color": "#0b0f19",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -4,6 +4,44 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Triangle Liquidators - Live Auction Tracker & Out-of-Pocket Calculator</title>
+  <meta name="description" content="Triangle Liquidators live auction tracking dashboard and financial calculator. Index active lots across Raleigh & SC, calculate total out-of-pocket costs with buyer's premium, tax, and CC fees.">
+  <link rel="canonical" href="https://auction.triangleliquidators.com/">
+  <meta name="theme-color" content="#0b0f19">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="apple-touch-icon" href="/favicon.svg">
+
+  <!-- Open Graph / Social Media Cards -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://auction.triangleliquidators.com/">
+  <meta property="og:title" content="Triangle Liquidators - Live Auction Tracker & Calculator">
+  <meta property="og:description" content="Live auction lot tracking, real-time out-of-pocket total cost calculation, and custom watchlists for Triangle Liquidators auctions.">
+  <meta property="og:image" content="https://auction.triangleliquidators.com/favicon.svg">
+  <meta property="og:site_name" content="Triangle Liquidators Auction Tracker">
+
+  <!-- Twitter Card Tags -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Triangle Liquidators - Live Auction Tracker">
+  <meta name="twitter:description" content="Live auction lot tracking, real-time out-of-pocket total cost calculation, and custom watchlists.">
+  <meta name="twitter:image" content="https://auction.triangleliquidators.com/favicon.svg">
+
+  <!-- Schema.org JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Triangle Liquidators Auction Tracker & Calculator",
+    "url": "https://auction.triangleliquidators.com/",
+    "description": "Live auction tracking dashboard with out-of-pocket financial calculator for Triangle Liquidators Raleigh & South Carolina auctions.",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
   <!-- Browser Tab Favicon Logo -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="shortcut icon" href="/favicon.svg">
@@ -151,6 +189,8 @@
       font-weight: 700;
       font-size: 1.4rem;
       letter-spacing: -0.02em;
+      margin: 0;
+      line-height: 1.2;
       background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -563,6 +603,8 @@
       transition: all 0.25s var(--ease-spring);
       display: flex;
       align-items: center;
+      justify-content: center;
+      text-align: center;
       gap: 0.35rem;
     }
 
@@ -593,8 +635,8 @@
     .tag-close-btn {
       margin-left: 0.35rem;
       font-size: 0.72rem;
-      opacity: 0.5;
-      transition: all 0.2s ease;
+      opacity: 0;
+      transition: opacity 0.15s ease;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
@@ -602,6 +644,13 @@
       width: 14px;
       height: 14px;
       border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .tag-btn:hover .tag-close-btn,
+    .tag-btn:focus-within .tag-close-btn {
+      opacity: 0.7;
+      pointer-events: auto;
     }
 
     .tag-close-btn:hover {
@@ -1332,6 +1381,8 @@
       font-weight: 600;
       display: flex;
       align-items: center;
+      justify-content: center;
+      text-align: center;
       gap: 0.45rem;
     }
 
@@ -1437,6 +1488,12 @@
   </style>
 </head>
 <body>
+  <noscript>
+    <div style="padding: 20px; background: #1e293b; color: #f8fafc; text-align: center;">
+      <h2>Triangle Liquidators Live Auction Dashboard</h2>
+      <p>JavaScript is required to operate the live auction tracking engine, calculated financial totals, and watchlist features.</p>
+    </div>
+  </noscript>
 
   <!-- HEADER -->
   <header>
@@ -1445,7 +1502,7 @@
         <img src="/favicon.svg" alt="Triangle Liquidators Logo" class="brand-logo-img" />
       </div>
       <div>
-        <div class="brand-title">Triangle Liquidators</div>
+        <h1 class="brand-title">Triangle Liquidators</h1>
         <div class="brand-subtitle">
           <span class="live-pulse"></span>
           Live Auction Tracker & Customizable Watchlist Engine
@@ -2054,7 +2111,7 @@
     let allItems = [];
     let activeWatchlist = new Set(["dewalt", "milwaukee", "ninja", "patio", "generator", "pressure washer", "craftsman"]);
     let activeExcludeWatchlist = new Set(["as-is", "broken", "parts only", "damaged"]);
-    let disabledExcludeWatchlist = new Set();
+    let disabledExcludeWatchlist = new Set(["as-is", "broken", "parts only", "damaged"]);
     let savedFavoriteUrls = new Set();
     let filterSavedOnly = false;
     let progressPollTimer = null;
@@ -2765,7 +2822,7 @@
     function resetDefaultKeywords() {
       activeWatchlist = new Set(["dewalt", "milwaukee", "ninja", "patio", "generator", "pressure washer", "craftsman"]);
       activeExcludeWatchlist = new Set(["as-is", "broken", "parts only", "damaged"]);
-      disabledExcludeWatchlist.clear();
+      disabledExcludeWatchlist = new Set(["as-is", "broken", "parts only", "damaged"]);
       saveWatchlistState();
       saveExcludeWatchlistState();
       saveDisabledExcludeState();
@@ -2841,6 +2898,16 @@
       saveDisabledExcludeState();
       renderSidebarTags();
       applyFilters();
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
 
     function calcFin(bid, retail) {
@@ -3484,6 +3551,16 @@
         document.getElementById('statAvgOutofPocket').innerText = '$0.00';
       }
 
+      // Dynamic Browser Tab Title
+      const rawSearch = document.getElementById('searchInput') ? document.getElementById('searchInput').value.trim() : '';
+      if (typeof filterSavedOnly !== 'undefined' && filterSavedOnly) {
+        document.title = `Saved Favorites (${visibleItems.length}) | Triangle Liquidators`;
+      } else if (rawSearch) {
+        document.title = `Search: "${rawSearch}" (${visibleItems.length}) | Triangle Liquidators`;
+      } else {
+        document.title = `Live Auctions (${visibleItems.length}) | Triangle Liquidators`;
+      }
+
       updateNextClosingStat();
     }
 
@@ -3501,7 +3578,7 @@
               <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-star"></i>
             </button>
 
-            <img src="${item.image}" alt="${item.title}" class="card-image" loading="lazy" decoding="async" onload="this.classList.add('loaded')" onerror="this.onerror=null;this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'360\' height=\'270\' viewBox=\'0 0 360 270\'%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'%231e293b\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' fill=\'%2364748b\' font-family=\'sans-serif\' font-size=\'14\' text-anchor=\'middle\' dy=\'.3em\'%3E📷 Image Unavailable%3C/text%3E%3C/svg%3E';this.classList.add('loaded');">
+            <img src="${item.image}" alt="${escapeHtml(item.title || 'Auction Lot Item')}" class="card-image" loading="lazy" decoding="async" onload="this.classList.add('loaded')" onerror="this.onerror=null;this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'360\' height=\'270\' viewBox=\'0 0 360 270\'%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'%231e293b\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' fill=\'%2364748b\' font-family=\'sans-serif\' font-size=\'14\' text-anchor=\'middle\' dy=\'.3em\'%3E📷 Image Unavailable%3C/text%3E%3C/svg%3E';this.classList.add('loaded');">
             <div class="card-badges">
               <span class="badge ${isRaleigh ? 'badge-raleigh' : 'badge-sc'}">
                 ${isRaleigh ? '📍 Raleigh Pickup' : '🚚 SC Transfer'}

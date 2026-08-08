@@ -5,17 +5,13 @@ const path = require('path');
 const httpMock = require('node:http');
 const { app } = require('../server.js');
 
-test('SEO & Security: robots.txt blocks AI scrapers and allows search engines', () => {
+test('SEO & Security: robots.txt disallows all search engines and web crawlers for private link access', () => {
   const robotsPath = path.join(__dirname, '../public/robots.txt');
   assert.strictEqual(fs.existsSync(robotsPath), true, 'robots.txt should exist');
 
   const content = fs.readFileSync(robotsPath, 'utf8');
-  assert.strictEqual(content.includes('User-agent: GPTBot'), true, 'Should disallow GPTBot');
-  assert.strictEqual(content.includes('User-agent: ClaudeBot'), true, 'Should disallow ClaudeBot');
-  assert.strictEqual(content.includes('User-agent: PerplexityBot'), true, 'Should disallow PerplexityBot');
-  assert.strictEqual(content.includes('User-agent: Bytespider'), true, 'Should disallow Bytespider');
-  assert.strictEqual(content.includes('User-agent: *'), true, 'Should include default user-agent rule');
-  assert.strictEqual(content.includes('Sitemap: https://auction.triangleliquidators.com/sitemap.xml'), true, 'Should link to sitemap.xml');
+  assert.strictEqual(content.includes('User-agent: *'), true, 'Should include User-agent: *');
+  assert.strictEqual(content.includes('Disallow: /'), true, 'Should disallow all crawling with Disallow: /');
 });
 
 test('SEO & Security: static SEO files exist (sitemap.xml, llms.txt, site.webmanifest, 404.html)', () => {
@@ -25,11 +21,14 @@ test('SEO & Security: static SEO files exist (sitemap.xml, llms.txt, site.webman
   assert.strictEqual(fs.existsSync(path.join(__dirname, '../public/404.html')), true, '404.html must exist');
 });
 
-test('SEO & HTML Structure: index.html contains essential metadata, JSON-LD, single H1, and noscript tag', () => {
+test('SEO & HTML Structure: index.html contains noindex meta tag, essential metadata, JSON-LD, single H1, and noscript tag', () => {
   const indexPath = path.join(__dirname, '../public/index.html');
   assert.strictEqual(fs.existsSync(indexPath), true, 'public/index.html must exist');
 
   const html = fs.readFileSync(indexPath, 'utf8');
+
+  // Check noindex meta tag
+  assert.strictEqual(html.includes('<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">'), true, 'Must contain noindex robots meta tag');
 
   // Check meta description
   assert.strictEqual(html.includes('<meta name="description"'), true, 'Must contain meta description');
@@ -52,7 +51,7 @@ test('SEO & HTML Structure: index.html contains essential metadata, JSON-LD, sin
   assert.strictEqual(html.includes('<noscript>'), true, 'Must contain noscript fallback');
 });
 
-test('Express Server: Returns 404 for unknown routes', async () => {
+test('Express Server: Returns 404 for unknown routes and sends X-Robots-Tag header', async () => {
   const req = new httpMock.IncomingMessage();
   req.method = 'GET';
   req.url = '/some-nonexistent-path-123';
@@ -60,8 +59,12 @@ test('Express Server: Returns 404 for unknown routes', async () => {
 
   let statusCode = 200;
   let sentFile = null;
+  let headers = {};
 
   const res = new httpMock.ServerResponse(req);
+  res.setHeader = function(name, value) {
+    headers[name.toLowerCase()] = value;
+  };
   res.status = function(code) {
     statusCode = code;
     return this;
@@ -78,4 +81,5 @@ test('Express Server: Returns 404 for unknown routes', async () => {
 
   assert.strictEqual(statusCode, 404, 'Status code should be 404');
   assert.strictEqual(sentFile.includes('404.html'), true, 'Should render 404.html');
+  assert.strictEqual(headers['x-robots-tag'], 'noindex, nofollow, noarchive, nosnippet', 'Must include X-Robots-Tag header');
 });

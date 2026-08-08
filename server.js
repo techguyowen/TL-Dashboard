@@ -11,6 +11,10 @@ let lastCatalogUpdateTime = Date.now();
 
 app.set('trust proxy', 1);
 app.use(compression());
+app.use((req, res, next) => {
+  res.setHeader('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet');
+  next();
+});
 app.use(express.static(path.join(__dirname, 'public'), {
   maxAge: process.env.NODE_ENV === 'production' ? '1d' : 0,
   etag: true

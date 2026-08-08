@@ -1,4 +1,4 @@
-# Triangle Liquidators Live Auction Tracker & Out-of-Pocket Calculator
+# TL Live Auction Tracker & Out-of-Pocket Calculator
 ### GitHub Repository: `techguyowen/TL-Dashboard`
 
 A real-time auction tracking dashboard built with Node.js, Express, and Puppeteer. Features live countdown timers, financial fee calculations (15% Buyer Premium + 7.25% Tax + 3% Credit Card fee), custom keyword watchlists, exclude keyword filters, and headless auction account synchronization.

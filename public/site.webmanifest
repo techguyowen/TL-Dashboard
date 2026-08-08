@@ -1,7 +1,7 @@
 {
-  "name": "Triangle Liquidators Live Auction Dashboard",
+  "name": "TL Live Auction Dashboard",
   "short_name": "TL Auction Tracker",
-  "description": "Live auction tracking dashboard and financial calculator for Triangle Liquidators.",
+  "description": "Live auction tracking dashboard and financial out-of-pocket calculator.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0b0f19",

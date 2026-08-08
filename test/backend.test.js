@@ -37,15 +37,15 @@ test('Backend: server.js defines expected API routes and status messages', () =>
   assert.strictEqual(content.includes('/api/financials'), true, 'server.js must define /api/financials endpoint');
   assert.strictEqual(content.includes('/api/clear-cache'), true, 'server.js must define /api/clear-cache endpoint');
 
-  // Verify Triangle Liquidators user status messages
+  // Verify user status messages
   assert.strictEqual(
-    content.includes('imported from Triangle Liquidators account.'),
+    content.includes('imported from auction account.'),
     true,
-    'server.js must present Triangle Liquidators watchlist sync message'
+    'server.js must present watchlist sync message'
   );
   assert.strictEqual(
-    content.includes('🚀 Triangle Liquidators Auction Tracker Running'),
+    content.includes('🚀 TL Auction Tracker Running'),
     true,
-    'server.js must print Triangle Liquidators startup banner'
+    'server.js must print startup banner'
   );
 });

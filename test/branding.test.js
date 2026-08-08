@@ -7,7 +7,7 @@ const ROOT_DIR = path.resolve(__dirname, '..');
 const IGNORED_DIRS = new Set(['.agents', 'node_modules', '.git', 'test']);
 const IGNORED_FILES = new Set(['ORIGINAL_REQUEST.md', 'PROJECT.md', 'TEST_INFRA.md']);
 
-test('Branding: verifies presence of Triangle Liquidators domain in key files', () => {
+test('Branding: verifies presence of TL Auction Tracker branding in key files', () => {
   const targetDomain = 'auction.triangleliquidators.com';
   const keyFiles = ['server.js', 'package.json', 'README.md', 'public/index.html', 'catalog_cache.json'];
 
@@ -16,9 +16,9 @@ test('Branding: verifies presence of Triangle Liquidators domain in key files', 
     assert.strictEqual(fs.existsSync(fullPath), true, `File should exist: ${relPath}`);
     const content = fs.readFileSync(fullPath, 'utf8');
     assert.strictEqual(
-      content.includes(targetDomain) || content.includes('triangleliquidators') || content.includes('Triangle Liquidators'),
+      content.includes(targetDomain) || content.includes('TL Auction') || content.includes('tl-auction') || content.includes('TL Live'),
       true,
-      `File ${relPath} must contain Triangle Liquidators domain or reference`
+      `File ${relPath} must contain TL Auction branding reference`
     );
   }
 });

@@ -965,7 +965,7 @@ app.post('/api/auth/login', async (req, res) => {
       if (browser) await browser.close();
       return res.status(401).json({
         success: false,
-        error: 'Invalid login credentials for Triangle Liquidators account.'
+        error: 'Invalid login credentials for auction account.'
       });
     }
 
@@ -1220,7 +1220,7 @@ app.post('/api/watchlist/sync', async (req, res) => {
 
     return res.json({
       success: true,
-      message: `Watchlist synced successfully. ${remoteItems.length} active items imported from Triangle Liquidators account.`,
+      message: `Watchlist synced successfully. ${remoteItems.length} active items imported from auction account.`,
       remoteItems,
       syncedCount: remoteItems.length
     });
@@ -1338,7 +1338,7 @@ app.use((req, res) => {
 if (require.main === module) {
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`====================================================`);
-    console.log(`🚀 Triangle Liquidators Auction Tracker Running`);
+    console.log(`🚀 TL Auction Tracker Running`);
     console.log(`📍 URL: http://0.0.0.0:${PORT}`);
     console.log(`====================================================`);
   });

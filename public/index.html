@@ -4,8 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-  <title>Triangle Liquidators - Live Auction Tracker & Out-of-Pocket Calculator</title>
-  <meta name="description" content="Triangle Liquidators live auction tracking dashboard and financial calculator. Index active lots across Raleigh & SC, calculate total out-of-pocket costs with buyer's premium, tax, and CC fees.">
+  <title>TL Auction Tracker - Live Auction Tracker & Out-of-Pocket Calculator</title>
+  <meta name="description" content="TL Live Auction tracking dashboard and financial calculator. Index active lots across Raleigh & SC, calculate total out-of-pocket costs with buyer's premium, tax, and CC fees.">
   <link rel="canonical" href="https://auction.triangleliquidators.com/">
   <meta name="theme-color" content="#0b0f19">
   <link rel="manifest" href="/site.webmanifest">
@@ -14,14 +14,14 @@
   <!-- Open Graph / Social Media Cards -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://auction.triangleliquidators.com/">
-  <meta property="og:title" content="Triangle Liquidators - Live Auction Tracker & Calculator">
-  <meta property="og:description" content="Live auction lot tracking, real-time out-of-pocket total cost calculation, and custom watchlists for Triangle Liquidators auctions.">
+  <meta property="og:title" content="TL Auction Tracker - Live Auction Tracker & Calculator">
+  <meta property="og:description" content="Live auction lot tracking, real-time out-of-pocket total cost calculation, and custom watchlists for live auctions.">
   <meta property="og:image" content="https://auction.triangleliquidators.com/favicon.svg">
-  <meta property="og:site_name" content="Triangle Liquidators Auction Tracker">
+  <meta property="og:site_name" content="TL Auction Tracker">
 
   <!-- Twitter Card Tags -->
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Triangle Liquidators - Live Auction Tracker">
+  <meta name="twitter:title" content="TL Auction Tracker - Live Auction Tracker">
   <meta name="twitter:description" content="Live auction lot tracking, real-time out-of-pocket total cost calculation, and custom watchlists.">
   <meta name="twitter:image" content="https://auction.triangleliquidators.com/favicon.svg">
 
@@ -30,9 +30,9 @@
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    "name": "Triangle Liquidators Auction Tracker & Calculator",
+    "name": "TL Auction Tracker & Calculator",
     "url": "https://auction.triangleliquidators.com/",
-    "description": "Live auction tracking dashboard with out-of-pocket financial calculator for Triangle Liquidators Raleigh & South Carolina auctions.",
+    "description": "Live auction tracking dashboard with out-of-pocket financial calculator for Raleigh & South Carolina auctions.",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "All",
     "offers": {
@@ -1491,7 +1491,7 @@
 <body>
   <noscript>
     <div style="padding: 20px; background: #1e293b; color: #f8fafc; text-align: center;">
-      <h2>Triangle Liquidators Live Auction Dashboard</h2>
+      <h2>TL Live Auction Dashboard</h2>
       <p>JavaScript is required to operate the live auction tracking engine, calculated financial totals, and watchlist features.</p>
     </div>
   </noscript>
@@ -1500,10 +1500,10 @@
   <header>
     <div class="brand-section">
       <div class="brand-logo">
-        <img src="/favicon.svg" alt="Triangle Liquidators Logo" class="brand-logo-img" />
+        <img src="/favicon.svg" alt="TL Auction Tracker Logo" class="brand-logo-img" />
       </div>
       <div>
-        <h1 class="brand-title">Triangle Liquidators</h1>
+        <h1 class="brand-title">TL Live Auctions</h1>
         <div class="brand-subtitle">
           <span class="live-pulse"></span>
           Live Auction Tracker & Customizable Watchlist Engine
@@ -1518,7 +1518,7 @@
         <span id="authStatusText">Connect Auction Account</span>
       </button>
 
-      <button id="syncWatchlistBtn" class="sync-btn watchlist-sync-btn" onclick="syncLiveWatchlist()" title="Bi-Directional Watchlist Sync with Triangle Liquidators">
+      <button id="syncWatchlistBtn" class="sync-btn watchlist-sync-btn" onclick="syncLiveWatchlist()" title="Bi-Directional Watchlist Sync with Auction Account">
         <i class="fa-solid fa-cloud-arrow-down"></i>
         <span>Sync Watchlist</span>
       </button>
@@ -1992,7 +1992,7 @@
             Est. Out-of-Pocket Cost Calculation
           </div>
           <div class="guide-text">
-            Triangle Liquidators adds standard auction fees to your winning hammer bid:
+            Standard auction fees are added to your winning hammer bid:
             <ul style="margin: 0.4rem 0 0.4rem 1.2rem; line-height: 1.5;">
               <li><strong>15% Buyer's Premium (BP)</strong></li>
               <li><strong>7.25% Sales Tax</strong> (applied to Bid + BP)</li>
@@ -2263,7 +2263,7 @@
     /* EXPORT & IMPORT BACKUP SYSTEM */
     function exportSettingsJSON() {
       const backupData = {
-        app: "Triangle Liquidators Auction Tracker",
+        app: "TL Auction Tracker",
         version: "1.2",
         exportDate: new Date().toISOString(),
         activeWatchlistKeywords: Array.from(activeWatchlist),
@@ -2497,7 +2497,7 @@
       submitBtn.classList.add('loading');
       submitBtn.disabled = true;
       alertBox.className = 'auth-alert info';
-      alertBox.innerHTML = '<i class="fa-solid fa-spinner spin-icon"></i> Logging into Triangle Liquidators headlessly via Puppeteer...';
+      alertBox.innerHTML = '<i class="fa-solid fa-spinner spin-icon"></i> Logging into auction account headlessly via Puppeteer...';
       alertBox.style.display = 'flex';
 
       try {
@@ -2556,7 +2556,7 @@
 
       syncBtn.classList.add('loading');
       if (dot) dot.className = 'status-dot syncing';
-      showToastNotice('🔄 Syncing Watchlist with Triangle Liquidators account...');
+      showToastNotice('🔄 Syncing Watchlist with auction account...');
 
       try {
         const localUrls = Array.from(savedFavoriteUrls);
@@ -3555,11 +3555,11 @@
       // Dynamic Browser Tab Title
       const rawSearch = document.getElementById('searchInput') ? document.getElementById('searchInput').value.trim() : '';
       if (typeof filterSavedOnly !== 'undefined' && filterSavedOnly) {
-        document.title = `Saved Favorites (${visibleItems.length}) | Triangle Liquidators`;
+        document.title = `Saved Favorites (${visibleItems.length}) | TL Auction Tracker`;
       } else if (rawSearch) {
-        document.title = `Search: "${rawSearch}" (${visibleItems.length}) | Triangle Liquidators`;
+        document.title = `Search: "${rawSearch}" (${visibleItems.length}) | TL Auction Tracker`;
       } else {
-        document.title = `Live Auctions (${visibleItems.length}) | Triangle Liquidators`;
+        document.title = `Live Auctions (${visibleItems.length}) | TL Auction Tracker`;
       }
 
       updateNextClosingStat();

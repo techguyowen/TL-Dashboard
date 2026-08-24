@@ -154,13 +154,14 @@ const FALLBACK_ITEMS = [
     currentBid: 52.00,
     retailPrice: 478.00,
     brand: "RYOBI",
-    condition: "Condition: B - Open Box",
+    condition: "Condition: Like New",
+    conditionValue: 2,
     location: "Raleigh",
     address: "1101 Transport Dr, Raleigh, NC 27603",
-    url: "https://auction.triangleliquidators.com/lots/view/1-D5PTSS/450-nintendo-switch-2-console-item-18131241",
+    url: "https://bid.triangleliquidators.com/lots/2026-08-01/1789",
     image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=600&q=80",
-    category: "Tools & Equipment",
-    auctionName: "Raleigh Live Auction Today",
+    category: "Tools",
+    auctionName: "Raleigh Auction",
     closingDate: todayStr,
     endsAt: new Date(now.getTime() + 3 * 3600 * 1000 + 45 * 60 * 1000).toISOString() // +3h 45m
   },
@@ -170,13 +171,14 @@ const FALLBACK_ITEMS = [
     currentBid: 85.00,
     retailPrice: 299.00,
     brand: "Milwaukee",
-    condition: "Condition: A - Appears New",
+    condition: "Condition: New",
+    conditionValue: 1,
     location: "Raleigh",
     address: "1101 Transport Dr, Raleigh, NC 27603",
-    url: "https://auction.triangleliquidators.com/lots/view/1-D5PTT4/899-cyberpowerpc-gamer-master-gaming-desktop-amd-ryzen-5-7600-16gb-ddr5-1tb-ssd-item-18131635",
+    url: "https://bid.triangleliquidators.com/lots/2026-08-01/1790",
     image: "https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80",
-    category: "Tools & Equipment",
-    auctionName: "Raleigh Live Auction Today",
+    category: "Tools",
+    auctionName: "Raleigh Auction",
     closingDate: todayStr,
     endsAt: new Date(now.getTime() + 1 * 3600 * 1000 + 20 * 60 * 1000).toISOString() // +1h 20m
   },
@@ -186,13 +188,14 @@ const FALLBACK_ITEMS = [
     currentBid: 52.00,
     retailPrice: 478.00,
     brand: "Concord Bikes",
-    condition: "Condition: C - Used, missing parts/batteries. Potentially damaged - As Is",
+    condition: "Condition: Used",
+    conditionValue: 3,
     location: "Raleigh",
     address: "1101 Transport Dr, Raleigh, NC 27603",
-    url: "https://auction.triangleliquidators.com/lots/view/1-D5PTR6/699-costway-20k-2-zone-mini-split-acheating-heat-pump-only-208230v-item-18126101",
+    url: "https://bid.triangleliquidators.com/lots/2026-08-01/1791",
     image: "https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=600&q=80",
-    category: "General Merchandise",
-    auctionName: "Raleigh Tuesday Auction",
+    category: "Outdoor",
+    auctionName: "Raleigh Auction",
     closingDate: tomorrowStr,
     endsAt: new Date(now.getTime() + 27 * 3600 * 1000).toISOString() // Tomorrow
   },
@@ -202,13 +205,14 @@ const FALLBACK_ITEMS = [
     currentBid: 110.00,
     retailPrice: 389.00,
     brand: "Craftsman",
-    condition: "Condition: D - Damaged / Untested As-Is",
+    condition: "Condition: As-Is",
+    conditionValue: 4,
     location: "Raleigh",
     address: "1101 Transport Dr, Raleigh, NC 27603",
-    url: "https://auction.triangleliquidators.com/lots/view/1-D5PTR8/680-22-cu-ft-front-load-washer-24-in-white-item-18127075",
+    url: "https://bid.triangleliquidators.com/lots/2026-08-01/1792",
     image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=600&q=80",
-    category: "Lawn & Garden",
-    auctionName: "Raleigh Live Auction Today",
+    category: "Outdoor",
+    auctionName: "Raleigh Auction",
     closingDate: todayStr,
     endsAt: new Date(now.getTime() + 5 * 3600 * 1000 + 10 * 60 * 1000).toISOString() // +5h 10m
   },
@@ -218,13 +222,14 @@ const FALLBACK_ITEMS = [
     currentBid: 145.00,
     retailPrice: 599.00,
     brand: "Patio Living",
-    condition: "Condition: Shelf Pull - Customer Return",
+    condition: "Condition: Like New",
+    conditionValue: 2,
     location: "Raleigh",
     address: "1101 Transport Dr, Raleigh, NC 27603",
-    url: "https://auction.triangleliquidators.com/lots/view/1-D5PTWU/1169-12000-cfm-evaporative-cooler-evap-swamp-cooler-air-conditioner-3200-sq-ft-for-outdoor-patio-shop-yard-factory-item-18138091",
+    url: "https://bid.triangleliquidators.com/lots/2026-08-01/1793",
     image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=600&q=80",
-    category: "Furniture & Patio",
-    auctionName: "Raleigh Live Auction Today",
+    category: "Home",
+    auctionName: "Raleigh Auction",
     closingDate: todayStr,
     endsAt: new Date(now.getTime() + 6 * 3600 * 1000).toISOString() // +6h
   },
@@ -234,13 +239,14 @@ const FALLBACK_ITEMS = [
     currentBid: 260.00,
     retailPrice: 1099.00,
     brand: "Honda",
-    condition: "Condition: B - Open Box",
-    location: "SC Transfer",
+    condition: "Condition: Like New",
+    conditionValue: 2,
+    location: "Anderson",
     address: "Williamston / Anderson, SC Transfer Depot",
-    url: "https://auction.triangleliquidators.com/auctions/1-D5PS9B/anderson-tuesday-07282026",
+    url: "https://bid.triangleliquidators.com/lots/2026-08-01/1794",
     image: "https://images.unsplash.com/photo-1544725176-7c40e5a71c5e?auto=format&fit=crop&w=600&q=80",
-    category: "Generators & Power",
-    auctionName: "Anderson Transfer Auction",
+    category: "Outdoor",
+    auctionName: "Anderson Auction",
     closingDate: tomorrowStr,
     endsAt: new Date(now.getTime() + 30 * 3600 * 1000).toISOString() // Tomorrow
   }
@@ -252,323 +258,268 @@ FALLBACK_ITEMS.forEach(i => {
 scraperProgress.totalIndexed = masterCatalogMap.size;
 
 /**
- * Fast Fast-Streaming Multi-Page Crawler with Progressive Real-Time UI Broadcasting
+ * Fast Streaming Multi-Page Crawler with Progressive Real-Time UI Broadcasting
+ * Targets the new Next.js site at bid.triangleliquidators.com.
+ * Extracts structured lot data from the __NEXT_DATA__ SSR JSON payload instead of DOM scraping.
+ *
+ * New site data model:
+ *  - URL format:    /lots/{auctionPeriod}/{id}   (e.g. /lots/2026-08-01/1234)
+ *  - Category:      item.category.label           (direct, no keyword guessing)
+ *  - Condition:     item.condition.displayName     (New/Like New/Used/As-is)
+ *  - Retail price:  item.estimatedRetailPrice
+ *  - Current bid:   item.currentPrice
+ *  - End time:      item.endsAt                   (ISO UTC — no parsing needed)
+ *  - Images:        https://cdn.bid.triangleliquidators.com/{item.images[0].imageCard}
+ *  - Location:      item.location.name             ("Raleigh" or "Anderson")
  */
 async function crawlDeepAuctionPages(maxCatalogsToScan = 10, maxPagesPerCatalog = 60) {
   if (isBackgroundScraping) return;
   isBackgroundScraping = true;
   scraperProgress.isScraping = true;
-  scraperProgress.status = "Discovering active auction catalogs...";
+  scraperProgress.status = "Connecting to bid.triangleliquidators.com...";
   scraperProgress.progressPct = 5;
 
   broadcastEvent('progress_update');
 
-  console.log(`[DEEP CRAWLER] Starting progressive live crawl (Scanning ${maxCatalogsToScan} catalogs x ${maxPagesPerCatalog} pages)...`);
+  const CDN_BASE = 'https://cdn.bid.triangleliquidators.com/';
+  const SITE_BASE = 'https://bid.triangleliquidators.com';
+  const FALLBACK_IMG = 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80';
 
-  let browser = null;
+  /**
+   * Condition value → human-readable string mapping (matches new site's condition codes)
+   * 1=New, 2=Like New, 3=Used, 4=As-is
+   */
+  const CONDITION_MAP = {
+    1: 'Condition: New',
+    2: 'Condition: Like New',
+    3: 'Condition: Used',
+    4: 'Condition: As-Is',
+  };
+
+  /**
+   * New site location codes → address lookup
+   */
+  const LOCATION_ADDRESSES = {
+    'Raleigh': '1101 Transport Dr, Raleigh, NC 27603',
+    'Anderson': 'Williamston / Anderson, SC Transfer Depot',
+  };
+
+  console.log(`[DEEP CRAWLER] Starting catalog ingestion from bid.triangleliquidators.com (up to ${maxPagesPerCatalog} pages)...`);
+
+  const seenIdsThisCrawl = new Set();
+  const perPage = 100;
+  let totalPages = maxPagesPerCatalog;
+  let totalCount = 0;
+  let useDirectAPI = true;
+
   try {
-    browser = await puppeteer.launch({
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
-      headless: true,
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--window-size=1440,900'
-      ]
-    });
+    for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
+      scraperProgress.progressPct = Math.min(97, Math.round(((pageNum - 1) / totalPages) * 92) + 5);
+      scraperProgress.status = `Ingesting bid.triangleliquidators.com — Page ${pageNum}/${totalPages}...`;
+      scraperProgress.currentAuction = `Page ${pageNum}`;
+      broadcastEvent('progress_update');
 
-    const createOptimizedPage = async () => {
-      const p = await browser.newPage();
-      await p.setUserAgent(
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
-      );
-      await p.setViewport({ width: 1440, height: 900 });
-      // Intercept & block unnecessary heavy assets during HTML structure parsing
-      await p.setRequestInterception(true);
-      p.on('request', (req) => {
-        const resourceType = req.resourceType();
-        if (['image', 'stylesheet', 'font', 'media', 'other'].includes(resourceType)) {
-          req.abort();
-        } else {
-          req.continue();
-        }
-      });
-      return p;
-    };
+      let rawResults = [];
 
-    let page = await createOptimizedPage();
-
-    await page.goto('https://auction.triangleliquidators.com/', { waitUntil: 'domcontentloaded', timeout: 20000 });
-    await new Promise(r => setTimeout(r, 1500));
-
-    // Get active auction catalog URLs across days
-    const activeAuctions = await page.evaluate(() => {
-      const anchors = Array.from(document.querySelectorAll('a[href*="/auctions/1-"]'));
-      const found = [];
-      anchors.forEach(a => {
-        if (a.href && !found.some(f => f.href === a.href) && !a.href.includes('/past')) {
-          const text = a.innerText.trim();
-          let location = 'Raleigh';
-          if (text.toLowerCase().includes('anderson') || a.href.toLowerCase().includes('anderson')) {
-            location = 'SC Transfer';
-          }
-          found.push({ name: text, href: a.href, location });
-        }
-      });
-      return found;
-    });
-
-    scraperProgress.scrapedDaysCount = activeAuctions.length;
-    console.log(`[DEEP CRAWLER] Discovered ${activeAuctions.length} active auction catalogs.`);
-    broadcastEvent('progress_update');
-
-    const catalogsToProcess = activeAuctions.slice(0, maxCatalogsToScan);
-    const totalWorkUnits = catalogsToProcess.length * maxPagesPerCatalog;
-    let completedWorkUnits = 0;
-
-    for (const auc of catalogsToProcess) {
-      for (let pageNum = 1; pageNum <= maxPagesPerCatalog; pageNum++) {
-        completedWorkUnits++;
-        scraperProgress.progressPct = Math.min(98, Math.round((completedWorkUnits / totalWorkUnits) * 92) + 5);
-        scraperProgress.currentAuction = auc.name;
-        scraperProgress.status = `Progressively Ingesting ${auc.name} (${auc.location}) Page ${pageNum}/${maxPagesPerCatalog}...`;
-
-        const pageUrl = `${auc.href}?limit=96&perPage=96&page=${pageNum}`;
-        console.log(`[DEEP CRAWLER] ${scraperProgress.status}`);
-        broadcastEvent('progress_update');
-
+      // Primary strategy: Direct REST API (100x faster, zero browser overhead, complete pagination)
+      if (useDirectAPI) {
         try {
-          if (!page || page.isClosed()) {
-            page = await createOptimizedPage();
-          }
-
-          await page.goto(pageUrl, { waitUntil: 'domcontentloaded', timeout: 18000 });
-          await new Promise(r => setTimeout(r, 1200));
-
-          const pageItems = await page.evaluate((loc, aucName, pNum) => {
-            const lotLinks = Array.from(document.querySelectorAll('a[href*="/lots/view/"]'));
-            const items = [];
-            const seen = new Set();
-
-            lotLinks.forEach(a => {
-              if (seen.has(a.href)) return;
-              seen.add(a.href);
-
-              let parent = a.parentElement;
-              for (let i = 0; i < 5; i++) {
-                if (parent && parent.innerText && parent.innerText.length > 20) break;
-                if (parent && parent.parentElement) parent = parent.parentElement;
-              }
-
-              const text = parent ? parent.innerText : '';
-              const img = parent ? parent.querySelector('img') : null;
-
-              // Condition A-E & Text Parser
-              let condition = 'Condition: Open Box';
-              const condMatch = text.match(/Condition\s*:?\s*([A-E]\s*-\s*[^\.\n\r]+|Appears New|Open Box|Shelf Pull|Untested|Used[^\.\n\r]*|As[- ]Is[^\.\n\r]*|[^\.\n\r]+)/i);
-
-              if (condMatch) {
-                let rawCond = condMatch[0].trim();
-                if (!rawCond.toLowerCase().startsWith('condition:')) {
-                  rawCond = 'Condition: ' + rawCond;
-                }
-                condition = rawCond;
-              }
-
-              // Extract Brand
-              let brand = null;
-              const brandMatch = text.match(/Brand\s*:?\s*([^\n\r]+)/i);
-              if (brandMatch) brand = brandMatch[1].trim();
-
-              // Extract Retail MSRP vs Current Bid
-              let retailPrice = null;
-              let currentBid = 0;
-
-              const retailMatch = text.match(/Retail Price\s*:?\s*\$?\s*([\d\.,]+)/i) || 
-                                  text.match(/^\s*\$([\d\.,]+)\b/);
-              if (retailMatch) retailPrice = parseFloat(retailMatch[1].replace(',', ''));
-
-              const bidMatch = text.match(/Current Bid\s*:?\s*\$?\s*([\d\.,]+)/i) || 
-                               text.match(/Bid\s*:?\s*\$?\s*([\d\.,]+)/i) ||
-                               text.match(/\$([\d\.,]+)\s*bid/i);
-              if (bidMatch) currentBid = parseFloat(bidMatch[1].replace(',', ''));
-              else currentBid = Math.floor(Math.random() * 45) + 5;
-
-              const hrefParts = a.href.split('/');
-              const slug = hrefParts[hrefParts.length - 1] || '';
-              let titleClean = decodeURIComponent(slug)
-                .replace(/-/g, ' ')
-                .replace(/^\$\d+\s*/, '')
-                .replace(/^item \d+/i, '')
-                .trim();
-
-              if (!titleClean || titleClean.length < 3) titleClean = a.innerText.trim();
-
-              let category = 'General Merchandise';
-              const tLower = (titleClean + ' ' + text).toLowerCase();
-
-              if (/\b(shoe|shoes|sneaker|sneakers|boot|boots|sandal|sandals|heel|heels|pump|pumps|dress|dresses|gown|gowns|shirt|shirts|pant|pants|jean|jeans|jacket|jackets|coat|coats|hoodie|hoodies|sweater|sweaters|sock|socks|hat|hats|bag|bags|purse|purses|backpack|apparel|clothing|womens|mens|size)\b/i.test(tLower)) {
-                category = 'Apparel, Shoes & Accessories';
-              } else if (/\b(massager|shaver|razor|skincare|lotion|serum|makeup|cosmetic|hair|dryer|straightener|perfume|cologne|vitamin|supplement|toothbrush|oral|health|beauty)\b/i.test(tLower)) {
-                category = 'Health, Beauty & Skincare';
-              } else if (/\b(stroller|car seat|baby|toddler|nursery|toy|toys|lego|doll|action figure|playpen|crib|puzzle|board game|kids)\b/i.test(tLower)) {
-                category = 'Toys, Baby & Kids';
-              } else if (/\b(vanity|towel|towels|sheet|sheets|pillow|pillows|blanket|blankets|comforter|duvet|mattress pad|shower|curtain|curtains|bath mat|rug|rugs|linens)\b/i.test(tLower)) {
-                category = 'Bedding, Bath & Linens';
-              } else if (/\b(tool|tools|drill|drills|saw|saws|dewalt|milwaukee|craftsman|ryobi|impact|wrench|wrenches|kobalt|socket|sockets|compressor|sander|router|welder)\b/i.test(tLower)) {
-                category = 'Tools & Equipment';
-              } else if (/\b(tv|tvs|nintendo|switch|gaming|playstation|xbox|laptop|laptops|desktop|tablet|tablets|ipad|monitor|monitors|headphone|headphones|audio|camera|speaker|speakers|phone|earbud|earbuds|wireless)\b/i.test(tLower)) {
-                category = 'Electronics & Gaming';
-              } else if ((/\b(washer|dryer|refrigerator|fridge|freezer|dishwasher|mini split|air conditioner|water heater|range|oven|microwave)\b/i.test(tLower)) && !tLower.includes('pressure washer')) {
-                category = 'Major Appliances & HVAC';
-              } else if (/\b(ninja|kitchen|cooker|fryer|blender|instant pot|coffee|espresso|toaster|cookware|ice maker|pot|pots|pan|pans|knife|dish)\b/i.test(tLower)) {
-                category = 'Kitchen & Dining';
-              } else if (/\b(sofa|couch|bed|mattress|desk|chair|table|cabinet|shelf|recliner|furniture|ottoman|lamp|lamps|sconce|chandelier|mirror|wall art|decor)\b/i.test(tLower)) {
-                category = 'Furniture & Home Decor';
-              } else if (/\b(patio|trimmer|lawn|mower|pressure washer|hose|tiller|chainsaw|grill|smoker|traeger|gazebo|umbrella|planter)\b/i.test(tLower)) {
-                category = 'Lawn & Garden';
-              } else if (/\b(generator|power station|inverter|solar|eco-flow|jackery|watt|battery)\b/i.test(tLower)) {
-                category = 'Generators & Solar Power';
-              } else if (/\b(tire|tires|jack|obd2|scanner|battery charger|jump starter|winch|automotive|trailer|hitch|car cover)\b/i.test(tLower)) {
-                category = 'Automotive & Marine';
-              } else if (/\b(bike|bicycle|scooter|e-bike|treadmill|exercise|fitness|kayak|tent|camping|cooler|yeti|golf|fishing|dumbbell)\b/i.test(tLower)) {
-                category = 'Sports, Fitness & Outdoors';
-              } else if (/\b(pump|sink|faucet|toilet|plumbing|hardware|flooring|tile|pipe|valve)\b/i.test(tLower)) {
-                category = 'Hardware & Plumbing';
-              } else if (/\b(pallet|bulk|wholesale|mystery box|liquidation)\b/i.test(tLower)) {
-                category = 'Pallets & Bulk Lots';
-              }
-
-              let closingDate = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
-              let endsAtISO = null;
-              let closingTimeStr = null;
-
-              // 1. Try extracting live countdown timer text from lot card DOM
-              const timerMatch = text.match(/\b(?:(\d+)\s*D[,\s]*)?(?:(\d+)\s*H[,\s]*)?(\d+)\s*(?:M|MIN|MINS|MINUTES)\b(?:[,\s]*(\d+)\s*S)?/i) ||
-                                 text.match(/\b(?:(\d{1,2}):)?(\d{1,2}):(\d{2})\b/);
-
-              if (timerMatch) {
-                if (timerMatch[0].includes(':')) {
-                  const parts = timerMatch[0].split(':').map(n => parseInt(n, 10));
-                  let hours = 0, mins = 0, secs = 0;
-                  if (parts.length === 3) {
-                    hours = parts[0]; mins = parts[1]; secs = parts[2];
-                  } else if (parts.length === 2) {
-                    mins = parts[0]; secs = parts[1];
-                  }
-                  const totalMs = (hours * 3600 + mins * 60 + secs) * 1000;
-                  if (totalMs > 0) {
-                    closingTimeStr = timerMatch[0];
-                    endsAtISO = new Date(Date.now() + totalMs).toISOString();
-                  }
-                } else {
-                  const days = timerMatch[1] ? parseInt(timerMatch[1], 10) : 0;
-                  const hours = timerMatch[2] ? parseInt(timerMatch[2], 10) : 0;
-                  const mins = timerMatch[3] ? parseInt(timerMatch[3], 10) : 0;
-                  const secs = timerMatch[4] ? parseInt(timerMatch[4], 10) : 0;
-
-                  closingTimeStr = timerMatch[0];
-                  const totalMs = ((days * 24 + hours) * 3600 + mins * 60 + secs) * 1000;
-                  if (totalMs > 0) {
-                    endsAtISO = new Date(Date.now() + totalMs).toISOString();
-                  }
-                }
-              }
-
-              // 2. Try extracting date MM/DD/YYYY from auction name
-              const dateMatch = aucName.match(/(\d{2})[\/-]?(\d{2})[\/-]?(\d{4})/) || a.href.match(/(\d{2})(\d{2})(\d{4})/);
-              if (dateMatch) {
-                const m = dateMatch[1];
-                const d = dateMatch[2];
-                const y = dateMatch[3];
-                closingDate = `${y}-${m}-${d}`;
-                if (!endsAtISO) {
-                  const targetDate = new Date(`${y}-${m}-${d}T23:59:59-04:00`);
-                  if (!isNaN(targetDate.getTime())) {
-                    endsAtISO = targetDate.toISOString();
-                  }
-                }
-              }
-
-              if (!endsAtISO) {
-                const edtTodayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
-                const fallbackDate = new Date(`${edtTodayStr}T23:59:59-04:00`);
-                if (fallbackDate.getTime() <= Date.now()) {
-                  fallbackDate.setDate(fallbackDate.getDate() + 1);
-                }
-                endsAtISO = fallbackDate.toISOString();
-              }
-
-              items.push({
-                id: 'scraped-' + slug,
-                title: titleClean,
-                currentBid: currentBid,
-                retailPrice: retailPrice,
-                brand: brand,
-                location: loc,
-                address: loc === 'Raleigh' ? '1101 Transport Dr, Raleigh, NC 27603' : 'Williamston / Anderson, SC Transfer Depot',
-                condition: condition,
-                url: a.href,
-                image: img ? img.src : 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=600&q=80',
-                category: category,
-                auctionName: aucName,
-                closingDate: closingDate,
-                closingTimeStr: closingTimeStr,
-                endsAt: endsAtISO,
-                page: pNum
-              });
-            });
-
-            return items;
-          }, auc.location, auc.name, pageNum);
-
-          if (pageItems.length === 0 && pageNum > 2) {
-            break;
-          }
-
-          // Automatically purge demo fallback items once live website items are scraped
-          if (pageItems.length > 0) {
-            FALLBACK_ITEMS.forEach(f => masterCatalogMap.delete(f.id));
-          }
-
-          pageItems.forEach(item => {
-            const key = item.id || item.url;
-            const existing = masterCatalogMap.get(key);
-            masterCatalogMap.set(key, {
-              ...item,
-              financials: calculateFinancials(item.currentBid, item.retailPrice),
-              indexedAt: existing ? existing.indexedAt : Date.now()
-            });
+          const apiUrl = `${SITE_BASE}/backend/v1/auctions/lots/?page=${pageNum}&per_page=${perPage}`;
+          const res = await fetch(apiUrl, {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+              'Accept': 'application/json, text/plain, */*'
+            }
           });
 
-          scraperProgress.totalIndexed = masterCatalogMap.size;
+          if (res.ok) {
+            const data = await res.json();
+            if (pageNum === 1) {
+              totalCount = data.count || 0;
+              const realTotalPages = Math.ceil(totalCount / perPage);
+              totalPages = Math.min(realTotalPages, maxPagesPerCatalog);
+              scraperProgress.scrapedDaysCount = totalPages;
+              console.log(`[DEEP CRAWLER] Total active lots on site: ${totalCount} across ~${realTotalPages} pages. Ingesting ${totalPages} pages.`);
+            }
 
-          // Push real-time progressive update to UI
-          const currentItems = Array.from(masterCatalogMap.values()).map(item => ({
-            ...item,
-            endsAt: ensureEndsAt(item)
-          }));
-
-          broadcastEvent('items_ingested', {
-            newBatchCount: pageItems.length,
-            items: currentItems
-          });
-
-        } catch (e) {
-          console.error(`[DEEP CRAWLER] Error on ${auc.name} Page ${pageNum}:`, e.message);
-          try { if (page) await page.close(); } catch (_) {}
-          page = null;
+            rawResults = data.results || [];
+          } else {
+            console.warn(`[DEEP CRAWLER] Direct API returned HTTP ${res.status} on page ${pageNum}. Falling back to browser.`);
+            useDirectAPI = false;
+          }
+        } catch (apiErr) {
+          console.warn(`[DEEP CRAWLER] Direct API error on page ${pageNum}:`, apiErr.message);
+          useDirectAPI = false;
         }
+      }
+
+      // Fallback strategy: Puppeteer if direct API is unavailable
+      if (!useDirectAPI && rawResults.length === 0) {
+        let browser = null;
+        try {
+          browser = await puppeteer.launch({
+            executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--window-size=1440,900']
+          });
+          const page = await browser.newPage();
+          await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
+          await page.goto(`${SITE_BASE}/?page=${pageNum}`, { waitUntil: 'networkidle2', timeout: 25000 });
+          const nextData = await page.evaluate(() => {
+            const el = document.getElementById('__NEXT_DATA__');
+            return el ? el.textContent : null;
+          });
+          if (nextData) {
+            const parsed = JSON.parse(nextData);
+            const queries = parsed?.props?.pageProps?.dehydratedState?.queries || [];
+            for (const q of queries) {
+              const d = q?.state?.data;
+              if (d && typeof d === 'object' && Array.isArray(d.results)) {
+                rawResults = d.results;
+                if (pageNum === 1 && typeof d.count === 'number') {
+                  totalCount = d.count;
+                  totalPages = Math.min(Math.ceil(totalCount / perPage), maxPagesPerCatalog);
+                }
+                break;
+              }
+            }
+          }
+          await browser.close();
+        } catch (bErr) {
+          console.error(`[DEEP CRAWLER] Browser fallback error on page ${pageNum}:`, bErr.message);
+          if (browser) await browser.close();
+        }
+      }
+
+      if (rawResults.length === 0) {
+        console.log(`[DEEP CRAWLER] No more results on page ${pageNum}. Finishing crawl.`);
+        break;
+      }
+
+      // Map raw API lot results → internal normalized schema
+      const nowMs = Date.now();
+      const pageItems = rawResults
+        .filter(item => item && item.id && item.status !== 'ended')
+        .map(item => {
+          const period = item.auction_period || item.auctionPeriod || getEDTDateString();
+          const lotUrl = `${SITE_BASE}/lots/${period}/${item.id}`;
+
+          // Image from images array (handles both snake_case and camelCase)
+          let image = FALLBACK_IMG;
+          const imgList = item.images || [];
+          if (Array.isArray(imgList) && imgList.length > 0) {
+            const cardImg = imgList[0].image_card || imgList[0].imageCard || imgList[0].image_large || imgList[0].imageLarge || imgList[0].image_thumb || imgList[0].imageThumb;
+            if (cardImg) {
+              image = cardImg.startsWith('http') ? cardImg : CDN_BASE + cardImg;
+            }
+          }
+
+          // Condition: use numeric map or display name
+          const condVal = item.condition?.value;
+          const condDisplay = item.condition?.display_name || item.condition?.displayName || 'Unknown';
+          const condition = CONDITION_MAP[condVal] || `Condition: ${condDisplay}`;
+
+          // Category
+          const category = item.category?.label || 'General Merchandise';
+
+          // Location
+          const locationName = item.location?.name || 'Raleigh';
+          const address = LOCATION_ADDRESSES[locationName] || LOCATION_ADDRESSES['Raleigh'];
+
+          // Price fields (handles snake_case and camelCase)
+          const currentBid = parseFloat(item.current_price !== undefined ? item.current_price : item.currentPrice) || 0;
+          const retailPrice = parseFloat(item.estimated_retail_price !== undefined ? item.estimated_retail_price : item.estimatedRetailPrice) || null;
+
+          // End time
+          let endsAtISO = item.ends_at || item.endsAt || null;
+          let closingDate = getEDTDateString();
+          if (endsAtISO) {
+            try {
+              closingDate = new Date(endsAtISO).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+            } catch (_) {}
+          } else if (period) {
+            const fallback = new Date(`${period}T23:59:59-04:00`);
+            if (!isNaN(fallback.getTime()) && fallback.getTime() > nowMs) {
+              endsAtISO = fallback.toISOString();
+              closingDate = period;
+            }
+          }
+
+          return {
+            id: `scraped-${item.id}`,
+            title: item.title || 'Auction Item',
+            currentBid,
+            retailPrice,
+            brand: item.brand || null,
+            model: item.model || null,
+            condition,
+            conditionValue: condVal || null,
+            category,
+            location: locationName,
+            address,
+            url: lotUrl,
+            image,
+            auctionPeriod: period,
+            auctionName: `${locationName} Auction`,
+            closingDate,
+            endsAt: endsAtISO,
+            status: item.status || 'live',
+            bidCount: item.bid_count !== undefined ? item.bid_count : (item.bidCount || 0),
+            isTransferable: item.is_transferable !== undefined ? item.is_transferable : (item.isTransferable || false),
+            transferFee: item.transfer_fee !== undefined ? item.transfer_fee : (item.transferFee || null),
+            lotNumber: item.lot_number || item.lotNumber || null,
+          };
+        });
+
+      console.log(`[DEEP CRAWLER] Page ${pageNum}: ingested ${pageItems.length} active items.`);
+
+      // Purge demo fallback items once real items are found
+      if (pageItems.length > 0) {
+        FALLBACK_ITEMS.forEach(f => masterCatalogMap.delete(f.id));
+      }
+
+      pageItems.forEach(item => {
+        const key = item.id;
+        const existing = masterCatalogMap.get(key);
+        masterCatalogMap.set(key, {
+          ...item,
+          financials: calculateFinancials(item.currentBid, item.retailPrice),
+          indexedAt: existing ? existing.indexedAt : Date.now()
+        });
+        seenIdsThisCrawl.add(key);
+      });
+
+      scraperProgress.totalIndexed = masterCatalogMap.size;
+
+      // Broadcast real-time progressive update to UI
+      const currentItems = Array.from(masterCatalogMap.values()).map(item => ({
+        ...item,
+        endsAt: ensureEndsAt(item)
+      }));
+
+      broadcastEvent('items_ingested', {
+        newBatchCount: pageItems.length,
+        items: currentItems
+      });
+    }
+
+    // Active prune: remove any 'scraped-*' items that no longer exist on the live site
+    if (seenIdsThisCrawl.size > 0) {
+      let removedCount = 0;
+      for (const [key] of masterCatalogMap.entries()) {
+        if (key.startsWith('scraped-') && !seenIdsThisCrawl.has(key)) {
+          masterCatalogMap.delete(key);
+          removedCount++;
+        }
+      }
+      if (removedCount > 0) {
+        console.log(`[DEEP CRAWLER] Active prune: removed ${removedCount} ended lots.`);
       }
     }
 
-    if (browser) await browser.close();
-    console.log(`[DEEP CRAWLER] Deep crawl complete! Total items indexed in master catalog: ${masterCatalogMap.size}`);
+    console.log(`[DEEP CRAWLER] Ingestion complete! Total items in master catalog: ${masterCatalogMap.size}`);
   } catch (err) {
     console.error('[DEEP CRAWLER ERROR]', err.message);
-    if (browser) await browser.close();
   } finally {
     isBackgroundScraping = false;
     scraperProgress.isScraping = false;
@@ -661,7 +612,7 @@ function updateCrawlerSchedule(intervalSec) {
     console.log(`[DEEP CRAWLER SCHEDULER] Background crawler scheduled to run every ${crawlerIntervalSec} seconds (${ms} ms).`);
     crawlerTimer = setInterval(() => {
       pruneExpiredCatalogCache();
-      crawlDeepAuctionPages(6, 8);
+      crawlDeepAuctionPages(10, 60);
     }, ms);
     crawlerTimer.unref();
   } else {
@@ -804,10 +755,10 @@ app.get('/api/scrape', async (req, res) => {
   const since = parseInt(req.query.since || '0', 10);
 
   if (extend) {
-    console.log('[DEEP CRAWLER] Triggering extended deep scan across 10 catalogs x 15 pages...');
-    crawlDeepAuctionPages(10, 15, true);
+    console.log('[DEEP CRAWLER] Triggering extended deep scan across full catalog...');
+    crawlDeepAuctionPages(10, 60, true);
   } else if (force || (refresh && crawlerIntervalSec > 0)) {
-    crawlDeepAuctionPages(6, 8);
+    crawlDeepAuctionPages(10, 60);
   }
 
   // Generate ETag header based on catalog count & timestamp
@@ -941,24 +892,29 @@ app.post('/api/auth/login', async (req, res) => {
 
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
-    await page.goto('https://auction.triangleliquidators.com/login', { waitUntil: 'networkidle2', timeout: 25000 });
+    // Updated: new site login page on bid.triangleliquidators.com
+    await page.goto('https://bid.triangleliquidators.com/login', { waitUntil: 'networkidle2', timeout: 25000 });
 
-    await page.waitForSelector('#username', { timeout: 10000 });
-    await page.type('#username', username, { delay: 20 });
-    await page.type('#password', password, { delay: 20 });
+    // New site uses email + password fields (MUI-based Next.js form)
+    await page.waitForSelector('input[type="email"], input[name="email"], #email, input[type="text"]', { timeout: 10000 });
+
+    const emailSelector = await page.$('input[type="email"], input[name="email"], #email') ? 'input[type="email"], input[name="email"], #email' : 'input[type="text"]';
+    await page.type(emailSelector, username, { delay: 20 });
+    await page.type('input[type="password"], input[name="password"], #password', password, { delay: 20 });
 
     await Promise.all([
-      page.click('.email-login, input[type="submit"]'),
+      page.click('button[type="submit"], input[type="submit"], form button').catch(() => null),
       page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 20000 }).catch(() => null)
     ]);
 
     const currentUrl = page.url();
     const bodyText = await page.evaluate(() => document.body.innerText || '');
     const isInvalid = currentUrl.includes('/login') && (
-      bodyText.toLowerCase().includes('invalid login credentials') ||
-      bodyText.toLowerCase().includes('incorrect username or password') ||
-      bodyText.toLowerCase().includes('invalid password') ||
-      bodyText.toLowerCase().includes('login failed')
+      bodyText.toLowerCase().includes('invalid') ||
+      bodyText.toLowerCase().includes('incorrect') ||
+      bodyText.toLowerCase().includes('wrong password') ||
+      bodyText.toLowerCase().includes('login failed') ||
+      bodyText.toLowerCase().includes('email or password')
     );
 
     if (isInvalid) {
@@ -1028,8 +984,8 @@ app.post('/api/watchlist/sync', async (req, res) => {
       await page.setCookie(...session.cookies);
     }
 
-    // Navigate to watched-lots page
-    await page.goto('https://auction.triangleliquidators.com/watched-lots', { waitUntil: 'networkidle2', timeout: 25000 });
+    // Updated: navigate to the new site's watchlist page on bid.triangleliquidators.com
+    await page.goto('https://bid.triangleliquidators.com/watchlist', { waitUntil: 'networkidle2', timeout: 25000 });
 
     const pageUrl = page.url();
     if (pageUrl.includes('/login')) {
@@ -1039,52 +995,52 @@ app.post('/api/watchlist/sync', async (req, res) => {
       return res.status(401).json({ success: false, error: 'Session expired. Please reconnect your account.' });
     }
 
-    // Extract watched lots
+    // Extract watched lots from new site's __NEXT_DATA__ SSR JSON, falling back to DOM scanning
     const remoteWatchedLots = await page.evaluate(() => {
       const items = [];
-      const lotCards = document.querySelectorAll('.lot-item, .lot-card, [id^="lot-"], .lotTile, div.lot, div[data-lot-id]');
 
-      lotCards.forEach(card => {
-        const linkEl = card.querySelector('a[href*="/lots/view/"]');
-        if (!linkEl) return;
-
-        const titleEl = card.querySelector('.lot-title, .title, h3, h4') || linkEl;
-        const imgEl = card.querySelector('img');
-        const bidEl = card.querySelector('.current-bid, .bid-amount, .price, [ng-bind*="bid"]');
-        const retailEl = card.querySelector('.retail-price, .msrp, [ng-bind*="retail"]');
-
-        const cardText = card.innerText || '';
-        const isEndedText = cardText.toLowerCase().includes('auction closed') ||
-                            cardText.toLowerCase().includes('bidding closed') ||
-                            cardText.toLowerCase().includes('ended') ||
-                            card.querySelector('.status-ended, .closed, .ended') !== null;
-
-        const title = titleEl ? titleEl.innerText.trim() : '';
-        const url = linkEl.href;
-        const image = imgEl ? (imgEl.src || imgEl.getAttribute('data-src')) : '';
-        const rawBid = bidEl ? bidEl.innerText.replace(/[^0-9.]/g, '') : '0';
-        const rawRetail = retailEl ? retailEl.innerText.replace(/[^0-9.]/g, '') : '';
-
-        // Exclude items explicitly marked as closed/ended
-        if (url && !isEndedText && !items.some(i => i.url === url)) {
-          items.push({
-            title,
-            url,
-            image,
-            currentBid: parseFloat(rawBid) || 0,
-            retailPrice: rawRetail ? parseFloat(rawRetail) : null
-          });
+      // Primary: try to extract from __NEXT_DATA__ JSON payload
+      try {
+        const nextDataEl = document.getElementById('__NEXT_DATA__');
+        if (nextDataEl) {
+          const data = JSON.parse(nextDataEl.textContent || '{}');
+          const queries = data?.props?.pageProps?.dehydratedState?.queries || [];
+          for (const q of queries) {
+            const d = q?.state?.data;
+            if (d && typeof d === 'object' && Array.isArray(d.results) && d.results.length > 0) {
+              d.results.forEach(item => {
+                if (!item || !item.id || item.status === 'ended') return;
+                const lotUrl = `https://bid.triangleliquidators.com/lots/${item.auctionPeriod}/${item.id}`;
+                const image = (Array.isArray(item.images) && item.images[0]?.imageCard)
+                  ? `https://cdn.bid.triangleliquidators.com/${item.images[0].imageCard}`
+                  : '';
+                if (!items.some(i => i.url === lotUrl)) {
+                  items.push({
+                    title: item.title || '',
+                    url: lotUrl,
+                    image,
+                    currentBid: parseFloat(item.currentPrice) || 0,
+                    retailPrice: parseFloat(item.estimatedRetailPrice) || null,
+                    lotId: item.id,
+                    auctionPeriod: item.auctionPeriod
+                  });
+                }
+              });
+              break;
+            }
+          }
         }
-      });
+      } catch (_) {}
 
-      // Fallback: if cards were not structured with .lot-item wrapper, grab all /lots/view/ links
+      // Fallback: DOM scan for lot links matching new URL format /lots/YYYY-MM-DD/ID
       if (items.length === 0) {
-        const allLinks = Array.from(document.querySelectorAll('a[href*="/lots/view/"]'));
+        const allLinks = Array.from(document.querySelectorAll('a[href*="/lots/"]'));
         allLinks.forEach(a => {
-          const title = a.innerText.trim();
-          const parentText = a.parentElement ? a.parentElement.innerText : '';
-          const isEnded = parentText.toLowerCase().includes('closed') || parentText.toLowerCase().includes('ended');
-          if (title && a.href && !isEnded && !items.some(i => i.url === a.href)) {
+          if (!/\/lots\/\d{4}-\d{2}-\d{2}\/\d+/.test(a.href)) return;
+          const title = a.innerText.trim() || a.querySelector('h2, h3, h4, [class*="title"]')?.innerText?.trim() || '';
+          const parentText = a.closest('[class*="card"], [class*="lot"], article, li')?.innerText || '';
+          const isEnded = parentText.toLowerCase().includes('ended') || parentText.toLowerCase().includes('closed');
+          if (a.href && !isEnded && !items.some(i => i.url === a.href)) {
             items.push({ title, url: a.href, currentBid: 0 });
           }
         });
@@ -1095,10 +1051,20 @@ app.post('/api/watchlist/sync', async (req, res) => {
 
     console.log(`[WATCHLIST SYNC] Found ${remoteWatchedLots.length} active items in remote watched lots.`);
 
+    /**
+     * Extracts a stable lot key from either old or new TL lot URLs.
+     * Old: /lots/view/1-XXXXX/slug  →  the "1-XXXXX" segment
+     * New: /lots/2026-08-01/1234    →  the "1234" numeric lot ID
+     */
     function extractLotKey(urlStr) {
       if (!urlStr) return '';
-      const match = urlStr.match(/\/lots\/view\/([^\/\?#]+)/i);
-      if (match) return match[1].toLowerCase();
+      // New site format: /lots/YYYY-MM-DD/ID
+      const newMatch = urlStr.match(/\/lots\/\d{4}-\d{2}-\d{2}\/(\d+)/i);
+      if (newMatch) return newMatch[1].toLowerCase();
+      // Old site format: /lots/view/ID/slug
+      const oldMatch = urlStr.match(/\/lots\/view\/([^\/\?#]+)/i);
+      if (oldMatch) return oldMatch[1].toLowerCase();
+      // Item number fallback
       const itemMatch = urlStr.match(/item-?(\d+)/i);
       if (itemMatch) return itemMatch[1].toLowerCase();
       return urlStr.toLowerCase().replace(/^https?:\/\/[^\/]+/, '').replace(/\/$/, '');
@@ -1135,27 +1101,41 @@ app.post('/api/watchlist/sync', async (req, res) => {
         if (isPast) continue;
         remoteItems.push(catalogItem);
       } else {
-        // Fetch real lot HTML on-demand so item has real title, real image, real location & real data position
+        // Fetch real lot HTML on-demand to get real title, image, location & data
         try {
           const lotRes = await fetch(remote.url);
           if (lotRes.ok) {
             const html = await lotRes.text();
             const realTitleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
             const realTitle = realTitleMatch ? realTitleMatch[1].replace(/\|.*/, '').trim() : remote.title;
-            const realImgMatch = html.match(/https:\/\/images-cdn\.auctionmobility\.com\/is3\/[^\s"'\>]+/i);
+
+            // Updated: match new CDN image pattern cdn.bid.triangleliquidators.com
+            const realImgMatch = html.match(/https:\/\/cdn\.bid\.triangleliquidators\.com\/lots\/[^\s"'<>]+/i) ||
+                                 html.match(/https:\/\/images-cdn\.auctionmobility\.com\/is3\/[^\s"'<>]+/i);
             const realImg = realImgMatch ? realImgMatch[0].replace(/&amp;/g, '&') : (remote.image || '');
-            const isAnderson = html.toLowerCase().includes('anderson') || html.toLowerCase().includes('williamston');
-            const realLocation = isAnderson ? 'SC Transfer' : 'Raleigh';
+
+            // Updated: new site uses location.name: "Anderson" instead of "SC Transfer"
+            const isAnderson = html.toLowerCase().includes('"name":"anderson"') ||
+                               html.toLowerCase().includes('anderson') ||
+                               html.toLowerCase().includes('williamston');
+            const realLocation = isAnderson ? 'Anderson' : 'Raleigh';
             const realAddress = isAnderson ? 'Williamston / Anderson, SC Transfer Depot' : '1101 Transport Dr, Raleigh, NC 27603';
 
-            const isEnded = html.toLowerCase().includes('auction closed') || html.toLowerCase().includes('bidding closed');
+            // Updated: new site uses "status":"ended" instead of "auction closed" text
+            const isEnded = html.toLowerCase().includes('"status":"ended"') ||
+                            html.toLowerCase().includes('auction closed') ||
+                            html.toLowerCase().includes('bidding closed');
             if (isEnded) continue; // Do not import closed item
 
-            const auctionMatch = html.match(/<a[^>]+href="[^"]*\/auctions\/1-[^"]*"[^>]*>([\s\S]*?)<\/a>/i);
-            const realAuctionName = auctionMatch ? auctionMatch[1].replace(/<[^>]+>/g, '').trim() : `${realLocation} Live Auction`;
+            // Updated: extract auction name from new site's JSON structure
+            let realAuctionName = `${realLocation} Auction`;
+            const auctionNameMatch = html.match(/"auctionName"\s*:\s*"([^"]+)"/i);
+            if (auctionNameMatch) realAuctionName = auctionNameMatch[1];
 
-            const catMatch = html.match(/category:\s*["']?([^"'\n<]+)/i);
-            const realCategory = catMatch ? catMatch[1].trim() : 'General Merchandise';
+            // Updated: extract category from new site's nested category.label JSON
+            let realCategory = 'General Merchandise';
+            const catLabelMatch = html.match(/"category"\s*:\s*\{[^}]*"label"\s*:\s*"([^"]+)"/i);
+            if (catLabelMatch) realCategory = catLabelMatch[1];
 
             const now = new Date();
             const id = 'scraped-' + (remoteKey || Math.random().toString(36).substr(2, 9));
@@ -1167,7 +1147,7 @@ app.post('/api/watchlist/sync', async (req, res) => {
               currentBid: remote.currentBid || 0,
               retailPrice: remote.retailPrice || null,
               brand: (realTitle || '').split(' ')[0] || 'Generic',
-              condition: 'Condition: Checked via Account Sync',
+              condition: 'Condition: Synced from Account',
               location: realLocation,
               address: realAddress,
               category: realCategory,
@@ -1194,12 +1174,17 @@ app.post('/api/watchlist/sync', async (req, res) => {
       for (const targetUrl of itemsToRemoteWatch.slice(0, 5)) { // batch limit to 5 per sync for performance
         try {
           await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 12000 });
-          const watchBtn = await page.waitForSelector('.watch-lot, .watch-icon, button[ng-click*="watchLot"]', { timeout: 6000 }).catch(() => null);
+          // Updated: new site uses different watchlist button selectors (MUI-based)
+          const watchBtn = await page.waitForSelector(
+            'button[aria-label*="watch"], button[aria-label*="Watch"], button[class*="watch"], [data-testid*="watch"]',
+            { timeout: 6000 }
+          ).catch(() => null);
           if (watchBtn) {
             const isWatched = await page.evaluate(el => {
               const text = (el.innerText || '').toLowerCase();
+              const ariaLabel = (el.getAttribute('aria-label') || '').toLowerCase();
               const className = el.className || '';
-              return text.includes('unwatch') || className.includes('watched') || className.includes('unwatch');
+              return text.includes('unwatch') || ariaLabel.includes('unwatch') || className.includes('watched');
             }, watchBtn);
             if (!isWatched) {
               await watchBtn.click();
@@ -1230,6 +1215,7 @@ app.post('/api/watchlist/sync', async (req, res) => {
     return res.status(500).json({ success: false, error: `Watchlist sync failed: ${err.message}` });
   }
 });
+
 
 // Clear Past / Ended Items Endpoint
 app.post(['/api/watchlist/clear-past', '/api/catalog/clear-past'], (req, res) => {
@@ -1301,13 +1287,18 @@ app.post('/api/watchlist/remote-watch', async (req, res) => {
     }
 
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 15000 });
-    const watchBtn = await page.waitForSelector('.watch-lot, .watch-icon, button[ng-click*="watchLot"]', { timeout: 7000 }).catch(() => null);
+    // Updated: new site uses MUI-based buttons instead of Angular ng-click selectors
+    const watchBtn = await page.waitForSelector(
+      'button[aria-label*="watch"], button[aria-label*="Watch"], button[class*="watch"], [data-testid*="watch"]',
+      { timeout: 7000 }
+    ).catch(() => null);
 
     if (watchBtn) {
       const isWatched = await page.evaluate(el => {
         const text = (el.innerText || '').toLowerCase();
+        const ariaLabel = (el.getAttribute('aria-label') || '').toLowerCase();
         const className = el.className || '';
-        return text.includes('unwatch') || className.includes('watched') || className.includes('unwatch');
+        return text.includes('unwatch') || ariaLabel.includes('unwatch') || className.includes('watched');
       }, watchBtn);
 
       if ((watch && !isWatched) || (!watch && isWatched)) {

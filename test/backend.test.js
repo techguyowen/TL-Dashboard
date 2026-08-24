@@ -8,21 +8,31 @@ const SERVER_PATH = path.resolve(__dirname, '../server.js');
 test('Backend: server.js contains target URLs for triangleliquidators.com', () => {
   const content = fs.readFileSync(SERVER_PATH, 'utf8');
 
-  // Verify scraper and auth target URLs
+  // Verify scraper and auth target URLs — updated for new bid.triangleliquidators.com site
   assert.strictEqual(
-    content.includes("https://auction.triangleliquidators.com/"),
+    content.includes("https://bid.triangleliquidators.com"),
     true,
-    'server.js must contain target homepage URL https://auction.triangleliquidators.com/'
+    'server.js must contain new site base URL https://bid.triangleliquidators.com'
   );
   assert.strictEqual(
-    content.includes("https://auction.triangleliquidators.com/login"),
+    content.includes("https://bid.triangleliquidators.com/login"),
     true,
-    'server.js must contain login target URL https://auction.triangleliquidators.com/login'
+    'server.js must contain new login target URL https://bid.triangleliquidators.com/login'
   );
   assert.strictEqual(
-    content.includes("https://auction.triangleliquidators.com/watched-lots"),
+    content.includes("https://bid.triangleliquidators.com/watchlist"),
     true,
-    'server.js must contain watched-lots target URL https://auction.triangleliquidators.com/watched-lots'
+    'server.js must contain new watchlist target URL https://bid.triangleliquidators.com/watchlist'
+  );
+  assert.strictEqual(
+    content.includes("__NEXT_DATA__"),
+    true,
+    'server.js must extract data from __NEXT_DATA__ SSR JSON on the new Next.js site'
+  );
+  assert.strictEqual(
+    content.includes("cdn.bid.triangleliquidators.com"),
+    true,
+    'server.js must reference new image CDN cdn.bid.triangleliquidators.com'
   );
 });
 

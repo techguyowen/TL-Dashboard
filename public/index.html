@@ -6,24 +6,24 @@
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
   <title>TL Auction Tracker - Live Auction Tracker & Out-of-Pocket Calculator</title>
   <meta name="description" content="TL Live Auction tracking dashboard and financial calculator. Index active lots across Raleigh & SC, calculate total out-of-pocket costs with buyer's premium, tax, and CC fees.">
-  <link rel="canonical" href="https://auction.triangleliquidators.com/">
+  <link rel="canonical" href="https://bid.triangleliquidators.com/">
   <meta name="theme-color" content="#0b0f19">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="apple-touch-icon" href="/favicon.svg">
 
   <!-- Open Graph / Social Media Cards -->
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://auction.triangleliquidators.com/">
+  <meta property="og:url" content="https://bid.triangleliquidators.com/">
   <meta property="og:title" content="TL Auction Tracker - Live Auction Tracker & Calculator">
   <meta property="og:description" content="Live auction lot tracking, real-time out-of-pocket total cost calculation, and custom watchlists for live auctions.">
-  <meta property="og:image" content="https://auction.triangleliquidators.com/favicon.svg">
+  <meta property="og:image" content="https://bid.triangleliquidators.com/favicon.svg">
   <meta property="og:site_name" content="TL Auction Tracker">
 
   <!-- Twitter Card Tags -->
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="TL Auction Tracker - Live Auction Tracker">
   <meta name="twitter:description" content="Live auction lot tracking, real-time out-of-pocket total cost calculation, and custom watchlists.">
-  <meta name="twitter:image" content="https://auction.triangleliquidators.com/favicon.svg">
+  <meta name="twitter:image" content="https://bid.triangleliquidators.com/favicon.svg">
 
   <!-- Schema.org JSON-LD Structured Data -->
   <script type="application/ld+json">
@@ -31,7 +31,7 @@
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "TL Auction Tracker & Calculator",
-    "url": "https://auction.triangleliquidators.com/",
+    "url": "https://bid.triangleliquidators.com/",
     "description": "Live auction tracking dashboard with out-of-pocket financial calculator for Raleigh & South Carolina auctions.",
     "applicationCategory": "BusinessApplication",
     "operatingSystem": "All",
@@ -47,8 +47,10 @@
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="shortcut icon" href="/favicon.svg">
   <!-- Pre-connect & DNS Prefetch for Fast Image Fetching -->
-  <link rel="preconnect" href="https://auction.triangleliquidators.com">
-  <link rel="dns-prefetch" href="https://auction.triangleliquidators.com">
+  <link rel="preconnect" href="https://bid.triangleliquidators.com">
+  <link rel="dns-prefetch" href="https://bid.triangleliquidators.com">
+  <link rel="preconnect" href="https://cdn.bid.triangleliquidators.com">
+  <link rel="dns-prefetch" href="https://cdn.bid.triangleliquidators.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -892,16 +894,21 @@
     .card-image-wrapper {
       position: relative;
       width: 100%;
-      height: 195px;
-      background: #131b2e;
+      height: 230px;
+      background: #ffffff;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.75rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .card-image-wrapper::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(90deg, #131b2e 0%, #1e293b 50%, #131b2e 100%);
+      background: linear-gradient(90deg, #f8fafc 0%, #e2e8f0 50%, #f8fafc 100%);
       background-size: 200% 100%;
       animation: skeletonShimmer 1.5s infinite ease-in-out;
       z-index: 0;
@@ -917,9 +924,11 @@
       z-index: 1;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
       opacity: 0;
-      transition: opacity 0.35s ease, transform 0.5s var(--ease-spring);
+      transition: opacity 0.35s ease, transform 0.4s var(--ease-spring);
     }
 
     .card-image.loaded {
@@ -927,7 +936,7 @@
     }
 
     .item-card:hover .card-image {
-      transform: scale(1.07);
+      transform: scale(1.05);
     }
 
     .star-bookmark-btn {
@@ -937,16 +946,17 @@
       width: 36px;
       height: 36px;
       border-radius: 50%;
-      background: rgba(11, 15, 25, 0.82);
+      background: rgba(15, 23, 42, 0.75);
       backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      color: #94a3b8;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #cbd5e1;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       z-index: 10;
       transition: all 0.25s var(--ease-spring);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
     }
 
     .star-bookmark-btn:hover {
@@ -962,16 +972,14 @@
     }
 
     .card-badges {
-      position: absolute;
-      top: 0.8rem;
-      left: 0.8rem;
       display: flex;
-      gap: 0.45rem;
-      pointer-events: none;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
     }
 
     .badge {
-      padding: 0.3rem 0.7rem;
+      padding: 0.28rem 0.65rem;
       border-radius: var(--radius-sm);
       font-size: 0.72rem;
       font-weight: 700;
@@ -981,15 +989,17 @@
     }
 
     .badge-raleigh {
-      background: rgba(16, 185, 129, 0.9);
-      color: #022c22;
-      box-shadow: 0 2px 10px rgba(16, 185, 129, 0.35);
+      background: rgba(16, 185, 129, 0.18);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      font-weight: 700;
     }
 
     .badge-sc {
-      background: rgba(99, 102, 241, 0.9);
-      color: #1e1b4b;
-      box-shadow: 0 2px 10px rgba(99, 102, 241, 0.35);
+      background: rgba(99, 102, 241, 0.18);
+      color: #a5b4fc;
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      font-weight: 700;
     }
 
     .badge-watchlist {
@@ -999,10 +1009,23 @@
     }
 
     .badge-savings {
-      background: rgba(16, 185, 129, 0.95);
+      background: rgba(16, 185, 129, 0.9);
       color: #022c22;
       font-weight: 800;
-      box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4);
+    }
+
+    .badge-category {
+      background: rgba(148, 163, 184, 0.2);
+      color: #cbd5e1;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-weight: 600;
+    }
+
+    .badge-transfer {
+      background: rgba(56, 189, 248, 0.2);
+      color: #7dd3fc;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      font-weight: 600;
     }
 
     .card-body {
@@ -1589,9 +1612,9 @@
       <div class="filter-group">
         <div class="filter-label">Location Filter</div>
         <select id="locationSelect" class="form-select" onchange="applyFilters()">
-          <option value="All" selected>🌐 All Locations (Raleigh & SC Transfer)</option>
-          <option value="Raleigh">📍 Raleigh, NC Only (1101 Transport Dr)</option>
-          <option value="SC Transfer">🚚 SC Transfer (Williamston / Anderson, SC)</option>
+          <option value="All" selected>🌐 All Locations (Raleigh & Anderson)</option>
+          <option value="Raleigh">📍 Raleigh, NC (1101 Transport Dr)</option>
+          <option value="Anderson">🚚 Anderson, SC Transfer Depot</option>
         </select>
       </div>
 
@@ -1600,17 +1623,19 @@
         <div class="filter-label">Category</div>
         <select id="categorySelect" class="form-select" onchange="applyFilters()">
           <option value="All" selected>📦 All Categories</option>
-          <option value="Tools & Equipment">🧰 Tools & Equipment</option>
-          <option value="Electronics & Gaming">📱 Electronics & Gaming</option>
-          <option value="Major Appliances">⚡ Major Appliances</option>
-          <option value="Lawn & Garden">🌱 Lawn & Garden</option>
-          <option value="Kitchen & Dining">🍳 Kitchen & Dining</option>
-          <option value="Furniture & Home Decor">🛋️ Furniture & Home Decor</option>
-          <option value="Generators & Solar Power">🔋 Generators & Solar Power</option>
-          <option value="Automotive & Marine">🚗 Automotive & Marine</option>
-          <option value="Sports, Fitness & Outdoors">🚴 Sports, Fitness & Outdoors</option>
-          <option value="Hardware & Plumbing">🔧 Hardware & Plumbing</option>
-          <option value="Pallets & Bulk Merchandise">📦 Pallets & Bulk Lots</option>
+          <option value="Tools">🧰 Tools</option>
+          <option value="Electronics & Appliances">📱 Electronics & Appliances</option>
+          <option value="Home">🛋️ Home</option>
+          <option value="Outdoor">🌲 Outdoor</option>
+          <option value="Apparel">👕 Apparel</option>
+          <option value="Automotive">🚗 Automotive</option>
+          <option value="Baby & Kids">🧸 Baby & Kids</option>
+          <option value="Building & Hardware">🧱 Building & Hardware</option>
+          <option value="Health & Beauty">💄 Health & Beauty</option>
+          <option value="Lighting & Electrical">💡 Lighting & Electrical</option>
+          <option value="Pets">🐾 Pets</option>
+          <option value="Plumbing & Bath">🚿 Plumbing & Bath</option>
+          <option value="Toys & Sports">⚽ Toys & Sports</option>
           <option value="General Merchandise">🛒 General Merchandise</option>
         </select>
       </div>
@@ -2061,7 +2086,7 @@
 
       <div class="modal-body">
         <p style="font-size: 0.85rem; color: var(--text-muted);">
-          Enter your login credentials for <strong style="color: var(--text-main);">auction.triangleliquidators.com</strong> to sync your Watch List headlessly to and from the live auction site.
+          Enter your login credentials for <strong style="color: var(--text-main);">bid.triangleliquidators.com</strong> to sync your Watch List headlessly to and from the live auction site.
         </p>
 
         <div id="authAlert" class="auth-alert" style="display: none;"></div>
@@ -3304,6 +3329,8 @@
         saveItemsToIndexedDB(cleanedItems);
       }
 
+      updateCategoryDropdownCounts();
+
       // If grid is empty or first load, render cards immediately.
       // Otherwise, update background memory & stats without re-shuffling active viewport cards!
       const grid = document.getElementById('cardsGrid');
@@ -3312,6 +3339,53 @@
       } else {
         updateStats(currentFilteredItems.length > 0 ? currentFilteredItems : allItems);
       }
+    }
+
+    function updateCategoryDropdownCounts() {
+      const select = document.getElementById('categorySelect');
+      if (!select) return;
+      const currentVal = select.value || 'All';
+
+      const categoryCounts = new Map();
+      allItems.forEach(i => {
+        if (i.category) {
+          categoryCounts.set(i.category, (categoryCounts.get(i.category) || 0) + 1);
+        }
+      });
+
+      const categoryIcons = {
+        'Tools': '🧰',
+        'Electronics & Appliances': '📱',
+        'Home': '🛋️',
+        'Outdoor': '🌲',
+        'Apparel': '👕',
+        'Automotive': '🚗',
+        'Baby & Kids': '🧸',
+        'Building & Hardware': '🧱',
+        'Health & Beauty': '💄',
+        'Lighting & Electrical': '💡',
+        'Pets': '🐾',
+        'Plumbing & Bath': '🚿',
+        'Toys & Sports': '⚽',
+        'General Merchandise': '🛒'
+      };
+
+      const defaultCategories = [
+        'Tools', 'Electronics & Appliances', 'Home', 'Outdoor', 'Apparel',
+        'Automotive', 'Baby & Kids', 'Building & Hardware', 'Health & Beauty',
+        'Lighting & Electrical', 'Pets', 'Plumbing & Bath', 'Toys & Sports', 'General Merchandise'
+      ];
+
+      const setOfCategories = new Set([...defaultCategories, ...categoryCounts.keys()]);
+      let html = `<option value="All" ${currentVal === 'All' ? 'selected' : ''}>📦 All Categories (${allItems.length})</option>`;
+
+      for (const cat of setOfCategories) {
+        const count = categoryCounts.get(cat) || 0;
+        const icon = categoryIcons[cat] || '📦';
+        const isSel = currentVal === cat ? 'selected' : '';
+        html += `<option value="${escapeHtml(cat)}" ${isSel}>${icon} ${escapeHtml(cat)} (${count})</option>`;
+      }
+      select.innerHTML = html;
     }
 
     function startProgressPolling() {
@@ -3446,7 +3520,7 @@
         
         if (location !== 'All') {
           if (location === 'Raleigh' && item.location !== 'Raleigh') return false;
-          if (location === 'SC Transfer' && item.location !== 'SC Transfer') return false;
+          if ((location === 'Anderson' || location === 'SC Transfer') && (item.location !== 'Anderson' && item.location !== 'SC Transfer')) return false;
         }
 
         if (category !== 'All' && item.category !== category) return false;
@@ -3580,21 +3654,25 @@
             </button>
 
             <img src="${item.image}" alt="${escapeHtml(item.title || 'Auction Lot Item')}" class="card-image" loading="lazy" decoding="async" onload="this.classList.add('loaded')" onerror="this.onerror=null;this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'360\' height=\'270\' viewBox=\'0 0 360 270\'%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'%231e293b\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' fill=\'%2364748b\' font-family=\'sans-serif\' font-size=\'14\' text-anchor=\'middle\' dy=\'.3em\'%3E📷 Image Unavailable%3C/text%3E%3C/svg%3E';this.classList.add('loaded');">
-            <div class="card-badges">
-              <span class="badge ${isRaleigh ? 'badge-raleigh' : 'badge-sc'}">
-                ${isRaleigh ? '📍 Raleigh Pickup' : '🚚 SC Transfer'}
-              </span>
-              ${fin.savingsPct ? `<span class="badge badge-savings"><i class="fa-solid fa-bolt"></i> SAVE ${fin.savingsPct}%</span>` : (watchMatch ? '<span class="badge badge-watchlist"><i class="fa-solid fa-fire"></i> Watchlist</span>' : '')}
-            </div>
           </div>
 
           <div class="card-body">
+            <div class="card-badges">
+              <span class="badge ${isRaleigh ? 'badge-raleigh' : 'badge-sc'}">
+                ${isRaleigh ? '📍 Raleigh' : '🚚 Anderson'}
+              </span>
+              ${item.category ? `<span class="badge badge-category"><i class="fa-solid fa-layer-group"></i> ${escapeHtml(item.category)}</span>` : ''}
+              ${item.isTransferable ? `<span class="badge badge-transfer" title="$${item.transferFee || 5} Transfer Available"><i class="fa-solid fa-truck-ramp-box"></i> Transfer</span>` : ''}
+              ${fin.savingsPct ? `<span class="badge badge-savings"><i class="fa-solid fa-bolt"></i> SAVE ${fin.savingsPct}%</span>` : (watchMatch ? '<span class="badge badge-watchlist"><i class="fa-solid fa-fire"></i> Watchlist</span>' : '')}
+            </div>
+
             <div>
               <div class="card-meta" style="margin-bottom: 0.3rem;">
-                <span><i class="fa-solid fa-gavel"></i> ${item.auctionName || 'Active Auction'}</span>
-                ${item.brand ? `<span style="font-weight: 700; color: #94a3b8;"><i class="fa-solid fa-tag"></i> ${item.brand}</span>` : ''}
+                <span><i class="fa-solid fa-gavel"></i> ${escapeHtml(item.auctionName || 'Active Auction')}</span>
+                ${item.lotNumber ? `<span style="color: #64748b; font-size: 0.75rem;">#${escapeHtml(item.lotNumber)}</span>` : ''}
+                ${item.brand ? `<span style="font-weight: 700; color: #94a3b8;"><i class="fa-solid fa-tag"></i> ${escapeHtml(item.brand)}</span>` : ''}
               </div>
-              <h3 class="card-title" title="${item.title}">${item.title}</h3>
+              <h3 class="card-title" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</h3>
             </div>
 
             <!-- TIME REMAINING COUNTDOWN BANNER -->
@@ -3607,10 +3685,10 @@
             </div>
 
             <!-- EXACT DESCRIPTION CONDITION BANNER -->
-            <div class="condition-banner" title="${item.condition}">
+            <div class="condition-banner" title="${escapeHtml(item.condition)}">
               <i class="fa-solid fa-circle-info"></i>
               <div class="condition-text">
-                ${item.condition}
+                ${escapeHtml(item.condition)}
               </div>
             </div>
 

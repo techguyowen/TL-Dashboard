@@ -81,8 +81,8 @@ function renderCardHTML(item, index) {
               <span class="total-label">Est. Out-of-Pocket:</span>
               <span class="total-amount">${fin.totalCost}</span>
             </div>
-            <div class="fee-tooltip-trigger" onclick="openFeeCalcModal('${fin.bidFormatted}', '${fin.retailFormatted}', '${fin.bpAmount}', '${fin.taxAmount}', '${fin.ccAmount}', '${fin.totalCost}')">
-              15% BP + Tax + CC Fee included ℹ️
+            <div class="fee-tooltip-trigger" onclick="openFeeCalcModal('${fin.bidFormatted}', '${fin.retailFormatted}', '${fin.bpAmount}', '${fin.lotFeeAmount}', '${fin.taxAmount}', '${fin.ccAmount}', '${fin.totalCost}')">
+              15% BP + $1 Lot Fee + Tax + CC ℹ️
             </div>
           </div>
 
@@ -249,6 +249,9 @@ function updateLiveTimers() {
     }
   });
 
+  if (typeof autoCleanEndedFavorites === 'function') {
+    autoCleanEndedFavorites();
+  }
   updateNextClosingStat();
 }
 
@@ -311,6 +314,20 @@ function openKeywordsModal(defaultTab = 'tabWatchlist') {
   switchModalTab(defaultTab);
   renderModalTags();
   renderExcludeTags();
+
+  // Sync preference inputs
+  if (document.getElementById('prefDefaultSort')) {
+    document.getElementById('prefDefaultSort').value = userPreferences.defaultSort || 'watchlist';
+  }
+  if (document.getElementById('prefAutoHideEnded')) {
+    document.getElementById('prefAutoHideEnded').checked = userPreferences.autoHideEnded !== false;
+  }
+  if (document.getElementById('prefEnableSounds')) {
+    document.getElementById('prefEnableSounds').checked = userPreferences.enableSounds !== false;
+  }
+  if (document.getElementById('webhookUrlInput')) {
+    document.getElementById('webhookUrlInput').value = userPreferences.webhookUrl || '';
+  }
 }
 
 function closeKeywordsModal() {
@@ -347,10 +364,13 @@ function closeHelpModal() {
   if (modal) modal.classList.remove('open');
 }
 
-function openFeeCalcModal(bid, retail, bp, tax, cc, total) {
+function openFeeCalcModal(bid, retail, bp, lotFee, tax, cc, total) {
   document.getElementById('feeCalcBid').innerText = bid;
   document.getElementById('feeCalcRetail').innerText = retail;
   document.getElementById('feeCalcBp').innerText = bp;
+  if (document.getElementById('feeCalcLotFee')) {
+    document.getElementById('feeCalcLotFee').innerText = lotFee || '$1.00';
+  }
   document.getElementById('feeCalcTax').innerText = tax;
   document.getElementById('feeCalcCc').innerText = cc;
   document.getElementById('feeCalcTotal').innerText = total;
@@ -369,21 +389,37 @@ function closeFeeCalcModal() {
  */
 function renderSidebarTags() {
   const container = document.getElementById('watchlistTags');
-  if (!container) return;
+  if (container) {
+    container.innerHTML = watchlistKeywords.map(item => {
+      const kw = typeof item === 'string' ? item : item.keyword;
+      const isActive = typeof item === 'string' ? true : item.active !== false;
+      const isIsolated = (isolatedKeyword && isolatedKeyword.toLowerCase() === kw.toLowerCase());
+      return `
+        <button class="tag-btn ${isActive ? 'active' : ''} ${isIsolated ? 'isolated' : ''}" 
+                onclick="toggleWatchlistTag('${escapeHtml(kw)}', event)" 
+                title="Click to isolate / filter by '${escapeHtml(kw)}'. Click '×' to remove.">
+          <span>🔥 ${escapeHtml(kw)}</span>
+          <span class="tag-close-btn" onclick="removeWatchlistTag('${escapeHtml(kw)}', event)" title="Remove Tag">×</span>
+        </button>
+      `;
+    }).join('');
+  }
 
-  container.innerHTML = watchlistKeywords.map(item => {
-    const kw = typeof item === 'string' ? item : item.keyword;
-    const isActive = typeof item === 'string' ? true : item.active !== false;
-    const isIsolated = (isolatedKeyword && isolatedKeyword.toLowerCase() === kw.toLowerCase());
-    return `
-      <button class="tag-btn ${isActive ? 'active' : ''} ${isIsolated ? 'isolated' : ''}" 
-              onclick="toggleWatchlistTag('${escapeHtml(kw)}', event)" 
-              title="Click to isolate / filter by '${escapeHtml(kw)}'. Click '×' to remove.">
-        <span>🔥 ${escapeHtml(kw)}</span>
-        <span class="tag-close-btn" onclick="removeWatchlistTag('${escapeHtml(kw)}', event)" title="Remove Tag">×</span>
-      </button>
-    `;
-  }).join('');
+  const excludeContainer = document.getElementById('sidebarExcludeTags');
+  if (excludeContainer) {
+    excludeContainer.innerHTML = excludeKeywords.map(item => {
+      const kw = typeof item === 'string' ? item : item.keyword;
+      const isActive = typeof item === 'string' ? true : item.active !== false;
+      return `
+        <button class="tag-btn exclude-tag ${isActive ? 'active' : 'disabled'}" 
+                onclick="toggleExcludeTag('${escapeHtml(kw)}', event)" 
+                title="Click to toggle exclusion. Click '×' to remove.">
+          <span>🚫 ${escapeHtml(kw)}</span>
+          <span class="tag-close-btn" onclick="event.stopPropagation(); removeExcludeTag('${escapeHtml(kw)}', event)" title="Remove Exclude Tag">×</span>
+        </button>
+      `;
+    }).join('');
+  }
 }
 
 function renderModalTags() {

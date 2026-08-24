@@ -18,7 +18,7 @@ let excludeKeywords = [];
 let savedFavoriteUrls = new Set();
 let userPreferences = {
   defaultLocation: 'all',
-  defaultSort: 'ending_soonest',
+  defaultSort: 'watchlist',
   autoHideEnded: true,
   enableSounds: true,
   enablePush: false,
@@ -69,7 +69,15 @@ function loadStorageState() {
   try {
     const raw = localStorage.getItem('tl_user_preferences');
     if (raw) {
-      userPreferences = Object.assign({}, userPreferences, JSON.parse(raw));
+      const parsed = JSON.parse(raw);
+      // Migrate old defaultSort values from previous builds
+      if (!parsed.defaultSort || parsed.defaultSort === 'ending_soonest' || parsed.defaultSort === 'time-asc' || parsed.defaultSort === 'deal_score') {
+        parsed.defaultSort = 'watchlist';
+      }
+      userPreferences = Object.assign({}, userPreferences, parsed);
+    } else {
+      userPreferences.defaultSort = 'watchlist';
+      savePreferencesState();
     }
   } catch (e) {
     console.warn('[STORAGE] Failed to parse user preferences:', e);
@@ -154,12 +162,18 @@ async function loadCatalogFromIndexedDB() {
  */
 function exportUserDataJSON() {
   const data = {
+    app: 'TL Auction Tracker',
     version: 2,
-    timestamp: new Date().toISOString(),
+    exportDate: new Date().toISOString(),
     watchlistKeywords,
     excludeKeywords,
     savedFavorites: Array.from(savedFavoriteUrls),
-    preferences: userPreferences
+    preferences: userPreferences,
+    // Backwards-compatible aliases
+    activeWatchlistKeywords: watchlistKeywords.map(k => typeof k === 'string' ? k : k.keyword),
+    activeExcludeWatchlistKeywords: excludeKeywords.map(k => typeof k === 'string' ? k : k.keyword),
+    savedFavoriteUrls: Array.from(savedFavoriteUrls),
+    settings: userPreferences
   };
 
   const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -167,37 +181,106 @@ function exportUserDataJSON() {
   const a = document.createElement('a');
   a.href = url;
   a.download = `tl_dashboard_backup_${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
+
+  showBackupAlert('success', 'Backup exported successfully! File downloaded.');
 }
 
-function importUserDataJSON(file) {
-  if (!file) return;
+function handleImportFileSelect(file) {
+  if (file) {
+    showBackupAlert('info', `Selected: ${file.name} (${(file.size / 1024).toFixed(1)} KB). Click "Import & Restore" to proceed.`);
+  }
+}
+
+function importUserDataJSON(explicitFile) {
+  const fileInput = document.getElementById('importFileInput');
+  const file = explicitFile || (fileInput && fileInput.files ? fileInput.files[0] : null);
+  const mode = document.querySelector('input[name="importMode"]:checked')?.value || 'merge';
+
+  if (!file) {
+    showBackupAlert('error', 'Please select a valid .json backup file first.');
+    return;
+  }
+
   const reader = new FileReader();
   reader.onload = (evt) => {
     try {
       const data = JSON.parse(evt.target.result);
-      if (data.watchlistKeywords && Array.isArray(data.watchlistKeywords)) {
-        watchlistKeywords = data.watchlistKeywords;
-        saveTagsState();
+      if (!data || typeof data !== 'object') {
+        throw new Error('Invalid JSON format');
       }
-      if (data.excludeKeywords && Array.isArray(data.excludeKeywords)) {
-        excludeKeywords = data.excludeKeywords;
-        saveExcludeTagsState();
+
+      // Extract watchlist keywords (supporting objects or strings)
+      const rawWatchlist = data.watchlistKeywords || data.activeWatchlistKeywords || [];
+      const normalizedWatchlist = rawWatchlist.map(k => typeof k === 'string' ? { keyword: k, active: true } : k);
+
+      // Extract exclude keywords
+      const rawExclude = data.excludeKeywords || data.activeExcludeWatchlistKeywords || [];
+      const normalizedExclude = rawExclude.map(k => typeof k === 'string' ? { keyword: k, active: true } : k);
+
+      // Extract favorites
+      const rawFavorites = data.savedFavorites || data.savedFavoriteUrls || [];
+
+      // Extract preferences
+      const rawPrefs = data.preferences || data.settings || {};
+
+      if (mode === 'replace') {
+        watchlistKeywords = normalizedWatchlist;
+        excludeKeywords = normalizedExclude;
+        savedFavoriteUrls = new Set(rawFavorites);
+        userPreferences = Object.assign({}, userPreferences, rawPrefs);
+      } else {
+        // Merge mode
+        normalizedWatchlist.forEach(item => {
+          const kw = typeof item === 'string' ? item : item.keyword;
+          if (!watchlistKeywords.some(k => (typeof k === 'string' ? k : k.keyword).toLowerCase() === kw.toLowerCase())) {
+            watchlistKeywords.push(typeof item === 'string' ? { keyword: item, active: true } : item);
+          }
+        });
+
+        normalizedExclude.forEach(item => {
+          const kw = typeof item === 'string' ? item : item.keyword;
+          if (!excludeKeywords.some(k => (typeof k === 'string' ? k : k.keyword).toLowerCase() === kw.toLowerCase())) {
+            excludeKeywords.push(typeof item === 'string' ? { keyword: item, active: true } : item);
+          }
+        });
+
+        rawFavorites.forEach(url => savedFavoriteUrls.add(url));
+        userPreferences = Object.assign({}, userPreferences, rawPrefs);
       }
-      if (data.savedFavorites && Array.isArray(data.savedFavorites)) {
-        savedFavoriteUrls = new Set(data.savedFavorites);
-        saveFavoritesState();
-      }
-      if (data.preferences && typeof data.preferences === 'object') {
-        userPreferences = Object.assign({}, userPreferences, data.preferences);
-        savePreferencesState();
-      }
-      alert('Preferences, Watchlist, and Saved Items imported successfully!');
-      location.reload();
+
+      // Persist state
+      saveTagsState();
+      saveExcludeTagsState();
+      saveFavoritesState();
+      savePreferencesState();
+
+      // Refresh UI
+      renderSidebarTags();
+      renderModalTags();
+      renderExcludeTags();
+      applyFilters();
+      playSuccessChime();
+
+      showBackupAlert('success', `Dashboard configuration imported successfully (${mode} mode)!`);
+      if (fileInput) fileInput.value = '';
     } catch (err) {
-      alert('Invalid backup JSON file: ' + err.message);
+      showBackupAlert('error', 'Import failed: ' + err.message);
     }
   };
   reader.readAsText(file);
+}
+
+function showBackupAlert(type, msg) {
+  const alertBox = document.getElementById('backupAlert');
+  if (!alertBox) return;
+  alertBox.className = `auth-alert ${type === 'error' ? 'error' : (type === 'success' ? 'success' : 'info')}`;
+  alertBox.innerHTML = `
+    <i class="fa-solid fa-${type === 'success' ? 'circle-check' : (type === 'error' ? 'circle-xmark' : 'circle-info')}"></i>
+    <span>${escapeHtml(msg)}</span>
+  `;
+  alertBox.style.display = 'flex';
 }

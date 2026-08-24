@@ -4,6 +4,7 @@
 
 const DEFAULT_TAX_RATE = 0.0725; // 7.25% NC/SC avg sales tax
 const BUYER_PREMIUM = 0.15;      // 15% Buyer's Premium
+const LOT_FEE = 1.00;            // $1.00 per-lot fee
 const CC_FEE = 0.03;             // 3% Credit Card / Processing Fee
 const PAGE_CHUNK_SIZE = 96;
 
@@ -32,6 +33,7 @@ function calcFin(rawBid, rawRetail) {
       bidFormatted: '$0.00',
       retailFormatted: retail > 0 ? `$${retail.toFixed(2)}` : '$0.00',
       bpAmount: '$0.00',
+      lotFeeAmount: '$0.00',
       taxAmount: '$0.00',
       ccAmount: '$0.00',
       totalCost: '$0.00',
@@ -42,10 +44,12 @@ function calcFin(rawBid, rawRetail) {
     };
   }
 
-  const bp = bid * BUYER_PREMIUM;
-  const tax = (bid + bp) * DEFAULT_TAX_RATE;
-  const cc = (bid + bp + tax) * CC_FEE;
-  const total = bid + bp + tax + cc;
+  const bp = Math.round((bid * BUYER_PREMIUM) * 100) / 100;
+  const lot = LOT_FEE;
+  const sub = Math.round((bid + bp + lot) * 100) / 100;
+  const tax = Math.round((sub * DEFAULT_TAX_RATE) * 100) / 100;
+  const cc = Math.round(((sub + tax) * CC_FEE) * 100) / 100;
+  const total = Math.round((sub + tax + cc) * 100) / 100;
 
   let savingsPct = null;
   let savingsAmount = null;
@@ -64,6 +68,7 @@ function calcFin(rawBid, rawRetail) {
     bidFormatted: `$${bid.toFixed(2)}`,
     retailFormatted: retail > 0 ? `$${retail.toFixed(2)}` : 'N/A',
     bpAmount: `$${bp.toFixed(2)}`,
+    lotFeeAmount: `$${lot.toFixed(2)}`,
     taxAmount: `$${tax.toFixed(2)}`,
     ccAmount: `$${cc.toFixed(2)}`,
     totalCost: `$${total.toFixed(2)}`,

@@ -15,14 +15,9 @@ test('Backend: server.js contains target URLs for triangleliquidators.com', () =
     'server.js must contain new site base URL https://bid.triangleliquidators.com'
   );
   assert.strictEqual(
-    content.includes("https://bid.triangleliquidators.com/login"),
+    content.includes("control-panel/active/watchlist"),
     true,
-    'server.js must contain new login target URL https://bid.triangleliquidators.com/login'
-  );
-  assert.strictEqual(
-    content.includes("https://bid.triangleliquidators.com/watchlist"),
-    true,
-    'server.js must contain new watchlist target URL https://bid.triangleliquidators.com/watchlist'
+    'server.js must contain new active watchlist target URL control-panel/active/watchlist'
   );
   assert.strictEqual(
     content.includes("__NEXT_DATA__"),

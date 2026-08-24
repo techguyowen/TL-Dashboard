@@ -862,8 +862,8 @@ setInterval(() => {
   }
 }, 3600000);
 
-// Auth Status Endpoint
-app.get('/api/auth/status', (req, res) => {
+// Auth Status / Session Endpoint
+app.get(['/api/auth/status', '/api/auth/session'], (req, res) => {
   const session = getUserSession(req, res);
   res.json({
     isLoggedIn: session.isLoggedIn,
@@ -892,36 +892,64 @@ app.post('/api/auth/login', async (req, res) => {
 
     const page = await browser.newPage();
     await page.setUserAgent('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36');
-    // Updated: new site login page on bid.triangleliquidators.com
-    await page.goto('https://bid.triangleliquidators.com/login', { waitUntil: 'networkidle2', timeout: 25000 });
 
-    // New site uses email + password fields (MUI-based Next.js form)
-    await page.waitForSelector('input[type="email"], input[name="email"], #email, input[type="text"]', { timeout: 10000 });
+    // Navigate to homepage where the Sign In trigger button resides
+    await page.goto('https://bid.triangleliquidators.com/', { waitUntil: 'networkidle2', timeout: 25000 });
 
-    const emailSelector = await page.$('input[type="email"], input[name="email"], #email') ? 'input[type="email"], input[name="email"], #email' : 'input[type="text"]';
-    await page.type(emailSelector, username, { delay: 20 });
-    await page.type('input[type="password"], input[name="password"], #password', password, { delay: 20 });
+    // Open Sign In modal dialog
+    const clickedSignIn = await page.evaluate(() => {
+      const btns = Array.from(document.querySelectorAll('button, a'));
+      const btn = btns.find(b => b.innerText && b.innerText.trim().toUpperCase() === 'SIGN IN');
+      if (btn) {
+        btn.click();
+        return true;
+      }
+      return false;
+    });
 
-    await Promise.all([
-      page.click('button[type="submit"], input[type="submit"], form button').catch(() => null),
-      page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 20000 }).catch(() => null)
-    ]);
+    if (!clickedSignIn) {
+      throw new Error('Sign In button not found on bid.triangleliquidators.com');
+    }
 
-    const currentUrl = page.url();
-    const bodyText = await page.evaluate(() => document.body.innerText || '');
-    const isInvalid = currentUrl.includes('/login') && (
-      bodyText.toLowerCase().includes('invalid') ||
-      bodyText.toLowerCase().includes('incorrect') ||
-      bodyText.toLowerCase().includes('wrong password') ||
-      bodyText.toLowerCase().includes('login failed') ||
-      bodyText.toLowerCase().includes('email or password')
-    );
+    // Wait for modal dialog and password input to be available
+    await page.waitForSelector('div[role="dialog"] input[type="password"]', { timeout: 10000 });
 
-    if (isInvalid) {
+    // Target dialog-scoped inputs specifically
+    const emailInput = await page.$('div[role="dialog"] input[type="email"], div[role="dialog"] input[name="email"]');
+    if (!emailInput) throw new Error('Email input field not found in login dialog.');
+    await emailInput.type(username, { delay: 20 });
+
+    const passInput = await page.$('div[role="dialog"] input[type="password"]');
+    if (!passInput) throw new Error('Password input field not found in login dialog.');
+    await passInput.type(password, { delay: 20 });
+
+    await new Promise(r => setTimeout(r, 400));
+
+    // Submit the dialog form
+    const submitBtn = await page.$('div[role="dialog"] button[type="submit"]');
+    if (submitBtn) {
+      await submitBtn.click();
+    } else {
+      await page.evaluate(() => {
+        const dialog = document.querySelector('div[role="dialog"]');
+        const form = dialog ? dialog.querySelector('form') : null;
+        if (form) form.requestSubmit();
+      });
+    }
+
+    await new Promise(r => setTimeout(r, 3000));
+
+    // Check for error alert within the dialog
+    const errorAlerts = await page.evaluate(() => {
+      const alerts = Array.from(document.querySelectorAll('[role="alert"], .MuiAlert-message, [class*="error" i], [class*="Alert" i]'));
+      return alerts.map(a => a.innerText.trim()).filter(Boolean);
+    });
+
+    if (errorAlerts.length > 0) {
       if (browser) await browser.close();
       return res.status(401).json({
         success: false,
-        error: 'Invalid login credentials for auction account.'
+        error: errorAlerts[0] || 'Invalid email or password.'
       });
     }
 
@@ -984,55 +1012,90 @@ app.post('/api/watchlist/sync', async (req, res) => {
       await page.setCookie(...session.cookies);
     }
 
-    // Updated: navigate to the new site's watchlist page on bid.triangleliquidators.com
-    await page.goto('https://bid.triangleliquidators.com/watchlist', { waitUntil: 'networkidle2', timeout: 25000 });
+    // Navigate to the new site's active watchlist control panel on bid.triangleliquidators.com
+    await page.goto('https://bid.triangleliquidators.com/control-panel/active/watchlist', { waitUntil: 'networkidle2', timeout: 25000 });
 
     const pageUrl = page.url();
-    if (pageUrl.includes('/login')) {
+    if (pageUrl.includes('/login') || pageUrl.includes('/auth/signin')) {
       session.isLoggedIn = false;
       session.cookies = [];
       if (browser) await browser.close();
       return res.status(401).json({ success: false, error: 'Session expired. Please reconnect your account.' });
     }
 
-    // Extract watched lots from new site's __NEXT_DATA__ SSR JSON, falling back to DOM scanning
-    const remoteWatchedLots = await page.evaluate(() => {
+    // Extract watched lots from new site's REST API or __NEXT_DATA__ / DOM
+    const remoteWatchedLots = await page.evaluate(async () => {
       const items = [];
 
-      // Primary: try to extract from __NEXT_DATA__ JSON payload
+      // 1. Direct REST fetch within authenticated session
       try {
-        const nextDataEl = document.getElementById('__NEXT_DATA__');
-        if (nextDataEl) {
-          const data = JSON.parse(nextDataEl.textContent || '{}');
-          const queries = data?.props?.pageProps?.dehydratedState?.queries || [];
-          for (const q of queries) {
-            const d = q?.state?.data;
-            if (d && typeof d === 'object' && Array.isArray(d.results) && d.results.length > 0) {
-              d.results.forEach(item => {
-                if (!item || !item.id || item.status === 'ended') return;
-                const lotUrl = `https://bid.triangleliquidators.com/lots/${item.auctionPeriod}/${item.id}`;
-                const image = (Array.isArray(item.images) && item.images[0]?.imageCard)
-                  ? `https://cdn.bid.triangleliquidators.com/${item.images[0].imageCard}`
-                  : '';
-                if (!items.some(i => i.url === lotUrl)) {
-                  items.push({
-                    title: item.title || '',
-                    url: lotUrl,
-                    image,
-                    currentBid: parseFloat(item.currentPrice) || 0,
-                    retailPrice: parseFloat(item.estimatedRetailPrice) || null,
-                    lotId: item.id,
-                    auctionPeriod: item.auctionPeriod
-                  });
-                }
+        const res = await fetch('/backend/v1/auctions/control-panel/active/watchlist/?page=1&per_page=100');
+        if (res.ok) {
+          const json = await res.json();
+          const list = Array.isArray(json.results) ? json.results : (Array.isArray(json) ? json : []);
+          list.forEach(item => {
+            if (!item || !item.id || item.status === 'ended') return;
+            const period = item.auction_period || item.auctionPeriod || '2026-08-01';
+            const lotUrl = `https://bid.triangleliquidators.com/lots/${period}/${item.id}`;
+            const image = (Array.isArray(item.images) && item.images[0])
+              ? `https://cdn.bid.triangleliquidators.com/${item.images[0].image_card || item.images[0].imageCard || item.images[0].image_thumb || ''}`
+              : '';
+            if (!items.some(i => i.url === lotUrl)) {
+              items.push({
+                title: item.title || '',
+                url: lotUrl,
+                image,
+                currentBid: parseFloat(item.current_price || item.currentPrice) || 0,
+                retailPrice: parseFloat(item.estimated_retail_price || item.estimatedRetailPrice) || null,
+                lotId: item.id,
+                auctionPeriod: period,
+                category: (item.category && (item.category.label || item.category.name)) || item.category || 'General Merchandise',
+                location: (item.location && (item.location.name || item.location.displayName)) || item.location || 'Raleigh',
+                endsAt: item.ends_at || item.endsAt || null,
+                status: item.status || 'live'
               });
-              break;
             }
-          }
+          });
         }
       } catch (_) {}
 
-      // Fallback: DOM scan for lot links matching new URL format /lots/YYYY-MM-DD/ID
+      // 2. Primary fallback: extract from __NEXT_DATA__ JSON payload
+      if (items.length === 0) {
+        try {
+          const nextDataEl = document.getElementById('__NEXT_DATA__');
+          if (nextDataEl) {
+            const data = JSON.parse(nextDataEl.textContent || '{}');
+            const queries = data?.props?.pageProps?.dehydratedState?.queries || [];
+            for (const q of queries) {
+              const d = q?.state?.data;
+              if (d && typeof d === 'object' && Array.isArray(d.results) && d.results.length > 0) {
+                d.results.forEach(item => {
+                  if (!item || !item.id || item.status === 'ended') return;
+                  const period = item.auction_period || item.auctionPeriod || '2026-08-01';
+                  const lotUrl = `https://bid.triangleliquidators.com/lots/${period}/${item.id}`;
+                  const image = (Array.isArray(item.images) && item.images[0])
+                    ? `https://cdn.bid.triangleliquidators.com/${item.images[0].image_card || item.images[0].imageCard || item.images[0].image_thumb || ''}`
+                    : '';
+                  if (!items.some(i => i.url === lotUrl)) {
+                    items.push({
+                      title: item.title || '',
+                      url: lotUrl,
+                      image,
+                      currentBid: parseFloat(item.current_price || item.currentPrice) || 0,
+                      retailPrice: parseFloat(item.estimated_retail_price || item.estimatedRetailPrice) || null,
+                      lotId: item.id,
+                      auctionPeriod: period
+                    });
+                  }
+                });
+                break;
+              }
+            }
+          }
+        } catch (_) {}
+      }
+
+      // 3. Fallback: DOM scan for lot links matching new URL format /lots/YYYY-MM-DD/ID
       if (items.length === 0) {
         const allLinks = Array.from(document.querySelectorAll('a[href*="/lots/"]'));
         allLinks.forEach(a => {
@@ -1171,24 +1234,31 @@ app.post('/api/watchlist/sync', async (req, res) => {
 
     if (itemsToRemoteWatch.length > 0) {
       console.log(`[WATCHLIST SYNC] Syncing ${itemsToRemoteWatch.length} local items to remote account...`);
-      for (const targetUrl of itemsToRemoteWatch.slice(0, 5)) { // batch limit to 5 per sync for performance
+      for (const targetUrl of itemsToRemoteWatch.slice(0, 10)) { // batch limit to 10 per sync for performance
         try {
-          await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 12000 });
-          // Updated: new site uses different watchlist button selectors (MUI-based)
-          const watchBtn = await page.waitForSelector(
-            'button[aria-label*="watch"], button[aria-label*="Watch"], button[class*="watch"], [data-testid*="watch"]',
-            { timeout: 6000 }
-          ).catch(() => null);
-          if (watchBtn) {
-            const isWatched = await page.evaluate(el => {
-              const text = (el.innerText || '').toLowerCase();
-              const ariaLabel = (el.getAttribute('aria-label') || '').toLowerCase();
-              const className = el.className || '';
-              return text.includes('unwatch') || ariaLabel.includes('unwatch') || className.includes('watched');
-            }, watchBtn);
-            if (!isWatched) {
-              await watchBtn.click();
-              await page.evaluate(() => new Promise(r => setTimeout(r, 500)));
+          const match = targetUrl.match(/\/lots\/(\d{4}-\d{2}-\d{2})\/(\d+)/i);
+          if (match) {
+            const [_, period, id] = match;
+            const watchedViaApi = await page.evaluate(async (p, i) => {
+              try {
+                const res = await fetch(`/backend/v1/auctions/lots/${p}/${i}/watchlist/`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({})
+                });
+                return res.ok;
+              } catch (_) {
+                return false;
+              }
+            }, period, id);
+
+            if (!watchedViaApi) {
+              await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 12000 });
+              const watchBtn = await page.waitForSelector('button[aria-label*="watchlist" i], button[aria-label*="watch" i]', { timeout: 5000 }).catch(() => null);
+              if (watchBtn) {
+                const isWatched = await page.evaluate(el => el.getAttribute('aria-pressed') === 'true' || (el.getAttribute('aria-label') || '').toLowerCase().includes('remove'));
+                if (!isWatched) await watchBtn.click();
+              }
             }
           }
         } catch (e) {
@@ -1286,24 +1356,44 @@ app.post('/api/watchlist/remote-watch', async (req, res) => {
       await page.setCookie(...session.cookies);
     }
 
-    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 15000 });
-    // Updated: new site uses MUI-based buttons instead of Angular ng-click selectors
-    const watchBtn = await page.waitForSelector(
-      'button[aria-label*="watch"], button[aria-label*="Watch"], button[class*="watch"], [data-testid*="watch"]',
-      { timeout: 7000 }
-    ).catch(() => null);
+    // Try fast direct API call in browser session
+    const match = url.match(/\/lots\/(\d{4}-\d{2}-\d{2})\/(\d+)/i);
+    let success = false;
+    if (match) {
+      const [_, period, id] = match;
+      await page.goto('https://bid.triangleliquidators.com/', { waitUntil: 'domcontentloaded', timeout: 10000 });
+      success = await page.evaluate(async (p, i, shouldWatch) => {
+        try {
+          const res = await fetch(`/backend/v1/auctions/lots/${p}/${i}/watchlist/`, {
+            method: shouldWatch ? 'POST' : 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({})
+          });
+          return res.ok;
+        } catch (_) {
+          return false;
+        }
+      }, period, id, watch);
+    }
 
-    if (watchBtn) {
-      const isWatched = await page.evaluate(el => {
-        const text = (el.innerText || '').toLowerCase();
-        const ariaLabel = (el.getAttribute('aria-label') || '').toLowerCase();
-        const className = el.className || '';
-        return text.includes('unwatch') || ariaLabel.includes('unwatch') || className.includes('watched');
-      }, watchBtn);
+    if (!success) {
+      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 15000 });
+      const watchBtn = await page.waitForSelector(
+        'button[aria-label*="watchlist" i], button[aria-label*="watch" i]',
+        { timeout: 7000 }
+      ).catch(() => null);
 
-      if ((watch && !isWatched) || (!watch && isWatched)) {
-        await watchBtn.click();
-        await page.evaluate(() => new Promise(r => setTimeout(r, 600)));
+      if (watchBtn) {
+        const isWatched = await page.evaluate(el => {
+          const pressed = el.getAttribute('aria-pressed');
+          const ariaLabel = (el.getAttribute('aria-label') || '').toLowerCase();
+          return pressed === 'true' || ariaLabel.includes('remove');
+        }, watchBtn);
+
+        if ((watch && !isWatched) || (!watch && isWatched)) {
+          await watchBtn.click();
+          await page.evaluate(() => new Promise(r => setTimeout(r, 600)));
+        }
       }
     }
 

@@ -31,3 +31,4 @@ Thumbs.db
 # Agent Metadata & Workspace Diagnostics
 .agents/
 .gemini/
+catalog_cache.json

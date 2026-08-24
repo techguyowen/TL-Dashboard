@@ -53,7 +53,7 @@ WORKDIR /app
 
 # Copy dependency specifications and install production modules
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
 # Copy source code
 COPY . .

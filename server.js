@@ -53,6 +53,8 @@ function calculateFinancials(rawBid, rawRetail) {
     savingsPct = Math.round(((retailPrice - totalCost) / retailPrice) * 100);
   }
 
+  const dealScore = calculateDealScore(currentBid, retailPrice, null, null);
+
   return {
     currentBid: currentBid.toFixed(2),
     buyerPremium: buyerPremium.toFixed(2),
@@ -62,8 +64,100 @@ function calculateFinancials(rawBid, rawRetail) {
     totalCost: totalCost.toFixed(2),
     totalCostNum: totalCost,
     retailPrice: retailPrice ? retailPrice.toFixed(2) : null,
-    savingsPct
+    savingsPct,
+    dealScore
   };
+}
+
+/**
+ * Algorithmic Deal Score (0 to 100)
+ * Evaluates savings %, item condition grade, brand tier, and out-of-pocket price ratio.
+ */
+function calculateDealScore(rawBid, rawRetail, rawCondition, rawBrand) {
+  const currentBid = parseFloat(rawBid) || 0;
+  const retailPrice = parseFloat(rawRetail) || null;
+  const buyerPremium = Math.round((currentBid * 0.15) * 100) / 100;
+  const subtotal = Math.round((currentBid + buyerPremium) * 100) / 100;
+  const salesTax = Math.round((subtotal * 0.0725) * 100) / 100;
+  const ccFee = Math.round(((subtotal + salesTax) * 0.03) * 100) / 100;
+  const totalCost = Math.round((subtotal + salesTax + ccFee) * 100) / 100;
+
+  let savingsPct = null;
+  if (retailPrice && retailPrice > totalCost) {
+    savingsPct = Math.round(((retailPrice - totalCost) / retailPrice) * 100);
+  }
+
+  let score = 0;
+
+  // 1. Savings % (Max 50 pts)
+  if (savingsPct !== null) {
+    if (savingsPct >= 90) score += 50;
+    else if (savingsPct >= 80) score += 42;
+    else if (savingsPct >= 70) score += 35;
+    else if (savingsPct >= 50) score += 25;
+    else if (savingsPct >= 30) score += 15;
+    else score += 5;
+  } else {
+    if (totalCost < 10) score += 25;
+    else if (totalCost < 25) score += 18;
+    else if (totalCost < 50) score += 12;
+    else score += 5;
+  }
+
+  // 2. Condition Grade (Max 25 pts)
+  const condStr = (typeof rawCondition === 'string' ? rawCondition : '').toLowerCase();
+  if (condStr.includes('new in box') || condStr.includes('brand new') || condStr === 'condition: new' || condStr === 'new') {
+    score += 25;
+  } else if (condStr.includes('like new') || condStr.includes('appears new')) {
+    score += 20;
+  } else if (condStr.includes('open box') || condStr.includes('inspected')) {
+    score += 15;
+  } else if (condStr.includes('used')) {
+    score += 10;
+  } else if (condStr.includes('as-is') || condStr.includes('salvage') || condStr.includes('parts')) {
+    score += 0;
+  } else {
+    score += 12;
+  }
+
+  // 3. Brand Prestige (Max 15 pts)
+  const brandStr = (typeof rawBrand === 'string' ? rawBrand : '').toLowerCase();
+  const topTierBrands = ['dewalt', 'milwaukee', 'makita', 'bosch', 'traeger', 'dyson', 'ryobi', 'honda', 'echo', 'weber', 'stihl', 'apple', 'sony', 'samsung', 'craftsman', 'toro', 'ridgid', 'husky'];
+  if (topTierBrands.some(b => brandStr.includes(b))) {
+    score += 15;
+  } else if (brandStr && brandStr.length > 2) {
+    score += 8;
+  } else {
+    score += 4;
+  }
+
+  // 4. Absolute Out-of-Pocket Value (Max 10 pts)
+  if (retailPrice && retailPrice >= 100 && totalCost <= 25) {
+    score += 10;
+  } else if (retailPrice && retailPrice >= 200 && totalCost <= 50) {
+    score += 8;
+  } else if (totalCost <= 15) {
+    score += 6;
+  } else {
+    score += 3;
+  }
+
+  score = Math.max(0, Math.min(100, Math.round(score)));
+
+  let tier = 'FAIR';
+  let badgeClass = 'deal-fair';
+  if (score >= 90) {
+    tier = 'EPIC STEAL';
+    badgeClass = 'deal-epic';
+  } else if (score >= 75) {
+    tier = 'GREAT DEAL';
+    badgeClass = 'deal-great';
+  } else if (score >= 50) {
+    tier = 'GOOD VALUE';
+    badgeClass = 'deal-good';
+  }
+
+  return { score, tier, badgeClass };
 }
 
 let masterCatalogMap = new Map();
@@ -312,50 +406,176 @@ async function crawlDeepAuctionPages(maxCatalogsToScan = 10, maxPagesPerCatalog 
   let totalCount = 0;
   let useDirectAPI = true;
 
+  function processRawLot(item, nowMs) {
+    if (!item || !item.id || item.status === 'ended') return null;
+    const period = item.auction_period || item.auctionPeriod || getEDTDateString();
+    const lotUrl = `${SITE_BASE}/lots/${period}/${item.id}`;
+
+    let image = FALLBACK_IMG;
+    const imgList = item.images || [];
+    if (Array.isArray(imgList) && imgList.length > 0) {
+      const cardImg = imgList[0].image_card || imgList[0].imageCard || imgList[0].image_large || imgList[0].imageLarge || imgList[0].image_thumb || imgList[0].imageThumb;
+      if (cardImg) {
+        image = cardImg.startsWith('http') ? cardImg : CDN_BASE + cardImg;
+      }
+    }
+
+    const condVal = item.condition?.value;
+    const condDisplay = item.condition?.display_name || item.condition?.displayName || 'Unknown';
+    const condition = CONDITION_MAP[condVal] || `Condition: ${condDisplay}`;
+    const category = item.category?.label || 'General Merchandise';
+    const locationName = item.location?.name || 'Raleigh';
+    const address = LOCATION_ADDRESSES[locationName] || LOCATION_ADDRESSES['Raleigh'];
+
+    const currentBid = parseFloat(item.current_price !== undefined ? item.current_price : item.currentPrice) || 0;
+    const retailPrice = parseFloat(item.estimated_retail_price !== undefined ? item.estimated_retail_price : item.estimatedRetailPrice) || null;
+
+    let endsAtISO = item.ends_at || item.endsAt || null;
+    let closingDate = getEDTDateString();
+    if (endsAtISO) {
+      try {
+        closingDate = new Date(endsAtISO).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+      } catch (_) {}
+    } else if (period) {
+      const fallback = new Date(`${period}T23:59:59-04:00`);
+      if (!isNaN(fallback.getTime()) && fallback.getTime() > nowMs) {
+        endsAtISO = fallback.toISOString();
+        closingDate = period;
+      }
+    }
+
+    return {
+      id: `scraped-${item.id}`,
+      title: item.title || 'Auction Item',
+      currentBid,
+      retailPrice,
+      brand: item.brand || null,
+      model: item.model || null,
+      condition,
+      conditionValue: condVal || null,
+      category,
+      location: locationName,
+      address,
+      url: lotUrl,
+      image,
+      auctionPeriod: period,
+      auctionName: `${locationName} Auction`,
+      closingDate,
+      endsAt: endsAtISO,
+      status: item.status || 'live',
+      bidCount: item.bid_count !== undefined ? item.bid_count : (item.bidCount || 0),
+      isTransferable: item.is_transferable !== undefined ? item.is_transferable : (item.isTransferable || false),
+      transferFee: item.transfer_fee !== undefined ? item.transfer_fee : (item.transferFee || null),
+      lotNumber: item.lot_number || item.lotNumber || null,
+    };
+  }
+
+  function ingestPageLots(rawResults, pgNum, totalPgs) {
+    const nowMs = Date.now();
+    const pageItems = rawResults
+      .map(item => processRawLot(item, nowMs))
+      .filter(Boolean);
+
+    if (pageItems.length > 0) {
+      FALLBACK_ITEMS.forEach(f => masterCatalogMap.delete(f.id));
+    }
+
+    pageItems.forEach(item => {
+      const key = item.id;
+      const existing = masterCatalogMap.get(key);
+      masterCatalogMap.set(key, {
+        ...item,
+        financials: calculateFinancials(item.currentBid, item.retailPrice),
+        dealScore: calculateDealScore(item.currentBid, item.retailPrice, item.condition, item.brand),
+        indexedAt: existing ? existing.indexedAt : Date.now()
+      });
+      seenIdsThisCrawl.add(key);
+    });
+
+    scraperProgress.totalIndexed = masterCatalogMap.size;
+    scraperProgress.status = `Ingesting bid.triangleliquidators.com — Page ${pgNum}/${totalPgs}... (${masterCatalogMap.size} items loaded)`;
+    scraperProgress.progressPct = Math.min(98, Math.round((pgNum / totalPgs) * 95) + 3);
+    scraperProgress.currentAuction = `Page ${pgNum}`;
+    broadcastEvent('progress_update');
+
+    const currentItems = Array.from(masterCatalogMap.values()).map(item => ({
+      ...item,
+      endsAt: ensureEndsAt(item)
+    }));
+
+    broadcastEvent('items_ingested', {
+      newBatchCount: pageItems.length,
+      items: currentItems
+    });
+
+    console.log(`[DEEP CRAWLER] Page ${pgNum}/${totalPgs}: ingested ${pageItems.length} active items (Total in memory: ${masterCatalogMap.size}).`);
+    return pageItems.length;
+  }
+
   try {
-    for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
-      scraperProgress.progressPct = Math.min(97, Math.round(((pageNum - 1) / totalPages) * 92) + 5);
-      scraperProgress.status = `Ingesting bid.triangleliquidators.com — Page ${pageNum}/${totalPages}...`;
-      scraperProgress.currentAuction = `Page ${pageNum}`;
-      broadcastEvent('progress_update');
+    // 1. Ingest Page 1 to discover catalog size and total active pages
+    try {
+      const p1Res = await fetch(`${SITE_BASE}/backend/v1/auctions/lots/?page=1&per_page=${perPage}`, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+          'Accept': 'application/json, text/plain, */*'
+        }
+      });
 
-      let rawResults = [];
+      if (p1Res.ok) {
+        const data = await p1Res.json();
+        totalCount = data.count || 0;
+        const realTotalPages = Math.ceil(totalCount / perPage);
+        totalPages = Math.min(realTotalPages, maxPagesPerCatalog);
+        scraperProgress.scrapedDaysCount = totalPages;
+        console.log(`[DEEP CRAWLER] Total active lots on site: ${totalCount} across ~${realTotalPages} pages. Ingesting ${totalPages} pages in parallel batches.`);
+        ingestPageLots(data.results || [], 1, totalPages);
+      } else {
+        useDirectAPI = false;
+      }
+    } catch (e) {
+      console.warn('[DEEP CRAWLER] Direct API page 1 error:', e.message);
+      useDirectAPI = false;
+    }
 
-      // Primary strategy: Direct REST API (100x faster, zero browser overhead, complete pagination)
-      if (useDirectAPI) {
-        try {
-          const apiUrl = `${SITE_BASE}/backend/v1/auctions/lots/?page=${pageNum}&per_page=${perPage}`;
-          const res = await fetch(apiUrl, {
-            headers: {
-              'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-              'Accept': 'application/json, text/plain, */*'
+    // 2. High-speed concurrent batch fetching for remaining pages (2..totalPages)
+    if (useDirectAPI && totalPages > 1) {
+      const BATCH_SIZE = 6;
+      for (let p = 2; p <= totalPages; p += BATCH_SIZE) {
+        const batchPageNums = [];
+        for (let b = p; b < Math.min(p + BATCH_SIZE, totalPages + 1); b++) {
+          batchPageNums.push(b);
+        }
+
+        const batchResults = await Promise.all(batchPageNums.map(async (pgNum) => {
+          try {
+            const res = await fetch(`${SITE_BASE}/backend/v1/auctions/lots/?page=${pgNum}&per_page=${perPage}`, {
+              headers: {
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+                'Accept': 'application/json, text/plain, */*'
+              }
+            });
+            if (res.ok) {
+              const data = await res.json();
+              return { pageNum: pgNum, results: data.results || [] };
             }
-          });
+          } catch (_) {}
+          return { pageNum: pgNum, results: [] };
+        }));
 
-          if (res.ok) {
-            const data = await res.json();
-            if (pageNum === 1) {
-              totalCount = data.count || 0;
-              const realTotalPages = Math.ceil(totalCount / perPage);
-              totalPages = Math.min(realTotalPages, maxPagesPerCatalog);
-              scraperProgress.scrapedDaysCount = totalPages;
-              console.log(`[DEEP CRAWLER] Total active lots on site: ${totalCount} across ~${realTotalPages} pages. Ingesting ${totalPages} pages.`);
-            }
-
-            rawResults = data.results || [];
-          } else {
-            console.warn(`[DEEP CRAWLER] Direct API returned HTTP ${res.status} on page ${pageNum}. Falling back to browser.`);
-            useDirectAPI = false;
+        for (const item of batchResults) {
+          if (item.results.length > 0) {
+            ingestPageLots(item.results, item.pageNum, totalPages);
           }
-        } catch (apiErr) {
-          console.warn(`[DEEP CRAWLER] Direct API error on page ${pageNum}:`, apiErr.message);
-          useDirectAPI = false;
         }
       }
+    }
 
-      // Fallback strategy: Puppeteer if direct API is unavailable
-      if (!useDirectAPI && rawResults.length === 0) {
+    // 3. Fallback to Puppeteer if direct API is unavailable
+    if (!useDirectAPI) {
+      for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
         let browser = null;
+        let rawResults = [];
         try {
           browser = await puppeteer.launch({
             executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || undefined,
@@ -376,10 +596,6 @@ async function crawlDeepAuctionPages(maxCatalogsToScan = 10, maxPagesPerCatalog 
               const d = q?.state?.data;
               if (d && typeof d === 'object' && Array.isArray(d.results)) {
                 rawResults = d.results;
-                if (pageNum === 1 && typeof d.count === 'number') {
-                  totalCount = d.count;
-                  totalPages = Math.min(Math.ceil(totalCount / perPage), maxPagesPerCatalog);
-                }
                 break;
               }
             }
@@ -389,118 +605,13 @@ async function crawlDeepAuctionPages(maxCatalogsToScan = 10, maxPagesPerCatalog 
           console.error(`[DEEP CRAWLER] Browser fallback error on page ${pageNum}:`, bErr.message);
           if (browser) await browser.close();
         }
+
+        if (rawResults.length > 0) {
+          ingestPageLots(rawResults, pageNum, totalPages);
+        } else {
+          break;
+        }
       }
-
-      if (rawResults.length === 0) {
-        console.log(`[DEEP CRAWLER] No more results on page ${pageNum}. Finishing crawl.`);
-        break;
-      }
-
-      // Map raw API lot results → internal normalized schema
-      const nowMs = Date.now();
-      const pageItems = rawResults
-        .filter(item => item && item.id && item.status !== 'ended')
-        .map(item => {
-          const period = item.auction_period || item.auctionPeriod || getEDTDateString();
-          const lotUrl = `${SITE_BASE}/lots/${period}/${item.id}`;
-
-          // Image from images array (handles both snake_case and camelCase)
-          let image = FALLBACK_IMG;
-          const imgList = item.images || [];
-          if (Array.isArray(imgList) && imgList.length > 0) {
-            const cardImg = imgList[0].image_card || imgList[0].imageCard || imgList[0].image_large || imgList[0].imageLarge || imgList[0].image_thumb || imgList[0].imageThumb;
-            if (cardImg) {
-              image = cardImg.startsWith('http') ? cardImg : CDN_BASE + cardImg;
-            }
-          }
-
-          // Condition: use numeric map or display name
-          const condVal = item.condition?.value;
-          const condDisplay = item.condition?.display_name || item.condition?.displayName || 'Unknown';
-          const condition = CONDITION_MAP[condVal] || `Condition: ${condDisplay}`;
-
-          // Category
-          const category = item.category?.label || 'General Merchandise';
-
-          // Location
-          const locationName = item.location?.name || 'Raleigh';
-          const address = LOCATION_ADDRESSES[locationName] || LOCATION_ADDRESSES['Raleigh'];
-
-          // Price fields (handles snake_case and camelCase)
-          const currentBid = parseFloat(item.current_price !== undefined ? item.current_price : item.currentPrice) || 0;
-          const retailPrice = parseFloat(item.estimated_retail_price !== undefined ? item.estimated_retail_price : item.estimatedRetailPrice) || null;
-
-          // End time
-          let endsAtISO = item.ends_at || item.endsAt || null;
-          let closingDate = getEDTDateString();
-          if (endsAtISO) {
-            try {
-              closingDate = new Date(endsAtISO).toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
-            } catch (_) {}
-          } else if (period) {
-            const fallback = new Date(`${period}T23:59:59-04:00`);
-            if (!isNaN(fallback.getTime()) && fallback.getTime() > nowMs) {
-              endsAtISO = fallback.toISOString();
-              closingDate = period;
-            }
-          }
-
-          return {
-            id: `scraped-${item.id}`,
-            title: item.title || 'Auction Item',
-            currentBid,
-            retailPrice,
-            brand: item.brand || null,
-            model: item.model || null,
-            condition,
-            conditionValue: condVal || null,
-            category,
-            location: locationName,
-            address,
-            url: lotUrl,
-            image,
-            auctionPeriod: period,
-            auctionName: `${locationName} Auction`,
-            closingDate,
-            endsAt: endsAtISO,
-            status: item.status || 'live',
-            bidCount: item.bid_count !== undefined ? item.bid_count : (item.bidCount || 0),
-            isTransferable: item.is_transferable !== undefined ? item.is_transferable : (item.isTransferable || false),
-            transferFee: item.transfer_fee !== undefined ? item.transfer_fee : (item.transferFee || null),
-            lotNumber: item.lot_number || item.lotNumber || null,
-          };
-        });
-
-      console.log(`[DEEP CRAWLER] Page ${pageNum}: ingested ${pageItems.length} active items.`);
-
-      // Purge demo fallback items once real items are found
-      if (pageItems.length > 0) {
-        FALLBACK_ITEMS.forEach(f => masterCatalogMap.delete(f.id));
-      }
-
-      pageItems.forEach(item => {
-        const key = item.id;
-        const existing = masterCatalogMap.get(key);
-        masterCatalogMap.set(key, {
-          ...item,
-          financials: calculateFinancials(item.currentBid, item.retailPrice),
-          indexedAt: existing ? existing.indexedAt : Date.now()
-        });
-        seenIdsThisCrawl.add(key);
-      });
-
-      scraperProgress.totalIndexed = masterCatalogMap.size;
-
-      // Broadcast real-time progressive update to UI
-      const currentItems = Array.from(masterCatalogMap.values()).map(item => ({
-        ...item,
-        endsAt: ensureEndsAt(item)
-      }));
-
-      broadcastEvent('items_ingested', {
-        newBatchCount: pageItems.length,
-        items: currentItems
-      });
     }
 
     // Active prune: remove any 'scraped-*' items that no longer exist on the live site
@@ -870,6 +981,54 @@ app.get(['/api/auth/status', '/api/auth/session'], (req, res) => {
     email: session.email,
     lastSyncTime: session.lastSyncTime
   });
+});
+
+// Webhook Test Relay Endpoint (Discord / Slack / Generic Webhook)
+app.post('/api/notifications/webhook-test', async (req, res) => {
+  const { webhookUrl, message, title } = req.body || {};
+  if (!webhookUrl || typeof webhookUrl !== 'string' || !webhookUrl.startsWith('http')) {
+    return res.status(400).json({ success: false, error: 'Valid webhook URL (http/https) required.' });
+  }
+
+  try {
+    let payload;
+    if (webhookUrl.includes('discord.com/api/webhooks')) {
+      payload = {
+        username: 'TL Auction Tracker',
+        embeds: [{
+          title: title || '🔔 Test Notification from TL Auction Tracker',
+          description: message || 'Your notification webhook integration is working perfectly!',
+          color: 0x10b981,
+          timestamp: new Date().toISOString()
+        }]
+      };
+    } else if (webhookUrl.includes('slack.com/services')) {
+      payload = {
+        text: `🔔 *${title || 'TL Auction Tracker Alert'}*\n${message || 'Your notification webhook integration is working!'}`
+      };
+    } else {
+      payload = {
+        title: title || 'TL Auction Tracker Alert',
+        message: message || 'Test alert from TL Auction Tracker',
+        timestamp: new Date().toISOString()
+      };
+    }
+
+    const resp = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (resp.ok) {
+      return res.json({ success: true, status: resp.status });
+    } else {
+      const errText = await resp.text().catch(() => '');
+      return res.status(resp.status).json({ success: false, error: `Remote webhook returned HTTP ${resp.status}: ${errText}` });
+    }
+  } catch (err) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 // Auth Login Endpoint (Headless Puppeteer Login)
@@ -1425,4 +1584,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { calculateFinancials, app };
+module.exports = { calculateFinancials, calculateDealScore, app };

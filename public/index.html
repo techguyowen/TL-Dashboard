@@ -3,1645 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-  <title>TL Auction Tracker - Live Auction Tracker & Out-of-Pocket Calculator</title>
-  <meta name="description" content="TL Live Auction tracking dashboard and financial calculator. Index active lots across Raleigh & SC, calculate total out-of-pocket costs with buyer's premium, tax, and CC fees.">
-  <link rel="canonical" href="https://bid.triangleliquidators.com/">
-  <meta name="theme-color" content="#0b0f19">
-  <link rel="manifest" href="/site.webmanifest">
-  <link rel="apple-touch-icon" href="/favicon.svg">
+  <title>TL Live Auctions & Deal Calculator</title>
 
-  <!-- Open Graph / Social Media Cards -->
+  <!-- SEO & OpenGraph Meta Tags -->
+  <meta name="description" content="Live auction tracker and out-of-pocket calculator for Triangle Liquidators Raleigh & South Carolina auctions. Real-time deal scores, watchlist matching, and sniping alerts.">
+  <meta property="og:title" content="TL Live Auctions & Deal Calculator">
+  <meta property="og:description" content="Track live Raleigh and SC auctions in real time with calculated fees, 0-100 deal ratings, and instant notification alerts.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://bid.triangleliquidators.com/">
-  <meta property="og:title" content="TL Auction Tracker - Live Auction Tracker & Calculator">
-  <meta property="og:description" content="Live auction lot tracking, real-time out-of-pocket total cost calculation, and custom watchlists for live auctions.">
-  <meta property="og:image" content="https://bid.triangleliquidators.com/favicon.svg">
-  <meta property="og:site_name" content="TL Auction Tracker">
 
-  <!-- Twitter Card Tags -->
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="TL Auction Tracker - Live Auction Tracker">
-  <meta name="twitter:description" content="Live auction lot tracking, real-time out-of-pocket total cost calculation, and custom watchlists.">
-  <meta name="twitter:image" content="https://bid.triangleliquidators.com/favicon.svg">
-
-  <!-- Schema.org JSON-LD Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "TL Auction Tracker & Calculator",
-    "url": "https://bid.triangleliquidators.com/",
-    "description": "Live auction tracking dashboard with out-of-pocket financial calculator for Raleigh & South Carolina auctions.",
-    "applicationCategory": "BusinessApplication",
-    "operatingSystem": "All",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    }
-  }
-  </script>
-
-  <!-- Browser Tab Favicon Logo -->
+  <!-- Favicon & Web Manifest -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="shortcut icon" href="/favicon.svg">
-  <!-- Pre-connect & DNS Prefetch for Fast Image Fetching -->
+  <link rel="manifest" href="/site.webmanifest">
+
+  <!-- Preconnect & CDNs -->
   <link rel="preconnect" href="https://bid.triangleliquidators.com">
-  <link rel="dns-prefetch" href="https://bid.triangleliquidators.com">
   <link rel="preconnect" href="https://cdn.bid.triangleliquidators.com">
-  <link rel="dns-prefetch" href="https://cdn.bid.triangleliquidators.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
-  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-  <style>
-    :root {
-      /* Warm Slate & Organic Dark Theme Palette */
-      --bg-dark: #0b0f19;
-      --bg-card: rgba(20, 27, 41, 0.75);
-      --bg-card-hover: rgba(27, 37, 56, 0.95);
-      --bg-surface: rgba(15, 22, 35, 0.6);
-      
-      --border-color: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(255, 255, 255, 0.18);
-      
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --text-subtle: #64748b;
-      
-      /* Humanized Accent Palette */
-      --accent-raleigh: #10b981;
-      --accent-raleigh-glow: rgba(16, 185, 129, 0.22);
-      --accent-raleigh-subtle: rgba(16, 185, 129, 0.12);
-      
-      --accent-sc: #6366f1;
-      --accent-sc-glow: rgba(99, 102, 241, 0.22);
-      --accent-sc-subtle: rgba(99, 102, 241, 0.12);
-      
-      --accent-gold: #f59e0b;
-      --accent-gold-glow: rgba(245, 158, 11, 0.2);
-      --accent-gold-subtle: rgba(245, 158, 11, 0.12);
-
-      --accent-danger: #ef4444;
-      --accent-danger-glow: rgba(239, 68, 68, 0.2);
-
-      /* Tactile Radius & Spring Physics */
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --radius-xl: 22px;
-      --radius-pill: 9999px;
-      
-      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
-      --sidebar-width: 330px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    /* Custom Soft Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: rgba(11, 15, 25, 0.5);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: var(--radius-pill);
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: rgba(255, 255, 255, 0.28);
-    }
-
-    body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background-color: var(--bg-dark);
-      background-image: 
-        radial-gradient(at 10% 10%, rgba(16, 185, 129, 0.07) 0px, transparent 55%),
-        radial-gradient(at 90% 90%, rgba(99, 102, 241, 0.07) 0px, transparent 55%),
-        radial-gradient(at 50% 50%, rgba(245, 158, 11, 0.03) 0px, transparent 65%);
-      background-attachment: fixed;
-      color: var(--text-main);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    /* HEADER - Soft Tactile Glassmorphism */
-    header {
-      background: rgba(11, 15, 25, 0.82);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border-color);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      padding: 0.9rem 2.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      transition: border-color 0.3s ease;
-    }
-
-    .brand-section {
-      display: flex;
-      align-items: center;
-      gap: 1.1rem;
-    }
-
-    .brand-logo {
-      width: 46px;
-      height: 46px;
-      border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.25), inset 0 1px 1px rgba(255,255,255,0.2);
-      transition: transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
-      flex-shrink: 0;
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(99, 102, 241, 0.2));
-      border: 1px solid rgba(255, 255, 255, 0.12);
-    }
-
-    .brand-logo:hover {
-      transform: translateY(-2px) scale(1.05);
-      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
-    }
-
-    .brand-logo-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: var(--radius-md);
-      display: block;
-    }
-
-    .brand-title {
-      font-family: 'Outfit', sans-serif;
-      font-weight: 700;
-      font-size: 1.4rem;
-      letter-spacing: -0.02em;
-      margin: 0;
-      line-height: 1.2;
-      background: linear-gradient(135deg, #ffffff 0%, #cbd5e1 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .brand-subtitle {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-weight: 400;
-    }
-
-    .live-pulse {
-      width: 8px;
-      height: 8px;
-      background-color: var(--accent-raleigh);
-      border-radius: 50%;
-      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-      animation: pulse 2s infinite var(--ease-spring);
-    }
-
-    @keyframes pulse {
-      0% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
-      }
-      70% {
-        transform: scale(1);
-        box-shadow: 0 0 0 8px rgba(16, 185, 129, 0);
-      }
-      100% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
-      }
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .icon-btn {
-      background: rgba(20, 27, 41, 0.8);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      width: 42px;
-      height: 42px;
-      border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 1.05rem;
-      transition: all 0.25s var(--ease-spring);
-    }
-
-    .icon-btn:hover {
-      background: rgba(245, 158, 11, 0.15);
-      border-color: rgba(245, 158, 11, 0.4);
-      color: var(--accent-gold);
-      transform: translateY(-2px);
-    }
-
-    .icon-btn:active {
-      transform: scale(0.95);
-    }
-
-    .sync-btn {
-      background: linear-gradient(135deg, #10b981, #059669);
-      color: white;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 0.65rem 1.25rem;
-      border-radius: var(--radius-md);
-      font-weight: 600;
-      font-size: 0.88rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.55rem;
-      transition: all 0.25s var(--ease-spring);
-      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.28);
-    }
-
-    .extend-btn {
-      background: linear-gradient(135deg, #6366f1, #4f46e5);
-      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.28);
-    }
-
-    .sync-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
-      border-color: rgba(255, 255, 255, 0.25);
-    }
-
-    .sync-btn:active {
-      transform: scale(0.97);
-    }
-
-    .sync-btn.loading i {
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* ACCOUNT & HEADLESS SYNC BUTTONS */
-    .account-auth-btn {
-      background: rgba(20, 27, 41, 0.85);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 0.65rem 1.1rem;
-      border-radius: var(--radius-md);
-      font-weight: 600;
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.55rem;
-      transition: all 0.25s var(--ease-spring);
-    }
-
-    .account-auth-btn:hover {
-      background: rgba(16, 185, 129, 0.12);
-      border-color: rgba(16, 185, 129, 0.4);
-      transform: translateY(-2px);
-    }
-
-    .account-auth-btn:active {
-      transform: scale(0.97);
-    }
-
-    .status-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      display: inline-block;
-      transition: all 0.3s ease;
-    }
-
-    .status-dot.connected {
-      background-color: var(--accent-raleigh);
-      box-shadow: 0 0 10px var(--accent-raleigh-glow);
-    }
-
-    .status-dot.disconnected {
-      background-color: #64748b;
-    }
-
-    .status-dot.syncing {
-      background-color: var(--accent-gold);
-      animation: pulse 1s infinite;
-    }
-
-    .watchlist-sync-btn {
-      background: linear-gradient(135deg, #f59e0b, #d97706) !important;
-      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.28) !important;
-    }
-
-    .watchlist-sync-btn:hover {
-      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4) !important;
-    }
-
-    .auth-alert {
-      padding: 0.8rem 1.1rem;
-      border-radius: var(--radius-md);
-      font-size: 0.85rem;
-      line-height: 1.45;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    .auth-alert.success {
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      color: #6ee7b7;
-    }
-
-    .auth-alert.error {
-      background: rgba(239, 68, 68, 0.12);
-      border: 1px solid rgba(239, 68, 68, 0.3);
-      color: #fca5a5;
-    }
-
-    .auth-alert.info {
-      background: rgba(99, 102, 241, 0.12);
-      border: 1px solid rgba(99, 102, 241, 0.3);
-      color: #a5b4fc;
-    }
-
-    /* LIVE SCAN PROGRESS WIDGET */
-    .progress-widget {
-      background: rgba(20, 27, 41, 0.85);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 0.95rem 1.1rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-      transition: all 0.3s ease;
-    }
-
-    .progress-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .progress-status-text {
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-    }
-
-    .progress-bar-bg {
-      width: 100%;
-      height: 8px;
-      background: rgba(11, 15, 25, 0.8);
-      border-radius: var(--radius-pill);
-      overflow: hidden;
-    }
-
-    .progress-bar-fill {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #10b981, #6366f1);
-      border-radius: var(--radius-pill);
-      transition: width 0.4s var(--ease-spring);
-    }
-
-    /* LIVE INGESTION BANNER */
-    .live-ingestion-banner {
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
-      background: rgba(20, 27, 41, 0.85);
-      border: 1px solid rgba(245, 158, 11, 0.35);
-      box-shadow: 0 6px 20px rgba(245, 158, 11, 0.12);
-      backdrop-filter: blur(14px);
-      padding: 0.85rem 1.35rem;
-      border-radius: var(--radius-lg);
-      margin-bottom: 1.3rem;
-      transition: all 0.3s var(--ease-spring);
-    }
-    .ingestion-pulse-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #f59e0b;
-      box-shadow: 0 0 12px #f59e0b;
-      animation: pulseGlow 1.5s infinite alternate ease-in-out;
-    }
-    @keyframes pulseGlow {
-      0% { opacity: 0.5; transform: scale(0.9); }
-      100% { opacity: 1; transform: scale(1.2); }
-    }
-    .ingestion-text {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 0.55rem;
-      font-size: 0.9rem;
-      color: #e2e8f0;
-    }
-    .ingestion-badge {
-      background: rgba(245, 158, 11, 0.18);
-      color: #fbbf24;
-      border: 1px solid rgba(245, 158, 11, 0.3);
-      font-weight: 700;
-      font-size: 0.82rem;
-      padding: 0.25rem 0.7rem;
-      border-radius: var(--radius-pill);
-    }
-
-    /* APP LAYOUT */
-    .app-layout {
-      display: flex;
-      flex: 1;
-    }
-
-    /* SIDEBAR */
-    aside {
-      width: var(--sidebar-width);
-      background: rgba(11, 15, 25, 0.75);
-      backdrop-filter: blur(12px);
-      border-right: 1px solid var(--border-color);
-      padding: 1.6rem 1.4rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
-    }
-
-    .filter-label {
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .reset-btn {
-      font-size: 0.74rem;
-      color: var(--accent-raleigh);
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      text-transform: none;
-      transition: color 0.2s ease;
-    }
-
-    .reset-btn:hover {
-      color: #34d399;
-      text-decoration: underline;
-    }
-
-    .input-wrapper {
-      position: relative;
-    }
-
-    .input-wrapper i {
-      position: absolute;
-      left: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--text-subtle);
-      font-size: 0.95rem;
-    }
-
-    .form-input, .form-select {
-      width: 100%;
-      background: rgba(20, 27, 41, 0.85);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 0.7rem 0.95rem 0.7rem 2.5rem;
-      border-radius: var(--radius-md);
-      font-size: 0.9rem;
-      font-family: inherit;
-      outline: none;
-      transition: all 0.25s var(--ease-spring);
-    }
-
-    .form-select {
-      padding-left: 1rem;
-      cursor: pointer;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 0.9rem center;
-      background-size: 1.1rem;
-    }
-
-    .form-input:focus, .form-select:focus {
-      border-color: rgba(16, 185, 129, 0.6);
-      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
-      background: rgba(27, 37, 56, 0.9);
-    }
-
-    .slider-value {
-      font-weight: 700;
-      color: var(--accent-raleigh);
-      font-size: 1.05rem;
-      font-family: 'Outfit', sans-serif;
-    }
-
-    input[type=range] {
-      width: 100%;
-      accent-color: var(--accent-raleigh);
-      cursor: pointer;
-      height: 6px;
-      border-radius: var(--radius-pill);
-    }
-
-    /* WATCHLIST TAGS */
-    .watchlist-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.45rem;
-    }
-
-    .tag-btn {
-      background: rgba(20, 27, 41, 0.8);
-      border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      padding: 0.4rem 0.75rem;
-      border-radius: var(--radius-pill);
-      font-size: 0.76rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.25s var(--ease-spring);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      gap: 0.35rem;
-    }
-
-    .tag-btn:hover {
-      border-color: rgba(255, 255, 255, 0.2);
-      color: var(--text-main);
-      transform: translateY(-1px);
-    }
-
-    .tag-btn:active {
-      transform: scale(0.95);
-    }
-
-    .tag-btn.active {
-      background: rgba(245, 158, 11, 0.18);
-      border-color: var(--accent-gold);
-      color: #fcd34d;
-      box-shadow: 0 2px 10px rgba(245, 158, 11, 0.2);
-    }
-
-    .tag-btn.isolated {
-      background: rgba(56, 189, 248, 0.2);
-      border-color: #38bdf8;
-      color: #38bdf8;
-      box-shadow: 0 2px 10px rgba(56, 189, 248, 0.25);
-    }
-
-    .tag-close-btn {
-      margin-left: 0.35rem;
-      font-size: 0.72rem;
-      opacity: 0;
-      transition: opacity 0.15s ease;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      pointer-events: none;
-    }
-
-    .tag-btn:hover .tag-close-btn,
-    .tag-btn:focus-within .tag-close-btn {
-      opacity: 0.7;
-      pointer-events: auto;
-    }
-
-    .tag-close-btn:hover {
-      opacity: 1;
-      background: rgba(239, 68, 68, 0.25);
-      color: #ef4444;
-    }
-
-    /* Native File Input Selector Button Styling */
-    input[type="file"]::file-selector-button {
-      background: linear-gradient(135deg, #6366f1, #4f46e5);
-      color: #ffffff;
-      border: none;
-      padding: 0.45rem 0.95rem;
-      border-radius: var(--radius-sm);
-      font-size: 0.78rem;
-      font-weight: 600;
-      cursor: pointer;
-      margin-right: 0.75rem;
-      transition: all 0.2s var(--ease-spring);
-      box-shadow: 0 2px 10px rgba(99, 102, 241, 0.25);
-    }
-
-    input[type="file"]::file-selector-button:hover {
-      background: linear-gradient(135deg, #4f46e5, #4338ca);
-      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
-    }
-
-    /* FEE BREAKDOWN CARD */
-    .fee-card {
-      background: rgba(20, 27, 41, 0.6);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 1.1rem;
-      font-size: 0.83rem;
-    }
-
-    .fee-card-title {
-      font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 0.65rem;
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-    }
-
-    .fee-row {
-      display: flex;
-      justify-content: space-between;
-      color: var(--text-muted);
-      margin-bottom: 0.4rem;
-    }
-
-    .fee-row.total {
-      border-top: 1px dashed var(--border-color);
-      padding-top: 0.5rem;
-      margin-top: 0.5rem;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    /* MAIN CONTAINER */
-    main {
-      flex: 1;
-      padding: 1.6rem 2.2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 1.6rem;
-    }
-
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 1.1rem;
-    }
-
-    .stat-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      padding: 1.1rem 1.3rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-      transition: all 0.25s var(--ease-spring);
-    }
-
-    .stat-card:hover {
-      border-color: var(--border-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    }
-
-    .stat-info .stat-value {
-      font-size: 1.5rem;
-      font-weight: 800;
-      font-family: 'Outfit', sans-serif;
-      letter-spacing: -0.02em;
-    }
-
-    .stat-info .stat-label {
-      font-size: 0.76rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-    }
-
-    .stat-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: var(--radius-md);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.15rem;
-    }
-
-    .stat-icon.green { background: var(--accent-raleigh-subtle); color: var(--accent-raleigh); }
-    .stat-icon.indigo { background: var(--accent-sc-subtle); color: var(--accent-sc); }
-    .stat-icon.gold { background: var(--accent-gold-subtle); color: var(--accent-gold); }
-    .stat-icon.red { background: rgba(239, 68, 68, 0.12); color: var(--accent-danger); }
-
-    /* TOOLBAR */
-    .toolbar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(20, 27, 41, 0.5);
-      backdrop-filter: blur(10px);
-      padding: 0.85rem 1.3rem;
-      border-radius: var(--radius-lg);
-      border: 1px solid var(--border-color);
-    }
-
-    .results-count {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
-
-    .results-count strong {
-      color: var(--text-main);
-    }
-
-    .toolbar-buttons {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-    }
-
-    .toggle-fav-btn {
-      background: rgba(20, 27, 41, 0.8);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 0.45rem 0.9rem;
-      border-radius: var(--radius-md);
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      transition: all 0.25s var(--ease-spring);
-    }
-
-    .toggle-fav-btn:hover {
-      border-color: rgba(255, 255, 255, 0.2);
-      transform: translateY(-1px);
-    }
-
-    .toggle-fav-btn.active {
-      background: rgba(245, 158, 11, 0.18);
-      border-color: var(--accent-gold);
-      color: #fcd34d;
-    }
-
-    .sort-container {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    .sort-select {
-      background: rgba(11, 15, 25, 0.8);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 0.45rem 0.85rem;
-      border-radius: var(--radius-md);
-      font-size: 0.85rem;
-      cursor: pointer;
-      font-family: inherit;
-      outline: none;
-      transition: border-color 0.2s ease;
-    }
-
-    .sort-select:focus {
-      border-color: var(--accent-raleigh);
-    }
-
-    /* VIEW DENSITY / LAYOUT TOGGLE */
-    .view-mode-toggle {
-      display: flex;
-      align-items: center;
-      background: rgba(11, 15, 25, 0.8);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 0.2rem;
-      gap: 0.2rem;
-    }
-
-    .view-toggle-btn {
-      background: transparent;
-      border: none;
-      color: #94a3b8;
-      width: 32px;
-      height: 32px;
-      border-radius: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 0.9rem;
-      transition: all 0.2s ease;
-    }
-
-    .view-toggle-btn:hover {
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .view-toggle-btn.active {
-      background: var(--accent-raleigh);
-      color: #022c22;
-      box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
-    }
-
-    /* CARD GRID - Optimized 4 to 5 column responsive layout */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
-      gap: 1.25rem;
-    }
-
-    /* DENSE GRID MODE */
-    .cards-grid.dense-grid {
-      grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
-      gap: 0.95rem;
-    }
-
-    .cards-grid.dense-grid .card-image-wrapper {
-      height: 175px;
-      padding: 0.6rem;
-    }
-
-    .cards-grid.dense-grid .card-image {
-      width: 145px;
-      height: 145px;
-      border-radius: 10px;
-      padding: 6px;
-    }
-
-    .cards-grid.dense-grid .card-body {
-      padding: 0.9rem;
-      gap: 0.65rem;
-    }
-
-    .cards-grid.dense-grid .card-title {
-      font-size: 0.88rem;
-      min-height: 2.45rem;
-    }
-
-    /* LIST VIEW MODE (3-Column Layout: Image | Details | Financials & Bid) */
-    .cards-grid.list-view {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .cards-grid.list-view .item-card {
-      display: grid;
-      grid-template-columns: 170px 1fr 250px;
-      align-items: stretch;
-      min-height: 170px;
-      contain-intrinsic-size: 1px 170px;
-    }
-
-    .cards-grid.list-view .card-image-wrapper {
-      width: 170px;
-      min-width: 170px;
-      height: 100%;
-      min-height: 170px;
-      border-bottom: none;
-      border-right: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 0.75rem;
-    }
-
-    .cards-grid.list-view .card-image {
-      width: 135px;
-      height: 135px;
-      border-radius: 10px;
-      padding: 6px;
-    }
-
-    .cards-grid.list-view .card-body {
-      display: contents;
-    }
-
-    .cards-grid.list-view .card-main-col {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 1.1rem 1.4rem;
-      gap: 0.65rem;
-    }
-
-    .cards-grid.list-view .card-side-col {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 1.1rem;
-      background: rgba(11, 15, 25, 0.5);
-      border-left: 1px solid rgba(255, 255, 255, 0.08);
-      gap: 0.75rem;
-    }
-
-    @media (max-width: 900px) {
-      .cards-grid.list-view .item-card {
-        grid-template-columns: 140px 1fr;
-      }
-      .cards-grid.list-view .card-side-col {
-        grid-column: span 2;
-        border-left: none;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-      }
-    }
-
-    /* ITEM CARD - Modern Tactile Card */
-    .item-card {
-      background: var(--bg-card);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      transition: all 0.3s var(--ease-spring);
-      position: relative;
-      content-visibility: auto;
-      contain-intrinsic-size: 1px 440px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .item-card:hover {
-      transform: translateY(-4px) scale(1.004);
-      background: var(--bg-card-hover);
-      border-color: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.45), 0 0 20px rgba(16, 185, 129, 0.08);
-    }
-
-    .item-card.watchlist-match {
-      border: 1.5px solid var(--accent-gold);
-      box-shadow: 0 0 20px var(--accent-gold-glow);
-    }
-
-    /* Floating Showcase Image Canvas */
-    .card-image-wrapper {
-      position: relative;
-      width: 100%;
-      height: 205px;
-      background: radial-gradient(circle at 50% 50%, #1c2742 0%, #0c1322 100%);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.85rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .card-image-wrapper::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.02) 100%);
-      background-size: 200% 100%;
-      animation: skeletonShimmer 1.5s infinite ease-in-out;
-      z-index: 0;
-    }
-
-    @keyframes skeletonShimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    /* 1:1 Inset Showcase Tile */
-    .card-image {
-      position: relative;
-      z-index: 1;
-      width: 175px;
-      height: 175px;
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-      background: #ffffff;
-      border-radius: 12px;
-      padding: 8px;
-      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-      opacity: 1;
-      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
-    .item-card:hover .card-image {
-      transform: scale(1.05);
-    }
-
-    .star-bookmark-btn {
-      position: absolute;
-      top: 0.8rem;
-      right: 0.8rem;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      color: #cbd5e1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 10;
-      transition: all 0.25s var(--ease-spring);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-    }
-
-    .star-bookmark-btn:hover {
-      transform: scale(1.1);
-      color: #ffffff;
-    }
-
-    .star-bookmark-btn.saved {
-      background: var(--accent-gold);
-      border-color: var(--accent-gold);
-      color: #451a03;
-      box-shadow: 0 0 14px var(--accent-gold-glow);
-    }
-
-    .card-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-bottom: 0.25rem;
-    }
-
-    .badge {
-      padding: 0.28rem 0.65rem;
-      border-radius: var(--radius-sm);
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      backdrop-filter: blur(8px);
-    }
-
-    .badge-raleigh {
-      background: rgba(16, 185, 129, 0.18);
-      color: #6ee7b7;
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      font-weight: 700;
-    }
-
-    .badge-sc {
-      background: rgba(99, 102, 241, 0.18);
-      color: #a5b4fc;
-      border: 1px solid rgba(99, 102, 241, 0.35);
-      font-weight: 700;
-    }
-
-    .badge-watchlist {
-      background: rgba(245, 158, 11, 0.92);
-      color: #451a03;
-      box-shadow: 0 2px 10px rgba(245, 158, 11, 0.35);
-    }
-
-    .badge-savings {
-      background: rgba(16, 185, 129, 0.9);
-      color: #022c22;
-      font-weight: 800;
-    }
-
-    .badge-category {
-      background: rgba(148, 163, 184, 0.2);
-      color: #cbd5e1;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      font-weight: 600;
-    }
-
-    .badge-transfer {
-      background: rgba(56, 189, 248, 0.2);
-      color: #7dd3fc;
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      font-weight: 600;
-    }
-
-    .card-body {
-      padding: 1.1rem;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-      justify-content: space-between;
-      gap: 0.75rem;
-    }
-
-    .card-title {
-      font-size: 0.94rem;
-      font-weight: 700;
-      line-height: 1.38;
-      color: var(--text-main);
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      min-height: 2.6rem;
-      text-transform: capitalize;
-    }
-
-    .card-meta {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    /* DETAILED CONDITION BANNER */
-    .condition-banner {
-      background: rgba(11, 15, 25, 0.75);
-      border-left: 3px solid var(--accent-gold);
-      padding: 0.5rem 0.75rem;
-      border-radius: var(--radius-sm);
-      font-size: 0.76rem;
-      color: #cbd5e1;
-      line-height: 1.4;
-      display: flex;
-      align-items: flex-start;
-      gap: 0.45rem;
-    }
-
-    .condition-banner i {
-      color: var(--accent-gold);
-      margin-top: 0.12rem;
-    }
-
-    .condition-text {
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-    }
-
-    /* TIME REMAINING BANNER */
-    .time-remaining-banner {
-      background: rgba(11, 15, 25, 0.85);
-      border: 1px solid var(--border-color);
-      padding: 0.55rem 0.8rem;
-      border-radius: var(--radius-md);
-      font-size: 0.82rem;
-      display: flex;
-      align-items: center;
-      gap: 0.55rem;
-      font-weight: 600;
-      transition: all 0.3s ease;
-    }
-
-    .time-remaining-banner.status-urgent {
-      background: rgba(239, 68, 68, 0.16);
-      border-color: rgba(239, 68, 68, 0.5);
-      color: #fca5a5;
-      box-shadow: 0 0 14px rgba(239, 68, 68, 0.2);
-      animation: urgentPulse 1.8s infinite ease-in-out;
-    }
-
-    .time-remaining-banner.status-soon {
-      background: rgba(245, 158, 11, 0.16);
-      border-color: rgba(245, 158, 11, 0.45);
-      color: #fcd34d;
-    }
-
-    .time-remaining-banner.status-upcoming {
-      background: rgba(99, 102, 241, 0.14);
-      border-color: rgba(99, 102, 241, 0.35);
-      color: #a5b4fc;
-    }
-
-    .time-remaining-banner.status-ended {
-      background: rgba(148, 163, 184, 0.12);
-      border-color: rgba(148, 163, 184, 0.25);
-      color: #94a3b8;
-    }
-
-    .time-remaining-banner .time-text-content {
-      display: flex;
-      align-items: center;
-      gap: 0.45rem;
-      width: 100%;
-      justify-content: space-between;
-    }
-
-    .time-remaining-banner .time-countdown-val {
-      font-family: 'Outfit', monospace, sans-serif;
-      font-weight: 700;
-      font-size: 0.88rem;
-      letter-spacing: 0.02em;
-    }
-
-    @keyframes urgentPulse {
-      0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-      70% { box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-    }
-
-    /* FINANCIAL PRICE COMPARISON BOX */
-    .financial-box {
-      background: rgba(11, 15, 25, 0.65);
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      padding: 0.9rem 1.05rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-    }
-
-    .price-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-
-    .price-label {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    .retail-amount {
-      font-size: 0.86rem;
-      text-decoration: line-through;
-      color: #94a3b8;
-    }
-
-    .raw-bid-amount {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #e2e8f0;
-    }
-
-    .total-price-row {
-      border-top: 1px dashed var(--border-color);
-      padding-top: 0.45rem;
-      margin-top: 0.15rem;
-    }
-
-    .total-label {
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: var(--accent-raleigh);
-    }
-
-    .total-amount {
-      font-size: 1.4rem;
-      font-weight: 800;
-      font-family: 'Outfit', sans-serif;
-      color: var(--accent-raleigh);
-      letter-spacing: -0.02em;
-    }
-
-    .fee-tooltip-trigger {
-      font-size: 0.73rem;
-      color: var(--text-muted);
-      text-decoration: underline;
-      cursor: pointer;
-      text-align: right;
-    }
-
-    .card-footer {
-      display: flex;
-      align-items: center;
-      gap: 0.65rem;
-    }
-
-    .bid-btn {
-      flex: 1;
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid var(--border-color);
-      color: var(--text-main);
-      padding: 0.65rem 1.1rem;
-      border-radius: var(--radius-md);
-      font-size: 0.88rem;
-      font-weight: 600;
-      text-decoration: none;
-      text-align: center;
-      transition: all 0.25s var(--ease-spring);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.45rem;
-    }
-
-    .bid-btn:hover {
-      background: var(--accent-raleigh);
-      border-color: var(--accent-raleigh);
-      color: #022c22;
-      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
-      transform: translateY(-1px);
-    }
-
-    .bid-btn:active {
-      transform: scale(0.97);
-    }
-
-    /* MODAL DIALOG - Warm Tactile Overlays */
-    .modal-backdrop {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(11, 15, 25, 0.85);
-      backdrop-filter: blur(12px);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .modal-backdrop.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .modal-card {
-      background: #141b29;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-xl);
-      width: 92%;
-      max-width: 590px;
-      max-height: 90vh;
-      padding: 1.6rem;
-      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.6);
-      display: flex;
-      flex-direction: column;
-      gap: 1.1rem;
-      overflow: hidden;
-      transform: scale(0.95);
-      transition: transform 0.3s var(--ease-spring);
-    }
-
-    .modal-backdrop.open .modal-card {
-      transform: scale(1);
-    }
-
-    .modal-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-shrink: 0;
-    }
-
-    .modal-title {
-      font-family: 'Outfit', sans-serif;
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: -0.01em;
-    }
-
-    .modal-tabs {
-      display: flex;
-      gap: 0.5rem;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 0.8rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .tab-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      padding: 0.55rem 0.95rem;
-      border-radius: var(--radius-md);
-      font-size: 0.85rem;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      transition: all 0.25s var(--ease-spring);
-    }
-
-    .tab-btn:hover {
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--text-main);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .tab-btn.active {
-      background: linear-gradient(135deg, var(--accent-raleigh), #4f46e5);
-      color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.3);
-      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.25);
-    }
-
-    .tab-content {
-      display: none;
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .tab-content.active {
-      display: flex;
-    }
-
-    .close-modal-btn {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      width: 36px;
-      height: 36px;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.25s var(--ease-spring);
-    }
-
-    .close-modal-btn:hover { 
-      color: var(--text-main);
-      background: rgba(239, 68, 68, 0.2);
-      border-color: #ef4444;
-      transform: scale(1.05);
-    }
-
-    .modal-body {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      flex: 1;
-      overflow-y: auto;
-      padding-right: 0.3rem;
-    }
-
-    .add-tag-row {
-      display: flex;
-      gap: 0.65rem;
-    }
-
-    .modal-tag-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.55rem;
-      max-height: 180px;
-      overflow-y: auto;
-      padding: 0.6rem;
-      background: rgba(11, 15, 25, 0.6);
-      border-radius: var(--radius-md);
-    }
-
-    .modal-tag-chip {
-      background: rgba(245, 158, 11, 0.18);
-      border: 1px solid var(--accent-gold);
-      color: #fcd34d;
-      padding: 0.38rem 0.7rem;
-      border-radius: var(--radius-pill);
-      font-size: 0.8rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      gap: 0.45rem;
-    }
-
-    .modal-tag-chip.exclude-chip {
-      background: rgba(239, 68, 68, 0.18);
-      border: 1px solid #ef4444;
-      color: #fca5a5;
-    }
-
-    .modal-tag-chip.exclude-chip i:hover {
-      color: #ef4444;
-    }
-
-    .tag-btn.exclude-tag {
-      background: rgba(239, 68, 68, 0.12);
-      border-color: rgba(239, 68, 68, 0.3);
-      color: #fca5a5;
-    }
-
-    .tag-btn.exclude-tag:hover {
-      background: rgba(239, 68, 68, 0.22);
-      color: #ffffff;
-    }
-
-    .tag-btn.exclude-tag.active {
-      background: linear-gradient(135deg, #ef4444, #b91c1c);
-      color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.4);
-      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
-    }
-
-    .modal-tag-chip i {
-      cursor: pointer;
-    }
-
-    .modal-tag-chip i:hover { color: #ef4444; }
-
-    /* LOADING & EMPTY STATES */
-    .empty-state {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 4.5rem 2rem;
-      background: var(--bg-card);
-      border: 1px dashed var(--border-color);
-      border-radius: var(--radius-lg);
-      color: var(--text-muted);
-    }
-
-    .empty-state i {
-      font-size: 3.2rem;
-      margin-bottom: 1.1rem;
-      color: #475569;
-    }
-
-    /* BACK TO TOP BUTTON */
-    .back-to-top-btn {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent-raleigh), #4f46e5);
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.45), 0 0 16px rgba(56, 189, 248, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.3rem;
-      cursor: pointer;
-      z-index: 9990;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(16px) scale(0.9);
-      transition: all 0.35s var(--ease-spring);
-    }
-    .back-to-top-btn.visible {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0) scale(1);
-    }
-    .back-to-top-btn:hover {
-      transform: translateY(-4px) scale(1.08);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 24px rgba(56, 189, 248, 0.5);
-      background: linear-gradient(135deg, #38bdf8, #6366f1);
-    }
-    .back-to-top-btn:active {
-      transform: translateY(-1px) scale(0.97);
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      .app-layout {
-        flex-direction: column;
-      }
-      aside {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid var(--border-color);
-      }
-    }
-  </style>
+  <!-- Modular Stylesheets -->
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/cards.css">
+  <link rel="stylesheet" href="/css/notifications.css">
+  <link rel="stylesheet" href="/css/modals.css">
 </head>
 <body>
   <noscript>
@@ -1678,2331 +66,480 @@
         <span>Sync Watchlist</span>
       </button>
 
-      <button class="icon-btn" onclick="openSettingsModal()" title="Dashboard & Watchlist Settings (Gear)">
-        <i class="fa-solid fa-gear"></i>
-      </button>
-      <button class="icon-btn" onclick="openHelpModal()" title="Help & Instructions Guide (?)">
-        <i class="fa-solid fa-circle-question"></i>
-      </button>
-      <button id="extendBtn" class="sync-btn extend-btn" onclick="extendScanDays()">
+      <!-- NOTIFICATION BELL & DRAWER -->
+      <div class="notif-bell-container">
+        <button id="notifBellBtn" class="icon-btn notif-bell-btn" onclick="toggleNotificationDrawer()" title="Deal & Sniping Notifications">
+          <i class="fa-solid fa-bell"></i>
+          <span id="notifBadge" class="notif-badge" style="display: none;">0</span>
+        </button>
+
+        <!-- NOTIFICATION DRAWER / DROPDOWN -->
+        <div id="notifDrawer" class="notif-drawer">
+          <div class="notif-drawer-header">
+            <div class="notif-drawer-title">
+              <i class="fa-solid fa-bell" style="color: var(--accent-gold);"></i>
+              <span>Deal & Sniping Alerts</span>
+              <span id="notifHeaderCount" class="notif-pill-count">0 unread</span>
+            </div>
+            <div class="notif-drawer-actions">
+              <button class="notif-action-btn" onclick="markAllNotificationsRead()" title="Mark all alerts as read">
+                <i class="fa-solid fa-check-double"></i> Mark Read
+              </button>
+              <button class="notif-action-btn" onclick="clearAllNotifications()" title="Clear all alerts">
+                <i class="fa-solid fa-trash-can"></i> Clear
+              </button>
+              <button class="notif-action-btn notif-close-btn" onclick="toggleNotificationDrawer(false)" title="Close Panel">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="notif-filters">
+            <button class="notif-filter-pill active" onclick="setNotifFilter('all', event)">All Alerts</button>
+            <button class="notif-filter-pill" onclick="setNotifFilter('deals', event)">🔥 Top Deals</button>
+            <button class="notif-filter-pill" onclick="setNotifFilter('sniping', event)">⏳ Ending Soon</button>
+            <button class="notif-filter-pill" onclick="setNotifFilter('watchlist', event)">⭐ Watchlist</button>
+          </div>
+
+          <div id="notifList" class="notif-list">
+            <!-- Notifications rendered dynamically -->
+          </div>
+
+          <div class="notif-drawer-footer">
+            <button class="notif-footer-link" onclick="toggleNotificationDrawer(false); openKeywordsModal('tabNotifications');">
+              <i class="fa-solid fa-sliders"></i> Configure Sound & Alert Settings
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <button id="scanBtn" class="sync-btn extend-btn" onclick="triggerDeepScan(60)" title="Perform Deep Multi-Page Catalog Scan">
         <i class="fa-solid fa-tower-broadcast"></i>
         <span>Scan More Days (+Deep Crawl)</span>
       </button>
-      <button id="syncBtn" class="sync-btn" onclick="syncAuctionData(true)">
+
+      <button id="refreshBtn" class="sync-btn" onclick="fetchCatalog(true)" title="Check for Immediate Bid & Lot Updates">
         <i class="fa-solid fa-rotate"></i>
         <span>Refresh Active Auctions</span>
+      </button>
+
+      <button class="icon-btn" onclick="openKeywordsModal()" title="Customize Watchlist Keywords & Notification Rules">
+        <i class="fa-solid fa-gear"></i>
+      </button>
+
+      <button class="icon-btn" onclick="openHelpModal()" title="Auction Tips & Fee Breakdown Guide">
+        <i class="fa-solid fa-circle-question"></i>
       </button>
     </div>
   </header>
 
-  <!-- MAIN APP LAYOUT -->
+  <!-- LIVE SCRAPER PROGRESS WIDGET -->
+  <div id="progressWidget" class="progress-widget" style="display: none; margin: 1rem 2.2rem 0;">
+    <div class="progress-header">
+      <div class="progress-status-text">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+        <span id="progressStatusText">Scanning live auction catalogs...</span>
+      </div>
+    </div>
+    <div class="progress-bar-bg">
+      <div id="progressBarFill" class="progress-bar-fill"></div>
+    </div>
+  </div>
+
+  <!-- APP LAYOUT -->
   <div class="app-layout">
-    
     <!-- SIDEBAR CONTROLS -->
     <aside>
-
-      <!-- LIVE SCRAPER PROGRESS WIDGET -->
-      <div class="progress-widget" id="progressWidget">
-        <div class="progress-header">
-          <span><i class="fa-solid fa-radar" style="color: var(--accent-raleigh);"></i> Crawler Status</span>
-          <span id="progressPctText">100%</span>
-        </div>
-        <div class="progress-bar-bg">
-          <div class="progress-bar-fill" id="progressBarFill" style="width: 100%;"></div>
-        </div>
-        <div class="progress-status-text">
-          <i class="fa-solid fa-circle-notch spin-icon" id="progressSpinner" style="display: none;"></i>
-          <span id="progressStatusMsg">Idle / Complete (Ready)</span>
-        </div>
-      </div>
-
-      <!-- SEARCH FILTER -->
+      <!-- KEYWORD SEARCH -->
       <div class="filter-group">
-        <div class="filter-label">
-          <span>Search Master Catalog</span>
+        <label class="filter-label">
+          <span>Search Lots</span>
           <button class="reset-btn" onclick="resetFilters()">Clear Filters</button>
-        </div>
+        </label>
         <div class="input-wrapper">
           <i class="fa-solid fa-magnifying-glass"></i>
-          <input type="text" id="searchInput" class="form-input" placeholder="Search Dewalt, Concord, Condition..." oninput="onSearchInputDebounced()">
-        </div>
-      </div>
-
-      <!-- EXCLUDE KEYWORDS FILTER -->
-      <div class="filter-group">
-        <div class="filter-label">
-          <span>Exclude Keywords</span>
-          <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: normal;">(comma-separated or use -term)</span>
-        </div>
-        <div class="input-wrapper">
-          <i class="fa-solid fa-filter-circle-xmark" style="color: #ef4444;"></i>
-          <input type="text" id="excludeInput" class="form-input" placeholder="e.g. broken, as-is, parts" oninput="applyFilters()">
-        </div>
-      </div>
-
-      <!-- LOCATION FILTER -->
-      <div class="filter-group">
-        <div class="filter-label">Location Filter</div>
-        <select id="locationSelect" class="form-select" onchange="applyFilters()">
-          <option value="All" selected>🌐 All Locations (Raleigh & Anderson)</option>
-          <option value="Raleigh">📍 Raleigh, NC (1101 Transport Dr)</option>
-          <option value="Anderson">🚚 Anderson, SC Transfer Depot</option>
-        </select>
-      </div>
-
-      <!-- CATEGORY FILTER -->
-      <div class="filter-group">
-        <div class="filter-label">Category</div>
-        <select id="categorySelect" class="form-select" onchange="applyFilters()">
-          <option value="All" selected>📦 All Categories</option>
-          <option value="Tools">🧰 Tools</option>
-          <option value="Electronics & Appliances">📱 Electronics & Appliances</option>
-          <option value="Home">🛋️ Home</option>
-          <option value="Outdoor">🌲 Outdoor</option>
-          <option value="Apparel">👕 Apparel</option>
-          <option value="Automotive">🚗 Automotive</option>
-          <option value="Baby & Kids">🧸 Baby & Kids</option>
-          <option value="Building & Hardware">🧱 Building & Hardware</option>
-          <option value="Health & Beauty">💄 Health & Beauty</option>
-          <option value="Lighting & Electrical">💡 Lighting & Electrical</option>
-          <option value="Pets">🐾 Pets</option>
-          <option value="Plumbing & Bath">🚿 Plumbing & Bath</option>
-          <option value="Toys & Sports">⚽ Toys & Sports</option>
-          <option value="General Merchandise">🛒 General Merchandise</option>
-        </select>
-      </div>
-
-      <!-- TIME REMAINING FILTER -->
-      <div class="filter-group">
-        <div class="filter-label">Time Remaining</div>
-        <select id="timeFilterSelect" class="form-select" onchange="applyFilters()">
-          <option value="All" selected>⏳ All Auction End Times</option>
-          <option value="urgent">🚨 Urgent (&lt; 2 Hours)</option>
-          <option value="today">📅 Closing Today (≤ 24 Hours)</option>
-          <option value="tomorrow">🌅 Closing Tomorrow (24–48 Hours)</option>
-          <option value="next3days">🗓️ Next 3 Days</option>
-          <option value="next7days">🗓️ Next 7 Days (1 Week)</option>
-          <option value="later">📆 Closing Later (7+ Days)</option>
-        </select>
-      </div>
-
-      <!-- MAX BUDGET SLIDER -->
-      <div class="filter-group">
-        <div class="filter-label">
-          <span>Max Out-Of-Pocket</span>
-          <span id="budgetValue" class="slider-value">Any Price</span>
-        </div>
-        <div class="budget-slider-container">
-          <input type="range" id="budgetRange" min="5" max="500" step="5" value="500" oninput="updateBudgetLabel(this.value)">
+          <input type="text" id="searchInput" class="form-input" placeholder="Search titles, brands (or -exclude)..." oninput="onSearchInputDebounced()" />
         </div>
       </div>
 
       <!-- WATCHLIST KEYWORDS -->
       <div class="filter-group">
         <div class="filter-label">
-          <span>🔥 Watchlist Highlights</span>
-          <button class="reset-btn" onclick="openSettingsModal('keywords')"><i class="fa-solid fa-pen"></i> Edit</button>
+          <span>Watchlist Highlights</span>
+          <button class="reset-btn" onclick="openKeywordsModal('tabWatchlist')">+ Manage</button>
         </div>
-        <div id="sidebarWatchlistTags" class="watchlist-tags">
-          <!-- Rendered dynamically -->
+        <div id="watchlistTags" class="watchlist-tags">
+          <!-- Watchlist tag chips rendered dynamically -->
         </div>
       </div>
 
-      <!-- EXCLUDED KEYWORDS TAGS -->
+      <!-- ISOLATED TAG BANNER -->
+      <div id="isolatedTagBanner" class="auth-alert info" style="display: none; justify-content: space-between;">
+        <span>Filtering by: <strong id="isolatedTagName"></strong></span>
+        <i class="fa-solid fa-xmark" style="cursor: pointer;" onclick="clearIsolatedTagFilter()" title="Clear Tag Filter"></i>
+      </div>
+
+      <!-- LOCATION SELECTOR -->
+      <div class="filter-group">
+        <label class="filter-label">Auction Location</label>
+        <select id="locationFilter" class="form-select" onchange="applyFilters()">
+          <option value="all">All Locations (Raleigh + SC)</option>
+          <option value="Raleigh">📍 Raleigh Warehouse Only</option>
+          <option value="SC">🚚 Anderson / SC Transfer Depot</option>
+        </select>
+      </div>
+
+      <!-- CATEGORY SELECTOR -->
+      <div class="filter-group">
+        <label class="filter-label">Category</label>
+        <select id="categorySelect" class="form-select" onchange="applyFilters()">
+          <option value="all">All Categories</option>
+        </select>
+      </div>
+
+      <!-- TIME REMAINING FILTER -->
+      <div class="filter-group">
+        <label class="filter-label">Time Remaining</label>
+        <select id="timeRemainingFilter" class="form-select" onchange="applyFilters()">
+          <option value="all">All Active Lots</option>
+          <option value="urgent">⏳ Closing in &lt; 1 Hour</option>
+          <option value="today">📅 Closing Today (&lt; 24h)</option>
+          <option value="closing_2d">⏱️ Next 2 Days (&lt; 48h)</option>
+        </select>
+      </div>
+
+      <!-- MAX BUDGET SLIDER -->
       <div class="filter-group">
         <div class="filter-label">
-          <span><i class="fa-solid fa-filter-circle-xmark" style="color: #ef4444;"></i> Excluded Keywords</span>
-          <button class="reset-btn" onclick="openSettingsModal('keywords')"><i class="fa-solid fa-pen"></i> Edit</button>
+          <span>Max Out-of-Pocket</span>
+          <span id="maxPriceValue" class="slider-value">$500+</span>
         </div>
-        <div id="sidebarExcludeTags" class="watchlist-tags">
-          <!-- Rendered dynamically -->
-        </div>
+        <input type="range" id="maxPriceSlider" min="20" max="500" step="10" value="500" oninput="document.getElementById('maxPriceValue').innerText = this.value >= 500 ? '$500+' : '$' + this.value; applyFilters();" />
       </div>
 
-      <!-- FEE BREAKDOWN CARD -->
+      <!-- FEE BREAKDOWN SUMMARY CARD -->
       <div class="fee-card">
         <div class="fee-card-title">
-          <i class="fa-solid fa-calculator" style="color: var(--accent-raleigh);"></i>
-          Fee Calculation Engine
+          <i class="fa-solid fa-receipt" style="color: var(--accent-raleigh);"></i>
+          <span>Transparent Fee Model</span>
         </div>
         <div class="fee-row">
-          <span>Buyer's Premium</span>
-          <span>+ 15.0%</span>
+          <span>Buyer's Premium:</span>
+          <span>15.0%</span>
         </div>
         <div class="fee-row">
-          <span>Wake Co. NC Tax</span>
-          <span>+ 7.25%</span>
+          <span>Avg Sales Tax:</span>
+          <span>7.25%</span>
         </div>
         <div class="fee-row">
-          <span>Credit Card Fee</span>
-          <span>+ 3.00%</span>
+          <span>Card Processing:</span>
+          <span>3.0%</span>
         </div>
         <div class="fee-row total">
-          <span>Est. Out-of-Pocket</span>
-          <span>Current Bid × ~1.267</span>
+          <span>Out-of-Pocket Factor:</span>
+          <span>~1.27x Bid</span>
         </div>
       </div>
     </aside>
 
-    <!-- MAIN CONTENT AREA -->
+    <!-- MAIN RESULTS CONTENT -->
     <main>
-      <!-- STATS SUMMARY -->
+      <!-- METRIC SUMMARY CARDS -->
       <div class="stats-bar">
         <div class="stat-card">
           <div class="stat-info">
-            <div id="statTotalItems" class="stat-value">0</div>
+            <div class="stat-value" id="statTotalItems" style="color: var(--accent-raleigh);">0</div>
             <div class="stat-label">Matching Items</div>
           </div>
-          <div class="stat-icon green"><i class="fa-solid fa-boxes-stacked"></i></div>
-        </div>
-
-        <div class="stat-card">
-          <div class="stat-info">
-            <div id="statWatchlistItems" class="stat-value">0</div>
-            <div class="stat-label">Watchlist Matches</div>
+          <div class="stat-icon green">
+            <i class="fa-solid fa-boxes-stacked"></i>
           </div>
-          <div class="stat-icon gold"><i class="fa-solid fa-star"></i></div>
         </div>
 
         <div class="stat-card">
           <div class="stat-info">
-            <div id="statAvgOutofPocket" class="stat-value">$0.00</div>
+            <div class="stat-value" id="statWatchlistItems" style="color: var(--accent-gold);">0</div>
+            <div class="stat-label">Watchlist Hits</div>
+          </div>
+          <div class="stat-icon gold">
+            <i class="fa-solid fa-star"></i>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-info">
+            <div class="stat-value" id="statAvgOutofPocket" style="color: #38bdf8;">$0.00</div>
             <div class="stat-label">Avg Out-of-Pocket</div>
           </div>
-          <div class="stat-icon indigo"><i class="fa-solid fa-receipt"></i></div>
+          <div class="stat-icon indigo">
+            <i class="fa-solid fa-wallet"></i>
+          </div>
         </div>
 
         <div class="stat-card">
           <div class="stat-info">
-            <div id="statNextClosing" class="stat-value">--</div>
+            <div class="stat-value" id="statNextClosing" style="color: #fca5a5; font-size: 1.15rem;">--</div>
             <div class="stat-label">Next Lot Closing</div>
           </div>
-          <div class="stat-icon red"><i class="fa-solid fa-stopwatch"></i></div>
+          <div class="stat-icon red">
+            <i class="fa-solid fa-stopwatch"></i>
+          </div>
         </div>
       </div>
 
-      <!-- LIVE PROGRESSIVE INGESTION BANNER -->
-      <div id="liveIngestionBanner" class="live-ingestion-banner" style="display: none;">
-        <div class="ingestion-pulse-dot"></div>
-        <div class="ingestion-text">
-          <i class="fa-solid fa-bolt spin-icon" style="color: #f59e0b;"></i>
-          <strong id="ingestionBannerTitle">Live Ingestion Active</strong>
-          <span id="ingestionBannerDetail" style="color: #94a3b8; font-size: 0.82rem;">- Populating catalog items progressively page by page...</span>
-        </div>
-        <div id="ingestionItemBadge" class="ingestion-badge">0 items loaded</div>
-      </div>
-
-      <!-- TOOLBAR -->
+      <!-- RESULTS TOOLBAR -->
       <div class="toolbar">
         <div class="results-count">
-          Showing <strong id="visibleCount">0</strong> of <strong id="totalCount">0</strong> active auction items
+          Showing <strong id="visibleCount">0</strong> active lots
         </div>
 
         <div class="toolbar-buttons">
-          <button id="savedOnlyBtn" class="toggle-fav-btn" onclick="toggleSavedOnlyFilter()">
-            <i class="fa-solid fa-star" style="color: var(--accent-gold);"></i>
-            <span>Saved Favorites (<strong id="savedCountLabel">0</strong>)</span>
+          <!-- FAVORITES TOGGLE -->
+          <button id="filterSavedBtn" class="toggle-fav-btn" onclick="toggleSavedFilter()" title="Filter by Saved Starred Items">
+            <i class="fa-solid fa-star"></i>
+            <span>Saved Favorites</span>
           </button>
 
-          <button id="clearStaleFavsBtn" class="toggle-fav-btn" onclick="clearStaleFavorites()" title="Clear past/expired items from saved favorites that are no longer in the active catalog pull">
-            <i class="fa-solid fa-broom" style="color: #38bdf8;"></i>
-            <span>Clear Stale</span>
+          <!-- TOP DEALS TOGGLE -->
+          <button id="filterTopDealsBtn" class="toggle-deals-btn" onclick="toggleTopDealsFilter()" title="Show only items with Deal Score 80+">
+            <i class="fa-solid fa-fire"></i>
+            <span>Top Deals (80+)</span>
+            <span id="topDealsCountLabel" style="background: rgba(0,0,0,0.25); padding: 0.1rem 0.4rem; border-radius: 999px; font-size: 0.72rem;">0</span>
           </button>
 
+          <!-- SORT SELECTOR -->
           <div class="sort-container">
-            <label for="sortSelect"><i class="fa-solid fa-sort"></i> Quick Sort:</label>
+            <span>Sort:</span>
             <select id="sortSelect" class="sort-select" onchange="applyFilters()">
-              <option value="watchlist" selected>🔥 Watchlist Highlights First</option>
-              <option value="time-asc">⏳ Time Remaining: Ending Soonest</option>
-              <option value="time-desc">⌛ Time Remaining: Ending Latest</option>
-              <option value="day-asc">📅 Closing Day: Earliest Day First</option>
-              <option value="day-desc">📅 Closing Day: Latest Day First</option>
-              <option value="date-asc">📅 Closing Date: Earliest First</option>
-              <option value="date-desc">📅 Closing Date: Latest First</option>
-              <option value="savings-desc">💥 Highest % Savings First</option>
-              <option value="bid-asc">💲 Current Bid: Low to High</option>
-              <option value="bid-desc">💰 Current Bid: High to Low</option>
-              <option value="total-asc">🧾 Out-of-Pocket: Low to High</option>
-              <option value="title-asc">🏷️ Title: A to Z</option>
+              <option value="watchlist">⭐ Watchlist Highlights First</option>
+              <option value="deal_score" selected>🔥 Highest Deal Score (0–100)</option>
+              <option value="ending_soonest">⏱️ Time Remaining: Ending Soonest</option>
+              <option value="ending_latest">⏳ Time Remaining: Ending Latest</option>
+              <option value="date_asc">📅 Closing Date: Earliest First</option>
+              <option value="date_desc">📅 Closing Date: Latest First</option>
+              <option value="savings_high">⚡ Highest % Savings</option>
+              <option value="price_low">💲 Out-of-Pocket: Low to High</option>
+              <option value="price_high">💰 Out-of-Pocket: High to Low</option>
+              <option value="bid_low">🏷️ Current Bid: Low to High</option>
+              <option value="bid_high">💵 Current Bid: High to Low</option>
+              <option value="retail_high">💎 Highest Retail MSRP</option>
+              <option value="title_asc">🔤 Title: A to Z</option>
+              <option value="title_desc">🔤 Title: Z to A</option>
             </select>
           </div>
 
-          <!-- VIEW MODE DENSITY TOGGLE -->
-          <div class="view-mode-toggle" role="group" aria-label="Layout View Mode">
-            <button id="viewGridBtn" class="view-toggle-btn active" onclick="setViewMode('grid')" title="Standard Grid View (3–4 columns)">
+          <!-- VIEW MODE SWITCHER -->
+          <div class="view-mode-toggle">
+            <button class="view-toggle-btn active" data-mode="grid" onclick="setViewMode('grid')" title="Standard Grid View (4-5 columns)">
               <i class="fa-solid fa-table-cells-large"></i>
             </button>
-            <button id="viewDenseBtn" class="view-toggle-btn" onclick="setViewMode('dense')" title="Dense Grid View (5–6 columns)">
+            <button class="view-toggle-btn" data-mode="dense" onclick="setViewMode('dense')" title="Dense Grid View (6 columns)">
               <i class="fa-solid fa-table-cells"></i>
             </button>
-            <button id="viewListBtn" class="view-toggle-btn" onclick="setViewMode('list')" title="List / Row View">
-              <i class="fa-solid fa-list"></i>
+            <button class="view-toggle-btn" data-mode="list" onclick="setViewMode('list')" title="Detailed List View (3 columns)">
+              <i class="fa-solid fa-list-ul"></i>
             </button>
           </div>
         </div>
       </div>
 
-      <!-- CARDS GRID -->
+      <!-- CARDS GRID CONTAINER -->
       <div id="cardsGrid" class="cards-grid">
-        <!-- Rendered dynamically -->
+        <!-- Rendered items dynamically -->
       </div>
+
+      <!-- SCROLL SENTINEL -->
+      <div id="scrollSentinel"></div>
     </main>
-
   </div>
 
-  <!-- DEDICATED SETTINGS MODAL -->
-  <div id="settingsModal" class="modal-backdrop">
-    <div class="modal-card settings-modal-card">
-      <div class="modal-header">
-        <div class="modal-title">
-          <i class="fa-solid fa-sliders" style="color: var(--accent-gold);"></i> 
-          Dashboard & Watchlist Settings
-        </div>
-        <button class="close-modal-btn" onclick="closeSettingsModal()"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-
-      <!-- MODAL TAB NAVIGATION -->
-      <div class="modal-tabs">
-        <button class="tab-btn active" id="tabBtnKeywords" onclick="switchSettingsTab('keywords')">
-          <i class="fa-solid fa-tags"></i> Watchlist Keywords
-        </button>
-        <button class="tab-btn" id="tabBtnPreferences" onclick="switchSettingsTab('preferences')">
-          <i class="fa-solid fa-gears"></i> Preferences
-        </button>
-        <button class="tab-btn" id="tabBtnBackup" onclick="switchSettingsTab('backup')">
-          <i class="fa-solid fa-floppy-disk"></i> Export & Import
-        </button>
-      </div>
-
-      <div class="modal-body">
-        
-        <!-- TAB 1: WATCHLIST & EXCLUDE KEYWORDS -->
-        <div id="tabContentKeywords" class="tab-content active">
-          <div>
-            <div style="font-weight: 700; font-size: 0.9rem; color: var(--accent-gold); margin-bottom: 0.3rem;">
-              🔥 Highlight Watchlist Keywords (Include)
-            </div>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-              Items matching these keywords will be highlighted with a gold glow and featured first in Watchlist view.
-            </p>
-            <div class="add-tag-row">
-              <div class="input-wrapper" style="flex: 1;">
-                <i class="fa-solid fa-plus"></i>
-                <input type="text" id="newTagInput" class="form-input" placeholder="Add keyword (e.g. traeger, Dyson, bike)..." onkeydown="if(event.key==='Enter') addWatchlistKeyword()">
-              </div>
-              <button class="sync-btn" onclick="addWatchlistKeyword()">Add Tag</button>
-            </div>
-            <div id="modalTagList" class="modal-tag-list" style="margin-top: 0.4rem;">
-              <!-- Rendered dynamically -->
-            </div>
-          </div>
-
-          <div style="border-top: 1px solid var(--border-color); padding-top: 0.8rem; margin-top: 0.5rem;">
-            <div style="font-weight: 700; font-size: 0.9rem; color: #ef4444; margin-bottom: 0.3rem;">
-              🚫 Excluded Keywords (Exclude)
-            </div>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
-              Items matching any of these keywords will be hidden automatically across all views.
-            </p>
-            <div class="add-tag-row">
-              <div class="input-wrapper" style="flex: 1;">
-                <i class="fa-solid fa-filter-circle-xmark" style="color: #ef4444;"></i>
-                <input type="text" id="newExcludeTagInput" class="form-input" placeholder="Add exclude keyword (e.g. broken, as-is, damaged)..." onkeydown="if(event.key==='Enter') addExcludeWatchlistKeyword()">
-              </div>
-              <button class="sync-btn" style="background: rgba(239, 68, 68, 0.2); border-color: #ef4444; color: #ef4444;" onclick="addExcludeWatchlistKeyword()">Add Exclude</button>
-            </div>
-            <div id="modalExcludeTagList" class="modal-tag-list" style="margin-top: 0.4rem;">
-              <!-- Rendered dynamically -->
-            </div>
-          </div>
-
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
-            <button class="reset-btn" onclick="resetDefaultKeywords()">Reset Default Keywords</button>
-            <button class="sync-btn" onclick="closeSettingsModal()">Done</button>
-          </div>
-        </div>
-
-        <!-- TAB 2: PREFERENCES & SCOPE CONTROLS -->
-        <div id="tabContentPreferences" class="tab-content">
-          <p style="font-size: 0.85rem; color: var(--text-muted);">
-            Customize default layout, filtering behavior, auto-refresh intervals, and display scope.
-          </p>
-
-          <div class="filter-group">
-            <div class="filter-label">Default Pickup Location Filter</div>
-            <select id="prefDefaultLocation" class="form-select" onchange="saveUserSettingsFromUI()">
-              <option value="All">🌐 All Locations (Raleigh & SC Transfer)</option>
-              <option value="Raleigh">📍 Raleigh, NC Only</option>
-              <option value="SC Transfer">🚚 SC Transfer Only</option>
-            </select>
-          </div>
-
-          <div class="filter-group">
-            <div class="filter-label">Default Quick Sort</div>
-            <select id="prefDefaultSort" class="form-select" onchange="saveUserSettingsFromUI()">
-              <option value="watchlist">🔥 Watchlist Highlights First</option>
-              <option value="time-asc">⏳ Time Remaining: Ending Soonest</option>
-              <option value="day-asc">📅 Closing Day: Earliest Day First</option>
-              <option value="total-asc">🧾 Out-of-Pocket: Low to High</option>
-              <option value="savings-desc">💥 Highest % Savings First</option>
-            </select>
-          </div>
-
-          <div class="filter-group">
-            <div class="filter-label">Crawler & Scraper Auto-Refresh Interval</div>
-            <select id="prefAutoRefresh" class="form-select" onchange="saveUserSettingsFromUI()">
-              <option value="0">Off (Manual Sync Only)</option>
-              <option value="30">Every 30 Seconds</option>
-              <option value="60" selected>Every 1 Minute (Default)</option>
-              <option value="180">Every 3 Minutes</option>
-              <option value="300">Every 5 Minutes</option>
-              <option value="600">Every 10 Minutes</option>
-            </select>
-          </div>
-
-          <div style="display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.3rem;">
-            <label style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; cursor: pointer; color: var(--text-main);">
-              <input type="checkbox" id="prefHideClosed" onchange="saveUserSettingsFromUI()" style="accent-color: var(--accent-raleigh);">
-              <span>Auto-hide ended / closed auctions</span>
-            </label>
-
-            <label style="display: flex; align-items: center; gap: 0.6rem; font-size: 0.85rem; cursor: pointer; color: var(--text-main);">
-              <input type="checkbox" id="prefSoundNotice" onchange="saveUserSettingsFromUI()" style="accent-color: var(--accent-gold);">
-              <span>Enable subtle chime on new watchlist match</span>
-            </label>
-          </div>
-
-          <div class="backup-box" style="margin-top: 0.8rem; background: rgba(15, 23, 42, 0.4);">
-            <div style="font-weight: 700; color: var(--text-main); font-size: 0.85rem;">
-              <i class="fa-solid fa-broom" style="color: #38bdf8;"></i> Purge Stale Favorites
-            </div>
-            <div style="font-size: 0.78rem; color: var(--text-muted);">
-              Removes saved favorite items that have ended or are no longer present in the active catalog pull.
-            </div>
-            <button class="sync-btn" onclick="clearStaleFavorites()" style="align-self: flex-start; background: rgba(56, 189, 248, 0.15); border-color: #38bdf8; color: #38bdf8; font-size: 0.8rem; padding: 0.4rem 0.8rem;">
-              <i class="fa-solid fa-broom"></i> Purge Stale Favorites Now
-            </button>
-          </div>
-
-          <div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
-            <button class="sync-btn" onclick="closeSettingsModal()">Save Preferences</button>
-          </div>
-        </div>
-
-        <!-- TAB 3: EXPORT & IMPORT BACKUP -->
-        <div id="tabContentBackup" class="tab-content">
-          <p style="font-size: 0.85rem; color: var(--text-muted);">
-            Back up or restore your customized watchlist tags, saved favorite items, and dashboard preferences as a portable JSON file.
-          </p>
-
-          <div id="backupAlert" class="auth-alert" style="display: none;"></div>
-
-          <div class="backup-box">
-            <div style="font-weight: 700; color: var(--text-main); font-size: 0.9rem;">
-              <i class="fa-solid fa-download" style="color: #10b981;"></i> Export Dashboard Backup
-            </div>
-            <div style="font-size: 0.8rem; color: var(--text-muted);">
-              Downloads a complete `.json` snapshot of your current keywords, favorited items, and display options.
-            </div>
-            <button class="sync-btn" onclick="exportSettingsJSON()" style="align-self: flex-start;">
-              <i class="fa-solid fa-file-arrow-down"></i> Export Settings (.json)
-            </button>
-          </div>
-
-          <div class="backup-box">
-            <div style="font-weight: 700; color: var(--text-main); font-size: 0.9rem;">
-              <i class="fa-solid fa-upload" style="color: #6366f1;"></i> Import & Restore Backup
-            </div>
-            <div style="font-size: 0.8rem; color: var(--text-muted);">
-              Select a previously exported `.json` file to restore your settings.
-            </div>
-            
-            <input type="file" id="importFileInput" accept=".json" class="form-input" style="font-size: 0.8rem;">
-
-            <div style="display: flex; gap: 1rem; font-size: 0.82rem; color: var(--text-muted);">
-              <label style="display: flex; align-items: center; gap: 0.3rem; cursor: pointer;">
-                <input type="radio" name="importMode" value="merge" checked style="accent-color: var(--accent-raleigh);"> Merge with existing
-              </label>
-              <label style="display: flex; align-items: center; gap: 0.3rem; cursor: pointer;">
-                <input type="radio" name="importMode" value="replace" style="accent-color: var(--accent-raleigh);"> Overwrite current
-              </label>
-            </div>
-
-            <button class="sync-btn" onclick="importSettingsJSON()" style="align-self: flex-start; background: linear-gradient(135deg, #6366f1, #4f46e5);">
-              <i class="fa-solid fa-file-import"></i> Import Settings
-            </button>
-          </div>
-        </div>
-
-      </div>
-
-      <div style="display: flex; justify-content: flex-end; align-items: center; border-top: 1px solid var(--border-color); padding-top: 0.8rem;">
-        <button class="sync-btn" onclick="closeSettingsModal()">Close Settings</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- DEDICATED HELP & USER GUIDE MODAL -->
-  <div id="helpModal" class="modal-backdrop">
-    <div class="modal-card help-modal-card" style="max-width: 640px;">
-      <div class="modal-header">
-        <div class="modal-title">
-          <i class="fa-solid fa-circle-question" style="color: var(--accent-raleigh);"></i> 
-          Dashboard Help & Instructions Guide
-        </div>
-        <button class="close-modal-btn" onclick="closeHelpModal()"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-
-      <div class="modal-body">
-        
-        <!-- FINANCIAL BREAKDOWN CARD -->
-        <div class="guide-box">
-          <div class="guide-title">
-            <i class="fa-solid fa-calculator" style="color: #38bdf8;"></i>
-            Est. Out-of-Pocket Cost Calculation
-          </div>
-          <div class="guide-text">
-            Standard auction fees are added to your winning hammer bid:
-            <ul style="margin: 0.4rem 0 0.4rem 1.2rem; line-height: 1.5;">
-              <li><strong>15% Buyer's Premium (BP)</strong></li>
-              <li><strong>7.25% Sales Tax</strong> (applied to Bid + BP)</li>
-              <li><strong>3% Credit Card Processing Fee</strong></li>
-            </ul>
-            <div style="background: rgba(15, 23, 42, 0.8); padding: 0.6rem 0.8rem; border-radius: 8px; font-family: monospace; font-size: 0.8rem; color: #38bdf8; margin-top: 0.4rem;">
-              Example: $100 Hammer Bid ➔ $115 Subtotal ➔ $8.34 Tax ➔ $3.70 CC Fee = <strong>$127.04 Final Total</strong>
-            </div>
-          </div>
-        </div>
-
-        <!-- PICKUP LOCATIONS CARD -->
-        <div class="guide-box">
-          <div class="guide-title">
-            <i class="fa-solid fa-location-dot" style="color: #ef4444;"></i>
-            Pickup Locations & SC Transfer
-          </div>
-          <div class="guide-text">
-            • <strong>📍 Raleigh Pickup:</strong> 1101 Transport Dr, Raleigh, NC 27603. Directly inspect and pick up won lots locally after closing.
-            <br>• <strong>🚚 SC Transfer:</strong> Items transferred to the Williamston / Anderson, SC Depot for South Carolina bidders. Filter by location using the sidebar location selector.
-          </div>
-        </div>
-
-        <!-- SEARCH & TAG ISOLATION CARD -->
-        <div class="guide-box">
-          <div class="guide-title">
-            <i class="fa-solid fa-hand-pointer" style="color: #f59e0b;"></i>
-            Highlight Keywords & Single-Tag Isolation
-          </div>
-          <div class="guide-text">
-            • <strong>Left-Click Tag:</strong> Filters and focuses strictly on lots for that item alone (Single-Tag Isolation Mode).
-            <br>• <strong>Click 'x' on Tag:</strong> Removes the keyword from your watchlist.
-            <br>• <strong>Star Icon:</strong> Saves favorite lot items locally and syncs across devices.
-          </div>
-        </div>
-
-        <!-- LIVE CRAWLER ENGINE CARD -->
-        <div class="guide-box">
-          <div class="guide-title">
-            <i class="fa-solid fa-tower-broadcast" style="color: #10b981;"></i>
-            Live Progressive Ingestion Engine
-          </div>
-          <div class="guide-text">
-            The dashboard runs a Puppeteer background crawler connected via Server-Sent Events (SSE). Lots stream progressive page-by-page as they are indexed, without freezing your browser or requiring manual page refreshes.
-          </div>
-        </div>
-
-      </div>
-
-      <div style="display: flex; justify-content: flex-end; align-items: center; border-top: 1px solid var(--border-color); padding-top: 0.8rem;">
-        <button class="sync-btn" onclick="closeHelpModal()">Got It, Close Guide</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- CREDENTIALS MODAL -->
-  <div id="credentialsModal" class="modal-backdrop">
-    <div class="modal-card">
-      <div class="modal-header">
-        <div class="modal-title">
-          <i class="fa-solid fa-user-shield" style="color: var(--accent-raleigh);"></i> 
-          Auction Site Credentials & Headless Sync
-        </div>
-        <button class="close-modal-btn" onclick="closeCredentialsModal()"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-
-      <div class="modal-body">
-        <p style="font-size: 0.85rem; color: var(--text-muted);">
-          Enter your login credentials for <strong style="color: var(--text-main);">bid.triangleliquidators.com</strong> to sync your Watch List headlessly to and from the live auction site.
-        </p>
-
-        <div id="authAlert" class="auth-alert" style="display: none;"></div>
-
-        <div class="filter-group">
-          <div class="filter-label">Email Address / Username</div>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-envelope"></i>
-            <input type="email" id="authEmail" class="form-input" placeholder="your-email@example.com" onkeydown="if(event.key==='Enter') submitHeadlessLogin()">
-          </div>
-        </div>
-
-        <div class="filter-group">
-          <div class="filter-label">Password</div>
-          <div class="input-wrapper">
-            <i class="fa-solid fa-key"></i>
-            <input type="password" id="authPassword" class="form-input" placeholder="••••••••••••" onkeydown="if(event.key==='Enter') submitHeadlessLogin()">
-          </div>
-        </div>
-
-        <div style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--text-muted); margin-top: 0.2rem;">
-          <input type="checkbox" id="rememberCreds" checked style="accent-color: var(--accent-raleigh);">
-          <label for="rememberCreds">Remember email for future sessions</label>
-        </div>
-      </div>
-
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.5rem;">
-        <button class="reset-btn" id="logoutBtn" onclick="submitHeadlessLogout()" style="display: none; color: #ef4444;">
-          <i class="fa-solid fa-right-from-bracket"></i> Disconnect Account
-        </button>
-        <div style="display: flex; gap: 0.6rem; margin-left: auto;">
-          <button class="reset-btn" onclick="closeCredentialsModal()">Cancel</button>
-          <button id="loginSubmitBtn" class="sync-btn" onclick="submitHeadlessLogin()">
-            <i class="fa-solid fa-arrow-right-to-bracket"></i>
-            <span>Authenticate & Sync</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- FLOATING BACK TO TOP BUTTON -->
-  <button id="backToTopBtn" class="back-to-top-btn" onclick="scrollToTop()" title="Back to Top" aria-label="Back to top">
+  <!-- BACK TO TOP BUTTON -->
+  <button id="backToTopBtn" class="back-to-top-btn" onclick="scrollToTop()" title="Scroll back to top">
     <i class="fa-solid fa-arrow-up"></i>
   </button>
 
-  <script>
-    let allItems = [];
-    let activeWatchlist = new Set(["dewalt", "milwaukee", "ninja", "patio", "generator", "pressure washer", "craftsman"]);
-    let activeExcludeWatchlist = new Set(["as-is", "broken", "parts only", "damaged"]);
-    let disabledExcludeWatchlist = new Set(["as-is", "broken", "parts only", "damaged"]);
-    let savedFavoriteUrls = new Set();
-    let filterSavedOnly = false;
-    let progressPollTimer = null;
-
-    let userSettings = {
-      defaultLocation: 'All',
-      defaultSort: 'watchlist',
-      autoRefreshIntervalSec: 60,
-      autoHideClosed: false,
-      watchlistSoundNotice: false
-    };
-
-    let isolatedKeyword = null;
-    let autoRefreshTimer = null;
-
-    // Load persistent watchlist, settings & favorites from localStorage
-    function loadSavedState() {
-      try {
-        const storedKeywords = localStorage.getItem('tl_watchlist_keywords');
-        if (storedKeywords) {
-          activeWatchlist = new Set(JSON.parse(storedKeywords));
-        }
-
-        const storedExcludeKeywords = localStorage.getItem('tl_exclude_watchlist_keywords');
-        if (storedExcludeKeywords) {
-          activeExcludeWatchlist = new Set(JSON.parse(storedExcludeKeywords));
-        }
-
-        const storedDisabledExclude = localStorage.getItem('tl_disabled_exclude_keywords');
-        if (storedDisabledExclude) {
-          disabledExcludeWatchlist = new Set(JSON.parse(storedDisabledExclude));
-        }
-
-        const storedFavs = localStorage.getItem('tl_saved_favorite_urls');
-        if (storedFavs) {
-          savedFavoriteUrls = new Set(JSON.parse(storedFavs));
-        }
-
-        const storedSettings = localStorage.getItem('tl_user_settings');
-        if (storedSettings) {
-          userSettings = { ...userSettings, ...JSON.parse(storedSettings) };
-        }
-      } catch (e) {
-        console.error('Error loading saved state', e);
-      }
-      applyUserSettingsToUI();
-      updateSavedCountLabel();
-    }
-
-    function saveWatchlistState() {
-      try {
-        localStorage.setItem('tl_watchlist_keywords', JSON.stringify(Array.from(activeWatchlist)));
-      } catch (e) {}
-    }
-
-    function saveExcludeWatchlistState() {
-      try {
-        localStorage.setItem('tl_exclude_watchlist_keywords', JSON.stringify(Array.from(activeExcludeWatchlist)));
-      } catch (e) {}
-    }
-
-    function saveDisabledExcludeState() {
-      try {
-        localStorage.setItem('tl_disabled_exclude_keywords', JSON.stringify(Array.from(disabledExcludeWatchlist)));
-      } catch (e) {}
-    }
-
-    function saveFavoritesState() {
-      try {
-        localStorage.setItem('tl_saved_favorite_urls', JSON.stringify(Array.from(savedFavoriteUrls)));
-      } catch (e) {}
-      updateSavedCountLabel();
-    }
-
-    function saveUserSettingsState() {
-      try {
-        localStorage.setItem('tl_user_settings', JSON.stringify(userSettings));
-      } catch (e) {}
-    }
-
-    function saveUserSettingsFromUI() {
-      const locEl = document.getElementById('prefDefaultLocation');
-      const sortEl = document.getElementById('prefDefaultSort');
-      const refreshEl = document.getElementById('prefAutoRefresh');
-      const hideClosedEl = document.getElementById('prefHideClosed');
-      const soundEl = document.getElementById('prefSoundNotice');
-
-      if (locEl) userSettings.defaultLocation = locEl.value;
-      if (sortEl) userSettings.defaultSort = sortEl.value;
-      if (refreshEl) userSettings.autoRefreshIntervalSec = parseInt(refreshEl.value, 10);
-      if (hideClosedEl) userSettings.autoHideClosed = hideClosedEl.checked;
-      if (soundEl) userSettings.watchlistSoundNotice = soundEl.checked;
-
-      saveUserSettingsState();
-      setupAutoRefreshTimer();
-      syncCrawlerIntervalToServer(userSettings.autoRefreshIntervalSec);
-      applyFilters();
-    }
-
-    async function syncCrawlerIntervalToServer(intervalSec) {
-      try {
-        await fetch('/api/crawler-settings', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ intervalSec })
-        });
-      } catch (e) {
-        console.warn('Failed to sync crawler interval to server', e);
-      }
-    }
-
-    function applyUserSettingsToUI() {
-      if (document.getElementById('prefDefaultLocation')) {
-        document.getElementById('prefDefaultLocation').value = userSettings.defaultLocation;
-      }
-      if (document.getElementById('prefDefaultSort')) {
-        document.getElementById('prefDefaultSort').value = userSettings.defaultSort;
-      }
-      if (document.getElementById('prefAutoRefresh')) {
-        document.getElementById('prefAutoRefresh').value = String(userSettings.autoRefreshIntervalSec);
-      }
-      if (document.getElementById('prefHideClosed')) {
-        document.getElementById('prefHideClosed').checked = userSettings.autoHideClosed;
-      }
-      if (document.getElementById('prefSoundNotice')) {
-        document.getElementById('prefSoundNotice').checked = userSettings.watchlistSoundNotice;
-      }
-
-      if (document.getElementById('locationSelect')) {
-        document.getElementById('locationSelect').value = userSettings.defaultLocation;
-      }
-      if (document.getElementById('sortSelect')) {
-        document.getElementById('sortSelect').value = userSettings.defaultSort;
-      }
-
-      setupAutoRefreshTimer();
-    }
-
-    function setupAutoRefreshTimer() {
-      if (autoRefreshTimer) clearInterval(autoRefreshTimer);
-      if (userSettings.autoRefreshIntervalSec > 0) {
-        autoRefreshTimer = setInterval(() => {
-          syncAuctionData();
-        }, userSettings.autoRefreshIntervalSec * 1000);
-      }
-    }
-
-    /* EXPORT & IMPORT BACKUP SYSTEM */
-    function exportSettingsJSON() {
-      const backupData = {
-        app: "TL Auction Tracker",
-        version: "1.2",
-        exportDate: new Date().toISOString(),
-        activeWatchlistKeywords: Array.from(activeWatchlist),
-        activeExcludeWatchlistKeywords: Array.from(activeExcludeWatchlist),
-        savedFavoriteUrls: Array.from(savedFavoriteUrls),
-        settings: userSettings
-      };
-
-      const jsonStr = JSON.stringify(backupData, null, 2);
-      const blob = new Blob([jsonStr], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `tl_dashboard_backup_${new Date().toISOString().split('T')[0]}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      showBackupAlert('success', 'Backup exported successfully! File downloaded.');
-    }
-
-    function importSettingsJSON() {
-      const fileInput = document.getElementById('importFileInput');
-      const mode = document.querySelector('input[name="importMode"]:checked')?.value || 'merge';
-
-      if (!fileInput.files || !fileInput.files[0]) {
-        showBackupAlert('error', 'Please select a valid .json backup file first.');
-        return;
-      }
-
-      const file = fileInput.files[0];
-      const reader = new FileReader();
-
-      reader.onload = function(e) {
-        try {
-          const json = JSON.parse(e.target.result);
-          if (!json || typeof json !== 'object') {
-            throw new Error('Invalid JSON format');
-          }
-
-          if (mode === 'replace') {
-            if (Array.isArray(json.activeWatchlistKeywords)) {
-              activeWatchlist = new Set(json.activeWatchlistKeywords);
-            }
-            if (Array.isArray(json.activeExcludeWatchlistKeywords)) {
-              activeExcludeWatchlist = new Set(json.activeExcludeWatchlistKeywords);
-            }
-            if (Array.isArray(json.savedFavoriteUrls)) {
-              savedFavoriteUrls = new Set(json.savedFavoriteUrls);
-            }
-            if (json.settings) {
-              userSettings = { ...userSettings, ...json.settings };
-            }
-          } else {
-            if (Array.isArray(json.activeWatchlistKeywords)) {
-              json.activeWatchlistKeywords.forEach(k => activeWatchlist.add(k.toLowerCase().trim()));
-            }
-            if (Array.isArray(json.activeExcludeWatchlistKeywords)) {
-              json.activeExcludeWatchlistKeywords.forEach(k => activeExcludeWatchlist.add(k.toLowerCase().trim()));
-            }
-            if (Array.isArray(json.savedFavoriteUrls)) {
-              json.savedFavoriteUrls.forEach(u => savedFavoriteUrls.add(u));
-            }
-            if (json.settings) {
-              userSettings = { ...userSettings, ...json.settings };
-            }
-          }
-
-          saveWatchlistState();
-          saveExcludeWatchlistState();
-          saveFavoritesState();
-          saveUserSettingsState();
-          applyUserSettingsToUI();
-          renderModalTags();
-          renderSidebarTags();
-          applyFilters();
-
-          showBackupAlert('success', `Dashboard settings imported successfully (${mode} mode)!`);
-          fileInput.value = '';
-        } catch (err) {
-          showBackupAlert('error', `Import failed: ${err.message}`);
-        }
-      };
-
-      reader.readAsText(file);
-    }
-
-    function showBackupAlert(type, msg) {
-      const alertBox = document.getElementById('backupAlert');
-      if (!alertBox) return;
-      alertBox.className = `auth-alert ${type}`;
-      alertBox.innerHTML = `<i class="fa-solid fa-${type === 'success' ? 'circle-check' : 'circle-xmark'}"></i> ${msg}`;
-      alertBox.style.display = 'flex';
-      setTimeout(() => { alertBox.style.display = 'none'; }, 4500);
-    }
-
-    /* MODAL TABS NAVIGATION & INSTRUCTIONS */
-    function switchSettingsTab(tabName) {
-      const tabs = ['keywords', 'preferences', 'backup', 'guide'];
-      tabs.forEach(t => {
-        const btn = document.getElementById(`tabBtn${t.charAt(0).toUpperCase() + t.slice(1)}`);
-        const content = document.getElementById(`tabContent${t.charAt(0).toUpperCase() + t.slice(1)}`);
-        if (btn) btn.classList.toggle('active', t === tabName);
-        if (content) content.classList.toggle('active', t === tabName);
-      });
-    }
-
-    function openInstructionsModal() {
-      openWatchlistModal();
-      switchSettingsTab('guide');
-    }
-
-    /* SINGLE TAG ISOLATION & HIGHLIGHT LONG PRESS */
-    function isolateKeyword(word) {
-      if (!word) return;
-      const clean = word.toLowerCase().trim();
-
-      if (isolatedKeyword === clean) {
-        clearIsolatedKeyword();
-        return;
-      }
-
-      isolatedKeyword = clean;
-      document.getElementById('searchInput').value = clean;
-
-      const banner = document.getElementById('isolatedTagBanner');
-      const nameEl = document.getElementById('isolatedTagName');
-      if (banner) banner.style.display = 'flex';
-      if (nameEl) nameEl.innerText = clean;
-
-      if (navigator.vibrate) {
-        try { navigator.vibrate(35); } catch (_) {}
-      }
-
-      renderSidebarTags();
-      applyFilters();
-    }
-
-    function clearIsolatedKeyword() {
-      isolatedKeyword = null;
-      document.getElementById('searchInput').value = '';
-      const banner = document.getElementById('isolatedTagBanner');
-      if (banner) banner.style.display = 'none';
-      renderSidebarTags();
-      applyFilters();
-    }
-
-    function handleTagContextMenu(word, event) {
-      if (event) event.preventDefault();
-      isolateKeyword(word);
-    }
-
-    function updateSavedCountLabel() {
-      autoCleanEndedFavorites();
-      const countEl = document.getElementById('savedCountLabel');
-      if (countEl) {
-        countEl.innerText = savedFavoriteUrls.size;
-      }
-    }
-
-    let authState = {
-      isLoggedIn: false,
-      email: null,
-      lastSyncTime: null
-    };
-
-    // Check Auth Status on Server
-    async function checkAuthStatus() {
-      try {
-        const res = await fetch('/api/auth/status');
-        const data = await res.json();
-        authState.isLoggedIn = data.isLoggedIn;
-        authState.email = data.email;
-        authState.lastSyncTime = data.lastSyncTime;
-
-        updateAuthStatusUI();
-      } catch (e) {
-        console.error('Auth status check error', e);
-      }
-    }
-
-    function updateAuthStatusUI() {
-      const dot = document.getElementById('authStatusDot');
-      const text = document.getElementById('authStatusText');
-      const logoutBtn = document.getElementById('logoutBtn');
-
-      if (authState.isLoggedIn && authState.email) {
-        if (dot) dot.className = 'status-dot connected';
-        if (text) text.innerText = `Connected: ${authState.email}`;
-        if (logoutBtn) logoutBtn.style.display = 'inline-flex';
-      } else {
-        if (dot) dot.className = 'status-dot disconnected';
-        if (text) text.innerText = 'Connect Auction Account';
-        if (logoutBtn) logoutBtn.style.display = 'none';
-      }
-    }
-
-    function openCredentialsModal() {
-      const alertBox = document.getElementById('authAlert');
-      if (alertBox) alertBox.style.display = 'none';
-
-      const savedEmail = localStorage.getItem('tl_saved_auth_email');
-      if (savedEmail) {
-        document.getElementById('authEmail').value = savedEmail;
-      }
-
-      document.getElementById('credentialsModal').classList.add('open');
-    }
-
-    function closeCredentialsModal() {
-      document.getElementById('credentialsModal').classList.remove('open');
-    }
-
-    async function submitHeadlessLogin() {
-      const emailInput = document.getElementById('authEmail');
-      const passwordInput = document.getElementById('authPassword');
-      const submitBtn = document.getElementById('loginSubmitBtn');
-      const alertBox = document.getElementById('authAlert');
-
-      const username = emailInput.value.trim();
-      const password = passwordInput.value;
-
-      if (!username || !password) {
-        alertBox.className = 'auth-alert error';
-        alertBox.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Please enter both your email address and password.';
-        alertBox.style.display = 'flex';
-        return;
-      }
-
-      submitBtn.classList.add('loading');
-      submitBtn.disabled = true;
-      alertBox.className = 'auth-alert info';
-      alertBox.innerHTML = '<i class="fa-solid fa-spinner spin-icon"></i> Logging into auction account headlessly via Puppeteer...';
-      alertBox.style.display = 'flex';
-
-      try {
-        const res = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username, password })
-        });
-
-        const data = await res.json();
-
-        if (data.success) {
-          alertBox.className = 'auth-alert success';
-          alertBox.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${data.message}`;
-
-          if (document.getElementById('rememberCreds').checked) {
-            localStorage.setItem('tl_saved_auth_email', username);
-          }
-
-          await checkAuthStatus();
-          setTimeout(() => {
-            closeCredentialsModal();
-            syncLiveWatchlist();
-          }, 1200);
-        } else {
-          alertBox.className = 'auth-alert error';
-          alertBox.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> ${data.error || 'Authentication failed.'}`;
-        }
-      } catch (e) {
-        alertBox.className = 'auth-alert error';
-        alertBox.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Network error: ${e.message}`;
-      } finally {
-        submitBtn.classList.remove('loading');
-        submitBtn.disabled = false;
-      }
-    }
-
-    async function submitHeadlessLogout() {
-      try {
-        await fetch('/api/auth/logout', { method: 'POST' });
-        await checkAuthStatus();
-        closeCredentialsModal();
-      } catch (e) {
-        console.error('Logout error', e);
-      }
-    }
-
-    async function syncLiveWatchlist() {
-      const syncBtn = document.getElementById('syncWatchlistBtn');
-      const dot = document.getElementById('authStatusDot');
-
-      if (!authState.isLoggedIn) {
-        openCredentialsModal();
-        return;
-      }
-
-      syncBtn.classList.add('loading');
-      if (dot) dot.className = 'status-dot syncing';
-      showToastNotice('🔄 Syncing Watchlist with auction account...');
-
-      try {
-        const localUrls = Array.from(savedFavoriteUrls);
-        const res = await fetch('/api/watchlist/sync', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ localWatchlistUrls: localUrls })
-        });
-
-        if (!res.ok && res.status !== 401) {
-          throw new Error(`Server returned error status (${res.status})`);
-        }
-
-        const data = await res.json();
-
-        if (data.success && data.remoteItems) {
-          data.remoteItems.forEach(item => {
-            savedFavoriteUrls.add(item.url);
-            const existingIdx = allItems.findIndex(i => i.url === item.url);
-            if (existingIdx !== -1) {
-              // Merge/update item with latest scraped catalog metadata
-              allItems[existingIdx] = { ...allItems[existingIdx], ...item };
-            } else {
-              allItems.push(item);
-            }
-          });
-
-          saveFavoritesState();
-          applyFilters();
-          await checkAuthStatus();
-          showToastNotice(`✅ Watchlist Synced! ${data.remoteItems.length} active watched items synced.`);
-        } else if (res.status === 401) {
-          await checkAuthStatus();
-          openCredentialsModal();
-          showToastNotice('⚠️ Account session expired. Please reconnect your account.');
-        } else {
-          showToastNotice(`⚠️ Watchlist sync issue: ${data.error || 'Failed to sync'}`);
-        }
-      } catch (e) {
-        console.error('Sync watchlist error', e);
-        showToastNotice(`❌ Sync Error: ${e.message}`);
-      } finally {
-        syncBtn.classList.remove('loading');
-        if (dot) dot.className = authState.isLoggedIn ? 'status-dot connected' : 'status-dot disconnected';
-      }
-    }
-
-    function toggleStarFavorite(url, event) {
-      if (event) event.stopPropagation();
-      const shouldWatch = !savedFavoriteUrls.has(url);
-      if (shouldWatch) {
-        savedFavoriteUrls.add(url);
-      } else {
-        savedFavoriteUrls.delete(url);
-      }
-      saveFavoritesState();
-
-      // Instantly update star button UI on the card without re-rendering grid
-      const btn = event && (event.currentTarget || (event.target && event.target.closest('.star-bookmark-btn')));
-      if (btn) {
-        if (shouldWatch) {
-          btn.classList.add('saved');
-          btn.title = 'Remove from Saved Favorites';
-        } else {
-          btn.classList.remove('saved');
-          btn.title = 'Save Item to Favorites';
-        }
-        const icon = btn.querySelector('i');
-        if (icon) {
-          icon.className = shouldWatch ? 'fa-solid fa-star' : 'fa-regular fa-star';
-        }
-      }
-
-      // Update statistics and watch counts without resetting render count or scroll position
-      if (filterSavedOnly) {
-        applyFilters(true);
-      } else {
-        updateStats(currentFilteredItems);
-      }
-
-      if (authState.isLoggedIn) {
-        fetch('/api/watchlist/remote-watch', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url, watch: shouldWatch })
-        }).catch(e => console.error('Remote watch toggle error', e));
-      }
-    }
-
-    function toggleSavedOnlyFilter() {
-      filterSavedOnly = !filterSavedOnly;
-      const btn = document.getElementById('savedOnlyBtn');
-      if (filterSavedOnly) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-      applyFilters();
-    }
-
-    async function clearStaleFavorites() {
-      let purgedCount = 0;
-
-      const nowMs = Date.now();
-      const BUFFER_MS = 2 * 60 * 60 * 1000;
-
-      // 1. Clear ended/stale items from saved favorites
-      Array.from(savedFavoriteUrls).forEach(url => {
-        const matchItem = allItems.find(i => i.url === url);
-        let isStale = true;
-
-        if (matchItem) {
-          const endsMs = matchItem.endsAt ? new Date(matchItem.endsAt).getTime() : NaN;
-          if (!isNaN(endsMs) && (endsMs + BUFFER_MS > nowMs)) {
-            isStale = false;
-          }
-          if (matchItem.closingDate) {
-            const closingEndMs = new Date(`${matchItem.closingDate}T23:59:59-04:00`).getTime();
-            if (!isNaN(closingEndMs) && closingEndMs >= nowMs) {
-              isStale = false;
-            }
-          }
-        }
-
-        if (isStale) {
-          savedFavoriteUrls.delete(url);
-          purgedCount++;
-        }
-      });
-
-      // 2. Clear ended items from in-memory allItems array
-      const initialItemCount = allItems.length;
-      allItems = allItems.filter(item => {
-        let isPast = true;
-        const endsMs = item.endsAt ? new Date(item.endsAt).getTime() : NaN;
-        if (!isNaN(endsMs) && (endsMs + BUFFER_MS > nowMs)) {
-          isPast = false;
-        }
-        if (item.closingDate) {
-          const closingEndMs = new Date(`${item.closingDate}T23:59:59-04:00`).getTime();
-          if (!isNaN(closingEndMs) && closingEndMs >= nowMs) {
-            isPast = false;
-          }
-        }
-        return !isPast;
-      });
-      const removedItemsCount = initialItemCount - allItems.length;
-
-      saveFavoritesState();
-      applyFilters();
-
-      // 3. Trigger backend server past item purge
-      try {
-        const res = await fetch('/api/watchlist/clear-past', { method: 'POST' });
-        const data = await res.json();
-        if (data.success && data.clearedCount > 0) {
-          purgedCount += data.clearedCount;
-        }
-      } catch (e) {
-        console.error('Clear past endpoint error:', e);
-      }
-
-      if (purgedCount > 0 || removedItemsCount > 0) {
-        showToastNotice(`🧹 Cleared ${purgedCount + removedItemsCount} past/ended item(s) and stale favorites!`);
-      } else {
-        showToastNotice('✅ All auction items and saved favorites are active.');
-      }
-    }
-
-    function showToastNotice(msg) {
-      let toast = document.getElementById('toastNotice');
-      if (!toast) {
-        toast = document.createElement('div');
-        toast.id = 'toastNotice';
-        toast.style.cssText = 'position: fixed; bottom: 24px; right: 24px; background: #1e293b; color: #f8fafc; border: 1px solid var(--accent-raleigh); border-radius: 12px; padding: 0.8rem 1.2rem; font-size: 0.85rem; font-weight: 600; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 9999; transition: all 0.3s ease; opacity: 0; transform: translateY(10px); pointer-events: none;';
-        document.body.appendChild(toast);
-      }
-      toast.innerText = msg;
-      toast.style.opacity = '1';
-      toast.style.transform = 'translateY(0)';
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
-      }, 3500);
-    }
-
-    /* DEDICATED MODAL CONTROLLERS */
-    function openSettingsModal(tabName = 'keywords') {
-      renderModalTags();
-      applyUserSettingsToUI();
-      if (tabName) switchSettingsTab(tabName);
-      document.getElementById('settingsModal').classList.add('open');
-    }
-
-    function openWatchlistModal(tabName = 'keywords') {
-      openSettingsModal(tabName);
-    }
-
-    function closeSettingsModal() {
-      saveUserSettingsFromUI();
-      document.getElementById('settingsModal').classList.remove('open');
-      renderSidebarTags();
-      applyFilters();
-    }
-
-    function openHelpModal() {
-      document.getElementById('helpModal').classList.add('open');
-    }
-
-    function closeHelpModal() {
-      document.getElementById('helpModal').classList.remove('open');
-    }
-
-    function addWatchlistKeyword() {
-      const input = document.getElementById('newTagInput');
-      if (!input) return;
-      const val = input.value.trim().toLowerCase();
-      if (val && val.length >= 2) {
-        activeWatchlist.add(val);
-        input.value = '';
-        saveWatchlistState();
-        renderModalTags();
-        renderSidebarTags();
-        applyFilters();
-      }
-    }
-
-    function removeWatchlistKeyword(word) {
-      activeWatchlist.delete(word);
-      const clean = word.toLowerCase().trim();
-      if (isolatedKeyword === clean) {
-        clearIsolatedKeyword();
-      }
-      saveWatchlistState();
-      renderModalTags();
-      renderSidebarTags();
-      applyFilters();
-    }
-
-    function addExcludeWatchlistKeyword() {
-      const input = document.getElementById('newExcludeTagInput');
-      if (!input) return;
-      const val = input.value.trim().toLowerCase();
-      if (val && val.length >= 2) {
-        activeExcludeWatchlist.add(val);
-        input.value = '';
-        saveExcludeWatchlistState();
-        renderModalTags();
-        renderSidebarTags();
-        applyFilters();
-      }
-    }
-
-    function removeExcludeWatchlistKeyword(word) {
-      activeExcludeWatchlist.delete(word);
-      disabledExcludeWatchlist.delete(word);
-      saveExcludeWatchlistState();
-      saveDisabledExcludeState();
-      renderModalTags();
-      renderSidebarTags();
-      applyFilters();
-    }
-
-    function resetDefaultKeywords() {
-      activeWatchlist = new Set(["dewalt", "milwaukee", "ninja", "patio", "generator", "pressure washer", "craftsman"]);
-      activeExcludeWatchlist = new Set(["as-is", "broken", "parts only", "damaged"]);
-      disabledExcludeWatchlist = new Set(["as-is", "broken", "parts only", "damaged"]);
-      saveWatchlistState();
-      saveExcludeWatchlistState();
-      saveDisabledExcludeState();
-      renderModalTags();
-      renderSidebarTags();
-      applyFilters();
-    }
-
-    function renderModalTags() {
-      const container = document.getElementById('modalTagList');
-      if (container) {
-        container.innerHTML = Array.from(activeWatchlist).map(word => `
-          <div class="modal-tag-chip">
-            <span>🔥 ${word}</span>
-            <i class="fa-solid fa-circle-xmark" onclick="removeWatchlistKeyword('${word}')"></i>
+  <!-- SETTINGS MODAL -->
+  <div id="keywordsModal" class="modal-backdrop">
+    <div class="modal-card settings-modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fa-solid fa-sliders" style="color: var(--accent-raleigh);"></i> Dashboard Settings & Alerts</h3>
+        <button class="close-modal-btn" onclick="closeKeywordsModal()">×</button>
+      </div>
+
+      <div class="modal-tabs">
+        <button class="tab-btn active" data-tab="tabWatchlist" onclick="switchModalTab('tabWatchlist')">
+          <i class="fa-solid fa-star"></i> Watchlist Keywords
+        </button>
+        <button class="tab-btn" data-tab="tabExcludes" onclick="switchModalTab('tabExcludes')">
+          <i class="fa-solid fa-ban"></i> Exclude Filters
+        </button>
+        <button class="tab-btn" data-tab="tabNotifications" onclick="switchModalTab('tabNotifications')">
+          <i class="fa-solid fa-bell"></i> Notifications & Sounds
+        </button>
+        <button class="tab-btn" data-tab="tabPreferences" onclick="switchModalTab('tabPreferences')">
+          <i class="fa-solid fa-gear"></i> Preferences & Backup
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <!-- TAB 1: WATCHLIST -->
+        <div id="tabWatchlist" class="tab-content active">
+          <p style="font-size: 0.85rem; color: var(--text-muted);">
+            Items with titles containing these keywords will be highlighted in gold with real-time deal alerts.
+          </p>
+          <div class="add-tag-row">
+            <input type="text" id="newTagInput" class="form-input" placeholder="e.g. DeWalt, iPad, Traeger..." onkeydown="if(event.key==='Enter') addWatchlistTag()" />
+            <button class="sync-btn" onclick="addWatchlistTag()">Add Keyword</button>
           </div>
-        `).join('');
-      }
+          <div id="modalWatchlistTags" class="modal-tag-list"></div>
+        </div>
 
-      const excludeContainer = document.getElementById('modalExcludeTagList');
-      if (excludeContainer) {
-        excludeContainer.innerHTML = Array.from(activeExcludeWatchlist).map(word => `
-          <div class="modal-tag-chip exclude-chip">
-            <span>🚫 ${word}</span>
-            <i class="fa-solid fa-circle-xmark" onclick="removeExcludeWatchlistKeyword('${word}')"></i>
+        <!-- TAB 2: EXCLUDE FILTERS -->
+        <div id="tabExcludes" class="tab-content">
+          <p style="font-size: 0.85rem; color: var(--text-muted);">
+            Lots containing any of these keywords will be automatically hidden from your dashboard.
+          </p>
+          <div class="add-tag-row">
+            <input type="text" id="newExcludeTagInput" class="form-input" placeholder="e.g. broken, as-is, salvage..." onkeydown="if(event.key==='Enter') addExcludeTag()" />
+            <button class="sync-btn" style="background: linear-gradient(135deg, #ef4444, #dc2626);" onclick="addExcludeTag()">Add Exclude</button>
           </div>
-        `).join('');
-      }
-    }
-
-    function renderSidebarTags() {
-      const container = document.getElementById('sidebarWatchlistTags');
-      if (container) {
-        container.innerHTML = Array.from(activeWatchlist).map(word => {
-          const isIsolated = (isolatedKeyword === word);
-          return `
-            <button class="tag-btn ${activeWatchlist.has(word) ? 'active' : ''} ${isIsolated ? 'isolated' : ''}" 
-                    data-word="${word}" 
-                    onclick="toggleWatchlistTag(this)"
-                    oncontextmenu="handleTagContextMenu('${word}', event)"
-                    title="Click to search / isolate this tag. Click 'x' to remove from watchlist.">
-              🔥 ${word}
-              <i class="fa-solid fa-xmark tag-close-btn" onclick="event.stopPropagation(); removeWatchlistKeyword('${word}')" title="Remove from Watchlist"></i>
-            </button>
-          `;
-        }).join('');
-      }
-
-      const excludeContainer = document.getElementById('sidebarExcludeTags');
-      if (excludeContainer) {
-        excludeContainer.innerHTML = Array.from(activeExcludeWatchlist).map(word => {
-          const isActive = !disabledExcludeWatchlist.has(word);
-          return `
-            <button class="tag-btn exclude-tag ${isActive ? 'active' : ''}" 
-                    data-word="${word}" 
-                    onclick="toggleExcludeTag(this)"
-                    title="Click to toggle exclusion. Click 'x' to remove from exclude list.">
-              🚫 ${word}
-              <i class="fa-solid fa-xmark tag-close-btn" onclick="event.stopPropagation(); removeExcludeWatchlistKeyword('${word}')" title="Remove from Exclude List"></i>
-            </button>
-          `;
-        }).join('');
-      }
-    }
-
-    function toggleExcludeTag(btn) {
-      const word = btn.getAttribute('data-word');
-      if (disabledExcludeWatchlist.has(word)) {
-        disabledExcludeWatchlist.delete(word);
-      } else {
-        disabledExcludeWatchlist.add(word);
-      }
-      saveDisabledExcludeState();
-      renderSidebarTags();
-      applyFilters();
-    }
-
-    function escapeHtml(str) {
-      if (!str) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
-
-    function calcFin(bid, retail) {
-      const b = parseFloat(bid) || 0;
-      const bp = Math.round(b * 0.15 * 100) / 100;
-      const sub = Math.round((b + bp) * 100) / 100;
-      const tax = Math.round(sub * 0.0725 * 100) / 100;
-      const cc = Math.round((sub + tax) * 0.03 * 100) / 100;
-      const tot = Math.round((sub + tax + cc) * 100) / 100;
-      const ret = parseFloat(retail) || null;
-      let sav = null;
-      if (ret && ret > tot) {
-        sav = Math.round(((ret - tot) / ret) * 100);
-      }
-      return {
-        bid: b.toFixed(2),
-        bp: bp.toFixed(2),
-        sub: sub.toFixed(2),
-        tax: tax.toFixed(2),
-        cc: cc.toFixed(2),
-        total: tot.toFixed(2),
-        totalNum: tot,
-        retailPrice: ret ? ret.toFixed(2) : null,
-        savingsPct: sav
-      };
-    }
-
-    function isWatchlistMatch(title) {
-      if (!title) return false;
-      const lower = title.toLowerCase();
-      for (const word of activeWatchlist) {
-        if (lower.includes(word)) return true;
-      }
-      return false;
-    }
-
-    function updateBudgetLabel(val) {
-      const numericVal = parseFloat(val);
-      const label = document.getElementById('budgetValue');
-      if (label) {
-        if (numericVal >= 500) {
-          label.innerText = 'Any Price';
-        } else {
-          label.innerText = `$${numericVal}`;
-        }
-      }
-      applyFilters();
-    }
-
-    function toggleWatchlistTag(btn) {
-      const word = btn.getAttribute('data-word');
-      isolateKeyword(word);
-    }
-
-    function resetFilters() {
-      document.getElementById('searchInput').value = '';
-      if (document.getElementById('excludeInput')) document.getElementById('excludeInput').value = '';
-      document.getElementById('locationSelect').value = 'All';
-      document.getElementById('categorySelect').value = 'All';
-      if (document.getElementById('timeFilterSelect')) document.getElementById('timeFilterSelect').value = 'All';
-      document.getElementById('budgetRange').value = 500;
-      document.getElementById('budgetValue').innerText = 'Any Price';
-      document.getElementById('sortSelect').value = 'watchlist';
-      filterSavedOnly = false;
-      document.getElementById('savedOnlyBtn').classList.remove('active');
-      applyFilters();
-    }
-
-    function formatTimeRemaining(endsAtISO, closingDateStr) {
-      let target = endsAtISO ? new Date(endsAtISO).getTime() : NaN;
-
-      if (isNaN(target) && closingDateStr) {
-        target = new Date(`${closingDateStr}T23:59:59-04:00`).getTime();
-      }
-
-      if (isNaN(target)) {
-        const fallback = new Date();
-        fallback.setHours(23, 59, 59, 999);
-        if (fallback.getTime() <= Date.now()) {
-          fallback.setDate(fallback.getDate() + 1);
-        }
-        target = fallback.getTime();
-      }
-
-      const now = Date.now();
-      const diffMs = target - now;
-
-      if (diffMs <= 0) {
-        return { text: 'Auction Closed', statusClass: 'status-ended', icon: 'fa-solid fa-calendar-xmark', seconds: 0 };
-      }
-
-      const totalSec = Math.floor(diffMs / 1000);
-      const hours = Math.floor(totalSec / 3600);
-      const mins = Math.floor((totalSec % 3600) / 60);
-      const secs = totalSec % 60;
-      const days = Math.floor(hours / 24);
-
-      let text = '';
-      if (days >= 2) {
-        text = `${days}d ${hours % 24}h remaining`;
-      } else if (hours >= 1) {
-        text = `${String(hours).padStart(2, '0')}h ${String(mins).padStart(2, '0')}m ${String(secs).padStart(2, '0')}s`;
-      } else {
-        text = `${String(mins).padStart(2, '0')}m ${String(secs).padStart(2, '0')}s remaining`;
-      }
-
-      let statusClass = 'status-upcoming';
-      let icon = 'fa-regular fa-clock';
-
-      if (hours < 2) {
-        statusClass = 'status-urgent';
-        icon = 'fa-solid fa-stopwatch spin-icon';
-      } else if (hours < 24) {
-        statusClass = 'status-soon';
-        icon = 'fa-solid fa-clock';
-      }
-
-      return { text, statusClass, icon, seconds: totalSec };
-    }
-
-    function autoCleanEndedFavorites() {
-      if (savedFavoriteUrls.size === 0 || allItems.length === 0) return;
-      let removedCount = 0;
-      const nowMs = Date.now();
-      const BUFFER_MS = 2 * 60 * 60 * 1000;
-
-      const itemMap = new Map();
-      allItems.forEach(item => itemMap.set(item.url, item));
-
-      Array.from(savedFavoriteUrls).forEach(url => {
-        const item = itemMap.get(url);
-        if (!item) {
-          // Favorite URL is no longer present in the active live catalog pull -> purge stale
-          savedFavoriteUrls.delete(url);
-          removedCount++;
-        } else {
-          let isPast = true;
-          const endsMs = item.endsAt ? new Date(item.endsAt).getTime() : NaN;
-          if (!isNaN(endsMs) && (endsMs + BUFFER_MS > nowMs)) {
-            isPast = false;
-          }
-          if (item.closingDate) {
-            const closingEndMs = new Date(`${item.closingDate}T23:59:59-04:00`).getTime();
-            if (!isNaN(closingEndMs) && closingEndMs >= nowMs) {
-              isPast = false;
-            }
-          }
-          if (isPast) {
-            // Auction has closed/ended -> purge
-            savedFavoriteUrls.delete(url);
-            removedCount++;
-          }
-        }
-      });
-
-      if (removedCount > 0) {
-        console.log(`[FAVORITES AUTO-PURGE] Purged ${removedCount} stale/orphan favorite URLs.`);
-        saveFavoritesState();
-      }
-    }
-
-    let currentFilteredItems = [];
-    let currentRenderCount = 48;
-    const PAGE_CHUNK_SIZE = 48;
-    let searchDebounceTimer = null;
-
-    function onSearchInputDebounced() {
-      if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
-      searchDebounceTimer = setTimeout(() => {
-        const rawQuery = document.getElementById('searchInput').value.trim().toLowerCase();
-        if (isolatedKeyword && rawQuery !== isolatedKeyword) {
-          isolatedKeyword = null;
-          const banner = document.getElementById('isolatedTagBanner');
-          if (banner) banner.style.display = 'none';
-          renderSidebarTags();
-        }
-        applyFilters();
-      }, 150);
-    }
-
-    function updateLiveTimers() {
-      const elements = document.querySelectorAll('.time-remaining-banner');
-      const vHeight = window.innerHeight;
-
-      elements.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.bottom >= -100 && rect.top <= (vHeight + 100)) {
-          const endsAt = el.getAttribute('data-endsat');
-          const closingDate = el.getAttribute('data-closingdate');
-          const info = formatTimeRemaining(endsAt, closingDate);
-          
-          el.className = `time-remaining-banner ${info.statusClass}`;
-          const iconEl = el.querySelector('i');
-          if (iconEl) iconEl.className = info.icon;
-          
-          const valEl = el.querySelector('.time-countdown-val');
-          if (valEl) valEl.innerText = info.text;
-        }
-      });
-
-      autoCleanEndedFavorites();
-      updateNextClosingStat();
-    }
-
-    function updateNextClosingStat() {
-      const statEl = document.getElementById('statNextClosing');
-      if (!statEl) return;
-
-      const activeItemsWithTime = allItems
-        .map(i => ({ item: i, info: formatTimeRemaining(i.endsAt) }))
-        .filter(x => x.info.seconds > 0 && x.info.seconds !== Infinity);
-
-      if (activeItemsWithTime.length === 0) {
-        statEl.innerText = 'None Active';
-        return;
-      }
-
-      activeItemsWithTime.sort((a, b) => a.info.seconds - b.info.seconds);
-      statEl.innerText = activeItemsWithTime[0].info.text;
-    }
-
-    let sseSource = null;
-
-    function initRealtimeStream() {
-      if (window.EventSource) {
-        if (sseSource) {
-          try { sseSource.close(); } catch (_) {}
-        }
-
-        sseSource = new EventSource('/api/stream');
-
-        sseSource.onmessage = function(event) {
-          try {
-            const data = JSON.parse(event.data);
-            if (data.progress) {
-              updateScraperProgressUI(data.progress, data.totalIndexed);
-            }
-
-            if (data.items && Array.isArray(data.items)) {
-              updateItemsProgressively(data.items);
-            }
-          } catch (err) {
-            console.error('SSE parse error', err);
-          }
-        };
-
-        sseSource.onerror = function(err) {
-          console.warn('SSE stream disconnected, enabling fast poll fallback');
-          startProgressPolling();
-        };
-      } else {
-        startProgressPolling();
-      }
-    }
-
-    function updateScraperProgressUI(progress, totalIndexed) {
-      const pctText = document.getElementById('progressPctText');
-      const barFill = document.getElementById('progressBarFill');
-      const statusMsg = document.getElementById('progressStatusMsg');
-      const spinner = document.getElementById('progressSpinner');
-
-      const banner = document.getElementById('liveIngestionBanner');
-      const bannerTitle = document.getElementById('ingestionBannerTitle');
-      const bannerBadge = document.getElementById('ingestionItemBadge');
-
-      if (pctText) pctText.innerText = `${progress.progressPct}%`;
-      if (barFill) barFill.style.width = `${progress.progressPct}%`;
-      
-      const count = totalIndexed || allItems.length;
-
-      if (statusMsg) {
-        if (progress.isScraping) {
-          statusMsg.innerText = `${progress.status} (${count} items loaded)`;
-        } else {
-          statusMsg.innerText = `Ingestion Complete (${count} items ready)`;
-        }
-      }
-
-      if (spinner) {
-        spinner.style.display = progress.isScraping ? 'inline-block' : 'none';
-      }
-
-      if (banner) {
-        if (progress.isScraping) {
-          banner.style.display = 'flex';
-          if (bannerTitle) bannerTitle.innerText = progress.status;
-          if (bannerBadge) bannerBadge.innerText = `⚡ ${count} items ingested live`;
-        } else {
-          banner.style.display = 'none';
-        }
-      }
-    }
-
-    // IndexedDB Catalog Cache Storage
-    let dbPromise = null;
-    let lastSyncTimestamp = 0;
-
-    function openCatalogDB() {
-      if (dbPromise) return dbPromise;
-      dbPromise = new Promise((resolve, reject) => {
-        const req = indexedDB.open('TL_Catalog_DB', 1);
-        req.onupgradeneeded = (e) => {
-          const db = e.target.result;
-          if (!db.objectStoreNames.contains('items')) {
-            db.createObjectStore('items', { keyPath: 'id' });
-          }
-        };
-        req.onsuccess = (e) => resolve(e.target.result);
-        req.onerror = (e) => reject(e);
-      });
-      return dbPromise;
-    }
-
-    async function loadCatalogFromIndexedDB() {
-      try {
-        const db = await openCatalogDB();
-        const tx = db.transaction('items', 'readwrite');
-        const store = tx.objectStore('items');
-        const req = store.getAll();
-        return new Promise(resolve => {
-          req.onsuccess = () => {
-            const cached = req.result || [];
-            const nowMs = Date.now();
-            const twelveHoursMs = 12 * 60 * 60 * 1000;
-            const validItems = [];
-
-            cached.forEach(item => {
-              const endsAtMs = item.endsAt ? new Date(item.endsAt).getTime() : NaN;
-              if (!isNaN(endsAtMs) && (nowMs - endsAtMs > twelveHoursMs)) {
-                store.delete(item.id || item.url);
-              } else {
-                validItems.push(item);
-              }
-            });
-
-            if (validItems.length > 0) {
-              updateItemsProgressively(validItems, false);
-              console.log(`[INDEXEDDB] Loaded ${validItems.length} active items from browser storage in <10ms!`);
-            }
-            resolve(validItems);
-          };
-        });
-      } catch (e) {
-        console.error('[INDEXEDDB LOAD ERROR]', e);
-        return [];
-      }
-    }
-
-    async function saveItemsToIndexedDB(items) {
-      if (!items || !items.length) return;
-      try {
-        const db = await openCatalogDB();
-        const tx = db.transaction('items', 'readwrite');
-        const store = tx.objectStore('items');
-        items.forEach(item => {
-          if (item.id || item.url) {
-            store.put({ ...item, id: item.id || item.url });
-          }
-        });
-      } catch (e) {
-        console.error('[INDEXEDDB SAVE ERROR]', e);
-      }
-    }
-
-    function updateItemsProgressively(newItems, shouldSaveDB = true) {
-      if (!newItems || !newItems.length) return;
-
-      const isInitialRender = (allItems.length === 0);
-
-      const hasLiveScraped = newItems.some(i => i.id && i.id.startsWith('scraped-'));
-      let cleanedItems = newItems;
-      if (hasLiveScraped) {
-        cleanedItems = newItems.filter(i => !(i.id && i.id.startsWith('tl-10')));
-      }
-
-      // Merge incoming items into catalog map so active items list auto-grows dynamically as ingestion runs
-      const catalogMap = new Map();
-      allItems.forEach(item => catalogMap.set(item.id || item.url, item));
-      
-      cleanedItems.forEach(item => {
-        const key = item.id || item.url;
-        catalogMap.set(key, item);
-      });
-
-      allItems = Array.from(catalogMap.values()).filter(i => 
-        i.auctionName !== 'Synced Watchlist Auction' && 
-        i.category !== 'Watched Items' && 
-        !(i.id && i.id.startsWith('watched-'))
-      );
-      autoCleanEndedFavorites();
-
-      if (shouldSaveDB) {
-        saveItemsToIndexedDB(cleanedItems);
-      }
-
-      updateCategoryDropdownCounts();
-
-      // If grid is empty or first load, render cards immediately.
-      // Otherwise, update background memory & stats without re-shuffling active viewport cards!
-      const grid = document.getElementById('cardsGrid');
-      if (isInitialRender || !grid || grid.children.length === 0 || grid.querySelector('.empty-state')) {
-        applyFilters();
-      } else {
-        updateStats(currentFilteredItems.length > 0 ? currentFilteredItems : allItems);
-      }
-    }
-
-    function updateCategoryDropdownCounts() {
-      const select = document.getElementById('categorySelect');
-      if (!select) return;
-      const currentVal = select.value || 'All';
-
-      const categoryCounts = new Map();
-      allItems.forEach(i => {
-        if (i.category) {
-          categoryCounts.set(i.category, (categoryCounts.get(i.category) || 0) + 1);
-        }
-      });
-
-      const categoryIcons = {
-        'Tools': '🧰',
-        'Electronics & Appliances': '📱',
-        'Home': '🛋️',
-        'Outdoor': '🌲',
-        'Apparel': '👕',
-        'Automotive': '🚗',
-        'Baby & Kids': '🧸',
-        'Building & Hardware': '🧱',
-        'Health & Beauty': '💄',
-        'Lighting & Electrical': '💡',
-        'Pets': '🐾',
-        'Plumbing & Bath': '🚿',
-        'Toys & Sports': '⚽',
-        'General Merchandise': '🛒'
-      };
-
-      const defaultCategories = [
-        'Tools', 'Electronics & Appliances', 'Home', 'Outdoor', 'Apparel',
-        'Automotive', 'Baby & Kids', 'Building & Hardware', 'Health & Beauty',
-        'Lighting & Electrical', 'Pets', 'Plumbing & Bath', 'Toys & Sports', 'General Merchandise'
-      ];
-
-      const setOfCategories = new Set([...defaultCategories, ...categoryCounts.keys()]);
-      let html = `<option value="All" ${currentVal === 'All' ? 'selected' : ''}>📦 All Categories (${allItems.length})</option>`;
-
-      for (const cat of setOfCategories) {
-        const count = categoryCounts.get(cat) || 0;
-        const icon = categoryIcons[cat] || '📦';
-        const isSel = currentVal === cat ? 'selected' : '';
-        html += `<option value="${escapeHtml(cat)}" ${isSel}>${icon} ${escapeHtml(cat)} (${count})</option>`;
-      }
-      select.innerHTML = html;
-    }
-
-    function startProgressPolling() {
-      if (progressPollTimer) clearInterval(progressPollTimer);
-      pollProgress();
-      progressPollTimer = setInterval(pollProgress, 1000);
-    }
-
-    async function pollProgress() {
-      try {
-        const res = await fetch('/api/progress');
-        const data = await res.json();
-        updateScraperProgressUI(data, data.totalIndexed);
-
-        // Auto-sync items array whenever server indexes new items or while scraping is active
-        if (data.isScraping || allItems.length < (data.totalIndexed || 0)) {
-          fetchCatalog();
-        }
-
-        if (!data.isScraping && progressPollTimer) {
-          clearInterval(progressPollTimer);
-          progressPollTimer = null;
-        }
-      } catch (e) {
-        console.error('Error polling progress', e);
-      }
-    }
-
-    async function fetchCatalog() {
-      try {
-        const url = lastSyncTimestamp > 0 
-          ? `/api/scrape?since=${lastSyncTimestamp}` 
-          : '/api/scrape';
-        const response = await fetch(url);
-        if (response.status === 304) {
-          // HTTP 304 Not Modified: 0 bytes downloaded
-          return;
-        }
-        const data = await response.json();
-        if (data.success && data.items) {
-          if (data.lastCatalogUpdate) {
-            lastSyncTimestamp = data.lastCatalogUpdate;
-          }
-          updateItemsProgressively(data.items);
-        }
-      } catch (err) {
-        console.error('Fetch catalog error', err);
-      }
-    }
-
-    async function syncAuctionData(isExplicitManual = false) {
-      const syncBtn = document.getElementById('syncBtn');
-      if (syncBtn) syncBtn.classList.add('loading');
-      initRealtimeStream();
-
-      try {
-        const endpoint = isExplicitManual ? '/api/scrape?refresh=true&force=true' : '/api/scrape?refresh=true';
-        const res = await fetch(endpoint);
-        const data = await res.json();
-        if (data.success && data.items && data.items.length > 0) {
-          updateItemsProgressively(data.items);
-        }
-      } catch (e) {
-        console.error('Error syncing auction data', e);
-      } finally {
-        if (syncBtn) syncBtn.classList.remove('loading');
-      }
-    }
-
-    async function extendScanDays() {
-      const extendBtn = document.getElementById('extendBtn');
-      extendBtn.classList.add('loading');
-      initRealtimeStream();
-
-      showToastNotice('🚀 Deep Scan active! Indexing up to 10 catalogs x 15 pages for future auction days...');
-
-      try {
-        await fetch('/api/scrape?extend=true');
-      } finally {
-        extendBtn.classList.remove('loading');
-      }
-    }
-
-    function startProgressPolling() {
-      if (progressPollTimer) clearInterval(progressPollTimer);
-      pollProgress();
-      progressPollTimer = setInterval(pollProgress, 1500);
-    }
-
-    function applyFilters(isBackgroundUpdate = false) {
-      const rawQuery = document.getElementById('searchInput').value.trim();
-      const rawExclude = document.getElementById('excludeInput') ? document.getElementById('excludeInput').value.trim().toLowerCase() : '';
-      const location = document.getElementById('locationSelect').value;
-      const category = document.getElementById('categorySelect').value;
-      const timeFilter = document.getElementById('timeFilterSelect') ? document.getElementById('timeFilterSelect').value : 'All';
-      const maxBudget = parseFloat(document.getElementById('budgetRange').value);
-      const sortBy = document.getElementById('sortSelect').value;
-
-      // Extract positive and negative search tokens (-term)
-      const searchTokens = rawQuery.split(/\s+/).filter(Boolean);
-      const positiveQueryTokens = searchTokens.filter(t => !t.startsWith('-')).map(t => t.toLowerCase());
-      const negativeSearchTokens = searchTokens.filter(t => t.startsWith('-') && t.length > 1).map(t => t.slice(1).toLowerCase());
-
-      const explicitExcludeKeywords = rawExclude.split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
-      const activeExcludeList = Array.from(activeExcludeWatchlist).filter(w => !disabledExcludeWatchlist.has(w));
-      const allExcludeKeywords = [...negativeSearchTokens, ...explicitExcludeKeywords, ...activeExcludeList];
-
-      let filtered = allItems.filter(item => {
-        const fin = item.financials || calcFin(item.currentBid, item.retailPrice);
-        const itemText = `${item.title || ''} ${item.auctionName || ''} ${item.condition || ''} ${item.category || ''}`.toLowerCase();
-        
-        if (userSettings.autoHideClosed) {
-          const info = formatTimeRemaining(item.endsAt, item.closingDate);
-          if (info.seconds <= 0) return false;
-        }
-
-        if (filterSavedOnly && !savedFavoriteUrls.has(item.url)) {
-          return false;
-        }
-
-        // Check excluded keywords (active exclude watchlist tags, -term syntax, or explicit exclude input)
-        if (allExcludeKeywords.length > 0) {
-          const isExcluded = allExcludeKeywords.some(ex => itemText.includes(ex));
-          if (isExcluded) return false;
-        }
-
-        // Positive search terms matching
-        if (positiveQueryTokens.length > 0) {
-          const matchesAllPositive = positiveQueryTokens.every(q => itemText.includes(q));
-          if (!matchesAllPositive) return false;
-        }
-        
-        if (location !== 'All') {
-          if (location === 'Raleigh' && item.location !== 'Raleigh') return false;
-          if ((location === 'Anderson' || location === 'SC Transfer') && (item.location !== 'Anderson' && item.location !== 'SC Transfer')) return false;
-        }
-
-        if (category !== 'All' && item.category !== category) return false;
-
-        const itemTotal = fin ? parseFloat(fin.totalCostNum || fin.totalNum || fin.total || fin.totalCost || 0) : 0;
-        if (maxBudget < 500 && itemTotal > maxBudget) return false;
-
-        if (timeFilter !== 'All') {
-          const info = formatTimeRemaining(item.endsAt, item.closingDate);
-          const totalSec = info.seconds;
-
-          if (timeFilter === 'urgent' && totalSec > 2 * 3600) return false;
-          if (timeFilter === 'today' && totalSec > 24 * 3600) return false;
-          if (timeFilter === 'tomorrow' && (totalSec <= 24 * 3600 || totalSec > 48 * 3600)) return false;
-          if (timeFilter === 'next3days' && totalSec > 72 * 3600) return false;
-          if (timeFilter === 'next7days' && totalSec > 168 * 3600) return false;
-          if (timeFilter === 'later' && totalSec <= 168 * 3600) return false;
-        }
-
-        return true;
-      });
-
-      filtered.sort((a, b) => {
-        const finA = a.financials || calcFin(a.currentBid, a.retailPrice);
-        const finB = b.financials || calcFin(b.currentBid, b.retailPrice);
-        const watchA = isWatchlistMatch(a.title);
-        const watchB = isWatchlistMatch(b.title);
-        const favA = savedFavoriteUrls.has(a.url);
-        const favB = savedFavoriteUrls.has(b.url);
-
-        if (sortBy === 'watchlist') {
-          if (favA && !favB) return -1;
-          if (!favA && favB) return 1;
-          if (watchA && !watchB) return -1;
-          if (!watchA && watchB) return 1;
-          return finA.totalNum - finB.totalNum;
-        } else if (sortBy === 'time-asc') {
-          const timeA = a.endsAt ? new Date(a.endsAt).getTime() : Infinity;
-          const timeB = b.endsAt ? new Date(b.endsAt).getTime() : Infinity;
-          return timeA - timeB;
-        } else if (sortBy === 'time-desc') {
-          const timeA = a.endsAt ? new Date(a.endsAt).getTime() : -1;
-          const timeB = b.endsAt ? new Date(b.endsAt).getTime() : -1;
-          return timeB - timeA;
-        } else if (sortBy === 'day-asc') {
-          const dayA = a.closingDate || (a.endsAt ? a.endsAt.split('T')[0] : '');
-          const dayB = b.closingDate || (b.endsAt ? b.endsAt.split('T')[0] : '');
-          const dayCmp = dayA.localeCompare(dayB);
-          if (dayCmp !== 0) return dayCmp;
-          const timeA = a.endsAt ? new Date(a.endsAt).getTime() : Infinity;
-          const timeB = b.endsAt ? new Date(b.endsAt).getTime() : Infinity;
-          return timeA - timeB;
-        } else if (sortBy === 'day-desc') {
-          const dayA = a.closingDate || (a.endsAt ? a.endsAt.split('T')[0] : '');
-          const dayB = b.closingDate || (b.endsAt ? b.endsAt.split('T')[0] : '');
-          const dayCmp = dayB.localeCompare(dayA);
-          if (dayCmp !== 0) return dayCmp;
-          const timeA = a.endsAt ? new Date(a.endsAt).getTime() : Infinity;
-          const timeB = b.endsAt ? new Date(b.endsAt).getTime() : Infinity;
-          return timeA - timeB;
-        } else if (sortBy === 'date-asc') {
-          return (a.closingDate || '').localeCompare(b.closingDate || '');
-        } else if (sortBy === 'date-desc') {
-          return (b.closingDate || '').localeCompare(a.closingDate || '');
-        } else if (sortBy === 'savings-desc') {
-          const savA = finA.savingsPct || 0;
-          const savB = finB.savingsPct || 0;
-          return savB - savA;
-        } else if (sortBy === 'bid-asc') {
-          return parseFloat(a.currentBid) - parseFloat(b.currentBid);
-        } else if (sortBy === 'bid-desc') {
-          return parseFloat(b.currentBid) - parseFloat(a.currentBid);
-        } else if (sortBy === 'total-asc') {
-          return finA.totalNum - finB.totalNum;
-        } else if (sortBy === 'title-asc') {
-          return a.title.localeCompare(b.title);
-        }
-        return 0;
-      });
-
-      currentFilteredItems = filtered;
-      if (isBackgroundUpdate) {
-        currentRenderCount = Math.max(PAGE_CHUNK_SIZE, currentRenderCount);
-      } else {
-        currentRenderCount = PAGE_CHUNK_SIZE;
-      }
-      renderCardsChunk();
-      updateStats(filtered);
-    }
-
-    function updateStats(visibleItems) {
-      document.getElementById('totalCount').innerText = allItems.length;
-      document.getElementById('statTotalItems').innerText = visibleItems.length;
-
-      const watchMatches = visibleItems.filter(i => isWatchlistMatch(i.title)).length;
-      document.getElementById('statWatchlistItems').innerText = watchMatches;
-
-      if (visibleItems.length > 0) {
-        const sum = visibleItems.reduce((acc, curr) => acc + (curr.financials ? parseFloat(curr.financials.totalCost) : calcFin(curr.currentBid, curr.retailPrice).totalNum), 0);
-        const avg = sum / visibleItems.length;
-        document.getElementById('statAvgOutofPocket').innerText = `$${avg.toFixed(2)}`;
-      } else {
-        document.getElementById('statAvgOutofPocket').innerText = '$0.00';
-      }
-
-      // Dynamic Browser Tab Title
-      const rawSearch = document.getElementById('searchInput') ? document.getElementById('searchInput').value.trim() : '';
-      if (typeof filterSavedOnly !== 'undefined' && filterSavedOnly) {
-        document.title = `Saved Favorites (${visibleItems.length}) | TL Auction Tracker`;
-      } else if (rawSearch) {
-        document.title = `Search: "${rawSearch}" (${visibleItems.length}) | TL Auction Tracker`;
-      } else {
-        document.title = `Live Auctions (${visibleItems.length}) | TL Auction Tracker`;
-      }
-
-      updateNextClosingStat();
-    }
-
-    function renderCardHTML(item) {
-      const fin = item.financials || calcFin(item.currentBid, item.retailPrice);
-      const watchMatch = isWatchlistMatch(item.title);
-      const isRaleigh = item.location === 'Raleigh';
-      const isSaved = savedFavoriteUrls.has(item.url);
-      const timeInfo = formatTimeRemaining(item.endsAt, item.closingDate);
-
-      return `
-        <div class="item-card ${watchMatch ? 'watchlist-match' : ''}">
-          <div class="card-image-wrapper">
-            <button class="star-bookmark-btn ${isSaved ? 'saved' : ''}" onclick="toggleStarFavorite('${item.url}', event)" title="${isSaved ? 'Remove from Saved Favorites' : 'Save Item to Favorites'}">
-              <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-star"></i>
-            </button>
-
-            <img src="${item.image}" alt="${escapeHtml(item.title || 'Auction Lot Item')}" class="card-image" loading="lazy" decoding="async" onload="this.classList.add('loaded')" onerror="this.onerror=null;this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'360\' height=\'270\' viewBox=\'0 0 360 270\'%3E%3Crect width=\'100%25\' height=\'100%25\' fill=\'%231e293b\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' fill=\'%2364748b\' font-family=\'sans-serif\' font-size=\'14\' text-anchor=\'middle\' dy=\'.3em\'%3E📷 Image Unavailable%3C/text%3E%3C/svg%3E';this.classList.add('loaded');">
-          </div>
-
-          <div class="card-body">
-            <div class="card-main-col">
-              <div class="card-badges">
-                <span class="badge ${isRaleigh ? 'badge-raleigh' : 'badge-sc'}">
-                  ${isRaleigh ? '📍 Raleigh' : '🚚 Anderson'}
-                </span>
-                ${item.category ? `<span class="badge badge-category"><i class="fa-solid fa-layer-group"></i> ${escapeHtml(item.category)}</span>` : ''}
-                ${item.isTransferable ? `<span class="badge badge-transfer" title="$${item.transferFee || 5} Transfer Available"><i class="fa-solid fa-truck-ramp-box"></i> Transfer</span>` : ''}
-                ${fin.savingsPct ? `<span class="badge badge-savings"><i class="fa-solid fa-bolt"></i> SAVE ${fin.savingsPct}%</span>` : (watchMatch ? '<span class="badge badge-watchlist"><i class="fa-solid fa-fire"></i> Watchlist</span>' : '')}
-              </div>
-
-              <div>
-                <div class="card-meta" style="margin-bottom: 0.3rem;">
-                  <span><i class="fa-solid fa-gavel"></i> ${escapeHtml(item.auctionName || 'Active Auction')}</span>
-                  ${item.lotNumber ? `<span style="color: #64748b; font-size: 0.75rem;">#${escapeHtml(item.lotNumber)}</span>` : ''}
-                  ${item.brand ? `<span style="font-weight: 700; color: #94a3b8;"><i class="fa-solid fa-tag"></i> ${escapeHtml(item.brand)}</span>` : ''}
-                </div>
-                <h3 class="card-title" title="${escapeHtml(item.title)}">${escapeHtml(item.title)}</h3>
-              </div>
-
-              <!-- TIME REMAINING COUNTDOWN BANNER -->
-              <div class="time-remaining-banner ${timeInfo.statusClass}" data-endsat="${item.endsAt || ''}" data-closingdate="${item.closingDate || ''}">
-                <i class="${timeInfo.icon}"></i>
-                <div class="time-text-content">
-                  <span>Time Remaining:</span>
-                  <span class="time-countdown-val">${timeInfo.text}</span>
-                </div>
-              </div>
-
-              <!-- EXACT DESCRIPTION CONDITION BANNER -->
-              <div class="condition-banner" title="${escapeHtml(item.condition)}">
-                <i class="fa-solid fa-circle-info"></i>
-                <div class="condition-text">
-                  ${escapeHtml(item.condition)}
-                </div>
-              </div>
+          <div id="modalExcludeTags" class="modal-tag-list"></div>
+        </div>
+
+        <!-- TAB 3: NOTIFICATIONS & SOUNDS -->
+        <div id="tabNotifications" class="tab-content">
+          <div style="display: flex; flex-direction: column; gap: 0.9rem;">
+            <label style="display: flex; align-items: center; justify-content: space-between; font-size: 0.88rem; cursor: pointer;">
+              <span><i class="fa-solid fa-volume-high" style="color: var(--accent-raleigh);"></i> Synthesized Sound Chimes</span>
+              <input type="checkbox" id="prefEnableSounds" checked onchange="userPreferences.enableSounds = this.checked; savePreferencesState();" />
+            </label>
+
+            <div style="display: flex; gap: 0.6rem;">
+              <button class="tag-btn" onclick="previewSoundEffect('discovery')">🎵 Test Discovery Chime</button>
+              <button class="tag-btn" onclick="previewSoundEffect('sniping')">🚨 Test Sniping Chime</button>
             </div>
 
-            <div class="card-side-col">
-              <!-- FINANCIAL BREAKDOWN BOX -->
-              <div class="financial-box">
-                ${fin.retailPrice ? `
-                  <div class="price-row">
-                    <span class="price-label">Est. Retail MSRP:</span>
-                    <span class="retail-amount">$${fin.retailPrice}</span>
-                  </div>
-                ` : ''}
-                <div class="price-row">
-                  <span class="price-label">Current Bid:</span>
-                  <span class="raw-bid-amount">$${parseFloat(item.currentBid).toFixed(2)}</span>
-                </div>
-                <div class="price-row total-price-row">
-                  <span class="total-label">Est. Out-of-Pocket:</span>
-                  <span class="total-amount">$${fin.totalCost || fin.total}</span>
-                </div>
-                <div class="fee-tooltip-trigger" title="Includes 15% Buyer Premium ($${fin.buyerPremium || fin.bp}) + 7.25% Tax ($${fin.salesTax || fin.tax}) + 3% CC Fee ($${fin.ccFee || fin.cc})">
-                  15% BP + Tax + CC Fee included ℹ️
-                </div>
-              </div>
+            <label style="display: flex; align-items: center; justify-content: space-between; font-size: 0.88rem; cursor: pointer; margin-top: 0.5rem;">
+              <span><i class="fa-solid fa-desktop" style="color: #38bdf8;"></i> Desktop Push Notifications</span>
+              <button class="sync-btn" style="padding: 0.35rem 0.8rem; font-size: 0.78rem;" onclick="requestPushPermission()">Enable Push</button>
+            </label>
 
-              <div class="card-footer">
-                <a href="${item.url}" target="_blank" class="bid-btn">
-                  <span>View & Bid on Lot</span>
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
+            <div class="filter-group" style="margin-top: 0.5rem;">
+              <label class="filter-label">External Webhook URL (Discord / Slack / Home Assistant)</label>
+              <div class="add-tag-row">
+                <input type="url" id="webhookUrlInput" class="form-input" placeholder="https://discord.com/api/webhooks/..." value="" onchange="userPreferences.webhookUrl = this.value.trim(); savePreferencesState();" />
+                <button class="sync-btn" onclick="testWebhookEndpoint()">Test Webhook</button>
               </div>
             </div>
           </div>
         </div>
-      `;
-    }
 
-    function renderCardsChunk() {
-      const grid = document.getElementById('cardsGrid');
-      if (!currentFilteredItems || currentFilteredItems.length === 0) {
-        grid.innerHTML = `
-          <div class="empty-state">
-            <i class="fa-solid fa-filter-circle-xmark"></i>
-            <h3>No auction lots found matching your filter criteria</h3>
-            <p>Try clearing your keyword search or clicking "Clear Filters" in the sidebar.</p>
+        <!-- TAB 4: PREFERENCES & BACKUP -->
+        <div id="tabPreferences" class="tab-content">
+          <div style="display: flex; flex-direction: column; gap: 0.9rem;">
+            <label style="display: flex; align-items: center; justify-content: space-between; font-size: 0.88rem; cursor: pointer;">
+              <span>Auto-hide ended / expired auction lots</span>
+              <input type="checkbox" id="prefAutoHideEnded" checked onchange="userPreferences.autoHideEnded = this.checked; savePreferencesState(); applyFilters();" />
+            </label>
+
+            <div style="display: flex; gap: 0.75rem; margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+              <button class="sync-btn" onclick="exportUserDataJSON()">
+                <i class="fa-solid fa-file-export"></i> Export Backup JSON
+              </button>
+              <label class="sync-btn" style="background: linear-gradient(135deg, #6366f1, #4f46e5); cursor: pointer;">
+                <i class="fa-solid fa-file-import"></i> Import Backup JSON
+                <input type="file" accept=".json" style="display: none;" onchange="importUserDataJSON(this.files[0])" />
+              </label>
+            </div>
           </div>
-        `;
-        document.getElementById('visibleCount').innerText = '0';
-        return;
-      }
+        </div>
+      </div>
 
-      const itemsToRender = currentFilteredItems.slice(0, currentRenderCount);
-      requestAnimationFrame(() => {
-        grid.innerHTML = itemsToRender.map(renderCardHTML).join('');
-        document.getElementById('visibleCount').innerText = `${Math.min(currentRenderCount, currentFilteredItems.length)}`;
-      });
-    }
+      <div class="modal-footer">
+        <button class="sync-btn" onclick="closeKeywordsModal()">Done</button>
+      </div>
+    </div>
+  </div>
 
-    let scrollTicking = false;
+  <!-- ACCOUNT CREDENTIALS MODAL -->
+  <div id="credentialsModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fa-solid fa-user-shield" style="color: var(--accent-raleigh);"></i> Connect Auction Account</h3>
+        <button class="close-modal-btn" onclick="closeCredentialsModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <p style="font-size: 0.85rem; color: var(--text-muted);">
+          Connecting your Triangle Liquidators account allows one-click bidirectional watchlist synchronization.
+        </p>
+        <div id="authAlert" class="auth-alert" style="display: none;"></div>
+        <div class="filter-group">
+          <label class="filter-label">Auction Account Email</label>
+          <input type="email" id="authEmail" class="form-input" placeholder="your_email@example.com" />
+        </div>
+        <div class="filter-group">
+          <label class="filter-label">Account Password</label>
+          <input type="password" id="authPassword" class="form-input" placeholder="••••••••••••" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="tag-btn" onclick="closeCredentialsModal()">Cancel</button>
+        <button class="sync-btn" onclick="saveAccountCredentials()">Save & Connect</button>
+      </div>
+    </div>
+  </div>
 
-    function scrollToTop() {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
+  <!-- FEE CALCULATOR INFO MODAL -->
+  <div id="feeCalcModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fa-solid fa-calculator" style="color: var(--accent-raleigh);"></i> Out-of-Pocket Breakdown</h3>
+        <button class="close-modal-btn" onclick="closeFeeCalcModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="fee-row"><span>Hammer Bid:</span><span id="feeCalcBid">$0.00</span></div>
+        <div class="fee-row"><span>Est. Retail MSRP:</span><span id="feeCalcRetail">$0.00</span></div>
+        <div class="fee-row"><span>Buyer's Premium (15%):</span><span id="feeCalcBp">$0.00</span></div>
+        <div class="fee-row"><span>Estimated Sales Tax (7.25%):</span><span id="feeCalcTax">$0.00</span></div>
+        <div class="fee-row"><span>Card / Processing Fee (3%):</span><span id="feeCalcCc">$0.00</span></div>
+        <div class="fee-row total"><span>Total Estimated Cost:</span><span id="feeCalcTotal" style="color: var(--accent-raleigh); font-size: 1.2rem;">$0.00</span></div>
+      </div>
+      <div class="modal-footer">
+        <button class="sync-btn" onclick="closeFeeCalcModal()">Close</button>
+      </div>
+    </div>
+  </div>
 
-    function handleScroll() {
-      const backToTopBtn = document.getElementById('backToTopBtn');
-      if (backToTopBtn) {
-        if (window.scrollY > 300) {
-          backToTopBtn.classList.add('visible');
-        } else {
-          backToTopBtn.classList.remove('visible');
-        }
-      }
+  <!-- HELP & GUIDE MODAL -->
+  <div id="helpModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fa-solid fa-circle-question" style="color: var(--accent-raleigh);"></i> Auction Guide & Tips</h3>
+        <button class="close-modal-btn" onclick="closeHelpModal()">×</button>
+      </div>
+      <div class="modal-body" style="font-size: 0.88rem; line-height: 1.6; color: #cbd5e1;">
+        <h4 style="color: #ffffff; margin-bottom: 0.3rem;">Deal Score (0–100)</h4>
+        <p>Our algorithmic Deal Score rates each lot based on % savings, condition grade (New/Like New/Used/As-is), brand tier, and out-of-pocket ratio. Scores 80+ are highlighted as Top Deals.</p>
 
-      if (!scrollTicking) {
-        requestAnimationFrame(() => {
-          loadMoreCardsOnScroll();
-          scrollTicking = false;
-        });
-        scrollTicking = true;
-      }
-    }
+        <h4 style="color: #ffffff; margin: 0.8rem 0 0.3rem;">Real-Time Sniping Alerts</h4>
+        <p>Keep the dashboard open to receive synthesized sound alerts and push notifications when high-value deals are closing in &lt;15 minutes.</p>
 
-    function loadMoreCardsOnScroll() {
-      if (!currentFilteredItems || currentRenderCount >= currentFilteredItems.length) return;
+        <h4 style="color: #ffffff; margin: 0.8rem 0 0.3rem;">SC Transfer Depot</h4>
+        <p>Lots marked with the Anderson tag can be transferred between depots for a flat $5.00 transfer fee.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="sync-btn" onclick="closeHelpModal()">Got It</button>
+      </div>
+    </div>
+  </div>
 
-      const scrollBottom = window.innerHeight + window.scrollY;
-      const docHeight = document.documentElement.scrollHeight;
-
-      if (docHeight - scrollBottom < 1200) {
-        const nextBatch = currentFilteredItems.slice(currentRenderCount, currentRenderCount + PAGE_CHUNK_SIZE);
-        currentRenderCount += PAGE_CHUNK_SIZE;
-
-        const grid = document.getElementById('cardsGrid');
-        if (nextBatch.length > 0 && grid) {
-          const html = nextBatch.map(renderCardHTML).join('');
-          grid.insertAdjacentHTML('beforeend', html);
-          document.getElementById('visibleCount').innerText = `${Math.min(currentRenderCount, currentFilteredItems.length)}`;
-        }
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    // VIEW MODE DENSITY HANDLER
-    let currentViewMode = localStorage.getItem('tl_card_view_mode') || 'grid';
-
-    function setViewMode(mode) {
-      currentViewMode = mode;
-      localStorage.setItem('tl_card_view_mode', mode);
-      const grid = document.getElementById('cardsGrid');
-      const btnGrid = document.getElementById('viewGridBtn');
-      const btnDense = document.getElementById('viewDenseBtn');
-      const btnList = document.getElementById('viewListBtn');
-
-      if (!grid) return;
-      grid.classList.remove('dense-grid', 'list-view');
-      if (btnGrid) btnGrid.classList.remove('active');
-      if (btnDense) btnDense.classList.remove('active');
-      if (btnList) btnList.classList.remove('active');
-
-      if (mode === 'dense') {
-        grid.classList.add('dense-grid');
-        if (btnDense) btnDense.classList.add('active');
-      } else if (mode === 'list') {
-        grid.classList.add('list-view');
-        if (btnList) btnList.classList.add('active');
-      } else {
-        if (btnGrid) btnGrid.classList.add('active');
-      }
-    }
-
-    // Initialize Page
-    window.addEventListener('DOMContentLoaded', async () => {
-      setViewMode(currentViewMode);
-      loadSavedState();
-      syncCrawlerIntervalToServer(userSettings.autoRefreshIntervalSec);
-      checkAuthStatus();
-      renderSidebarTags();
-      await loadCatalogFromIndexedDB();
-      startProgressPolling();
-      fetchCatalog();
-      if (userSettings.autoRefreshIntervalSec > 0) {
-        syncAuctionData();
-      }
-      initRealtimeStream();
-      setInterval(updateLiveTimers, 1000);
-
-      // Dismiss modals on Escape key or clicking dark backdrop outside card
-      window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-          closeSettingsModal();
-          closeHelpModal();
-          closeCredentialsModal();
-        }
-      });
-
-      document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
-        backdrop.addEventListener('click', (e) => {
-          if (e.target === backdrop) {
-            closeSettingsModal();
-            closeHelpModal();
-            closeCredentialsModal();
-          }
-        });
-      });
-    });
-  </script>
+  <!-- Application Scripts (Loaded with defer for fast parallel parsing) -->
+  <script src="/js/config.js" defer></script>
+  <script src="/js/deal-score.js" defer></script>
+  <script src="/js/audio.js" defer></script>
+  <script src="/js/storage.js" defer></script>
+  <script src="/js/notifications.js" defer></script>
+  <script src="/js/ui.js" defer></script>
+  <script src="/js/app.js" defer></script>
 </body>
 </html>

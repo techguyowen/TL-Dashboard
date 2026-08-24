@@ -133,23 +133,25 @@
     </div>
   </header>
 
-  <!-- LIVE SCRAPER PROGRESS WIDGET -->
-  <div id="progressWidget" class="progress-widget" style="display: none; margin: 1rem 2.2rem 0;">
-    <div class="progress-header">
-      <div class="progress-status-text">
-        <i class="fa-solid fa-spinner fa-spin"></i>
-        <span id="progressStatusText">Scanning live auction catalogs...</span>
-      </div>
-    </div>
-    <div class="progress-bar-bg">
-      <div id="progressBarFill" class="progress-bar-fill"></div>
-    </div>
-  </div>
-
   <!-- APP LAYOUT -->
   <div class="app-layout">
     <!-- SIDEBAR CONTROLS -->
     <aside>
+      <!-- LIVE SCRAPER PROGRESS WIDGET -->
+      <div id="progressWidget" class="progress-widget" style="margin-bottom: 1rem;">
+        <div class="progress-header">
+          <span><i class="fa-solid fa-radar" style="color: var(--accent-raleigh);"></i> Crawler Status</span>
+          <span id="progressPctText">100%</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div id="progressBarFill" class="progress-bar-fill" style="width: 100%;"></div>
+        </div>
+        <div class="progress-status-text">
+          <i class="fa-solid fa-circle-notch fa-spin" id="progressSpinner" style="display: none; color: var(--accent-raleigh);"></i>
+          <span id="progressStatusMsg">Idle / Complete (Ready)</span>
+        </div>
+      </div>
+
       <!-- KEYWORD SEARCH -->
       <div class="filter-group">
         <label class="filter-label">
@@ -170,6 +172,17 @@
         </div>
         <div id="watchlistTags" class="watchlist-tags">
           <!-- Watchlist tag chips rendered dynamically -->
+        </div>
+      </div>
+
+      <!-- EXCLUDED KEYWORDS -->
+      <div class="filter-group">
+        <div class="filter-label">
+          <span><i class="fa-solid fa-filter-circle-xmark" style="color: #ef4444;"></i> Excluded Keywords</span>
+          <button class="reset-btn" onclick="openKeywordsModal('tabExcludes')">+ Manage</button>
+        </div>
+        <div id="sidebarExcludeTags" class="watchlist-tags">
+          <!-- Exclude tag chips rendered dynamically -->
         </div>
       </div>
 
@@ -228,6 +241,10 @@
           <span>15.0%</span>
         </div>
         <div class="fee-row">
+          <span>Per-Item Lot Fee:</span>
+          <span>$1.00</span>
+        </div>
+        <div class="fee-row">
           <span>Avg Sales Tax:</span>
           <span>7.25%</span>
         </div>
@@ -237,7 +254,7 @@
         </div>
         <div class="fee-row total">
           <span>Out-of-Pocket Factor:</span>
-          <span>~1.27x Bid</span>
+          <span>~1.27x Bid + $1.10</span>
         </div>
       </div>
     </aside>
@@ -311,8 +328,8 @@
           <div class="sort-container">
             <span>Sort:</span>
             <select id="sortSelect" class="sort-select" onchange="applyFilters()">
-              <option value="watchlist">⭐ Watchlist Highlights First</option>
-              <option value="deal_score" selected>🔥 Highest Deal Score (0–100)</option>
+              <option value="watchlist" selected>⭐ Watchlist Highlights First</option>
+              <option value="deal_score">🔥 Highest Deal Score (0–100)</option>
               <option value="ending_soonest">⏱️ Time Remaining: Ending Soonest</option>
               <option value="ending_latest">⏳ Time Remaining: Ending Latest</option>
               <option value="date_asc">📅 Closing Date: Earliest First</option>
@@ -377,7 +394,10 @@
           <i class="fa-solid fa-bell"></i> Notifications & Sounds
         </button>
         <button class="tab-btn" data-tab="tabPreferences" onclick="switchModalTab('tabPreferences')">
-          <i class="fa-solid fa-gear"></i> Preferences & Backup
+          <i class="fa-solid fa-gear"></i> Preferences
+        </button>
+        <button class="tab-btn" data-tab="tabBackup" onclick="switchModalTab('tabBackup')">
+          <i class="fa-solid fa-floppy-disk"></i> Export & Import
         </button>
       </div>
 
@@ -434,23 +454,82 @@
           </div>
         </div>
 
-        <!-- TAB 4: PREFERENCES & BACKUP -->
+        <!-- TAB 4: PREFERENCES -->
         <div id="tabPreferences" class="tab-content">
           <div style="display: flex; flex-direction: column; gap: 0.9rem;">
+            <div class="filter-group">
+              <label class="filter-label">Default Quick Sort</label>
+              <select id="prefDefaultSort" class="form-select" onchange="userPreferences.defaultSort = this.value; savePreferencesState(); if (document.getElementById('sortSelect')) { document.getElementById('sortSelect').value = this.value; applyFilters(); }">
+                <option value="watchlist" selected>⭐ Watchlist Highlights First</option>
+                <option value="deal_score">🔥 Highest Deal Score (0–100)</option>
+                <option value="ending_soonest">⏱️ Time Remaining: Ending Soonest</option>
+                <option value="ending_latest">⏳ Time Remaining: Ending Latest</option>
+                <option value="date_asc">📅 Closing Date: Earliest First</option>
+                <option value="date_desc">📅 Closing Date: Latest First</option>
+                <option value="savings_high">⚡ Highest % Savings</option>
+                <option value="price_low">💲 Out-of-Pocket: Low to High</option>
+                <option value="price_high">💰 Out-of-Pocket: High to Low</option>
+                <option value="bid_low">🏷️ Current Bid: Low to High</option>
+                <option value="bid_high">💵 Current Bid: High to Low</option>
+                <option value="retail_high">💎 Highest Retail MSRP</option>
+                <option value="title_asc">🔤 Title: A to Z</option>
+                <option value="title_desc">🔤 Title: Z to A</option>
+              </select>
+            </div>
+
             <label style="display: flex; align-items: center; justify-content: space-between; font-size: 0.88rem; cursor: pointer;">
               <span>Auto-hide ended / expired auction lots</span>
               <input type="checkbox" id="prefAutoHideEnded" checked onchange="userPreferences.autoHideEnded = this.checked; savePreferencesState(); applyFilters();" />
             </label>
+          </div>
+        </div>
 
-            <div style="display: flex; gap: 0.75rem; margin-top: 1rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
-              <button class="sync-btn" onclick="exportUserDataJSON()">
-                <i class="fa-solid fa-file-export"></i> Export Backup JSON
-              </button>
-              <label class="sync-btn" style="background: linear-gradient(135deg, #6366f1, #4f46e5); cursor: pointer;">
-                <i class="fa-solid fa-file-import"></i> Import Backup JSON
-                <input type="file" accept=".json" style="display: none;" onchange="importUserDataJSON(this.files[0])" />
+        <!-- TAB 5: EXPORT & IMPORT BACKUP -->
+        <div id="tabBackup" class="tab-content">
+          <p style="font-size: 0.85rem; color: var(--text-muted);">
+            Back up or restore your customized watchlist keywords, exclude filters, saved favorites, and preferences as a portable JSON file.
+          </p>
+
+          <div id="backupAlert" class="auth-alert" style="display: none;"></div>
+
+          <div class="backup-box">
+            <div style="font-weight: 700; color: var(--text-main); font-size: 0.92rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fa-solid fa-file-arrow-down" style="color: var(--accent-raleigh);"></i>
+              <span>Export Dashboard Backup</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">
+              Downloads a complete <code>.json</code> snapshot of your keywords, starred lots, alerts, and settings.
+            </div>
+            <button class="sync-btn" onclick="exportUserDataJSON()" style="align-self: flex-start;">
+              <i class="fa-solid fa-download"></i> Export Settings (.json)
+            </button>
+          </div>
+
+          <div class="backup-box">
+            <div style="font-weight: 700; color: var(--text-main); font-size: 0.92rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fa-solid fa-file-arrow-up" style="color: #818cf8;"></i>
+              <span>Import & Restore Backup</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted);">
+              Select a previously exported <code>.json</code> file to restore your settings.
+            </div>
+            
+            <input type="file" id="importFileInput" accept=".json" class="form-input" style="font-size: 0.82rem;" onchange="handleImportFileSelect(this.files[0])" />
+
+            <div style="display: flex; gap: 1.2rem; font-size: 0.82rem; color: var(--text-muted);">
+              <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+                <input type="radio" name="importMode" value="merge" checked />
+                <span>Merge with current keywords</span>
+              </label>
+              <label style="display: flex; align-items: center; gap: 0.4rem; cursor: pointer;">
+                <input type="radio" name="importMode" value="replace" />
+                <span>Overwrite completely</span>
               </label>
             </div>
+
+            <button class="sync-btn" style="background: linear-gradient(135deg, #6366f1, #4f46e5); align-self: flex-start;" onclick="importUserDataJSON()">
+              <i class="fa-solid fa-upload"></i> Import & Restore (.json)
+            </button>
           </div>
         </div>
       </div>
@@ -500,6 +579,7 @@
         <div class="fee-row"><span>Hammer Bid:</span><span id="feeCalcBid">$0.00</span></div>
         <div class="fee-row"><span>Est. Retail MSRP:</span><span id="feeCalcRetail">$0.00</span></div>
         <div class="fee-row"><span>Buyer's Premium (15%):</span><span id="feeCalcBp">$0.00</span></div>
+        <div class="fee-row"><span>Lot / Handling Fee:</span><span id="feeCalcLotFee">$1.00</span></div>
         <div class="fee-row"><span>Estimated Sales Tax (7.25%):</span><span id="feeCalcTax">$0.00</span></div>
         <div class="fee-row"><span>Card / Processing Fee (3%):</span><span id="feeCalcCc">$0.00</span></div>
         <div class="fee-row total"><span>Total Estimated Cost:</span><span id="feeCalcTotal" style="color: var(--accent-raleigh); font-size: 1.2rem;">$0.00</span></div>

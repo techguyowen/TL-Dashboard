@@ -12,6 +12,7 @@ let filterTopDealsOnly = false;
 let lastScrapeTimestamp = 0;
 let isFetchingCatalog = false;
 let searchDebounceTimer = null;
+let progressPollTimer = null;
 
 /**
  * WATCHLIST & EXCLUDE MATCHING
@@ -114,9 +115,10 @@ function addExcludeTag() {
   const val = input ? input.value.trim() : '';
   if (!val) return;
 
-  if (!excludeKeywords.some(k => k.keyword.toLowerCase() === val.toLowerCase())) {
+  if (!excludeKeywords.some(k => (typeof k === 'string' ? k : k.keyword).toLowerCase() === val.toLowerCase())) {
     excludeKeywords.push({ keyword: val, active: true });
     saveExcludeTagsState();
+    renderSidebarTags();
     renderExcludeTags();
     applyFilters();
     playSuccessChime();
@@ -124,9 +126,42 @@ function addExcludeTag() {
   if (input) input.value = '';
 }
 
-function removeExcludeTag(keyword) {
-  excludeKeywords = excludeKeywords.filter(k => k.keyword !== keyword);
+function toggleExcludeTag(keyword, evt) {
+  if (evt && evt.target && (evt.target.classList.contains('tag-close-btn') || evt.target.classList.contains('fa-xmark'))) return;
+
+  const target = excludeKeywords.find(k => {
+    const kw = typeof k === 'string' ? k : k.keyword;
+    return kw.toLowerCase() === keyword.toLowerCase();
+  });
+
+  if (target) {
+    if (typeof target === 'string') {
+      const idx = excludeKeywords.indexOf(target);
+      excludeKeywords[idx] = { keyword: target, active: false };
+    } else {
+      target.active = !target.active;
+    }
+  } else {
+    excludeKeywords.push({ keyword, active: true });
+  }
+
   saveExcludeTagsState();
+  renderSidebarTags();
+  renderExcludeTags();
+  applyFilters();
+}
+
+function removeExcludeTag(keyword, evt) {
+  if (evt) {
+    evt.preventDefault();
+    evt.stopPropagation();
+  }
+  excludeKeywords = excludeKeywords.filter(k => {
+    const kw = typeof k === 'string' ? k : k.keyword;
+    return kw.toLowerCase() !== keyword.toLowerCase();
+  });
+  saveExcludeTagsState();
+  renderSidebarTags();
   renderExcludeTags();
   applyFilters();
 }
@@ -187,7 +222,7 @@ function resetFilters() {
   document.getElementById('timeRemainingFilter').value = 'all';
   document.getElementById('maxPriceSlider').value = 500;
   document.getElementById('maxPriceValue').innerText = '$500+';
-  document.getElementById('sortSelect').value = 'deal_score';
+  document.getElementById('sortSelect').value = userPreferences.defaultSort || 'watchlist';
 
   isolatedKeyword = null;
   filterSavedOnly = false;
@@ -210,7 +245,7 @@ function applyFilters(resetChunkPagination = true) {
   const category = document.getElementById('categorySelect') ? document.getElementById('categorySelect').value : 'all';
   const timeFilter = document.getElementById('timeRemainingFilter') ? document.getElementById('timeRemainingFilter').value : 'all';
   const maxPrice = document.getElementById('maxPriceSlider') ? parseFloat(document.getElementById('maxPriceSlider').value) : 500;
-  const sort = document.getElementById('sortSelect') ? document.getElementById('sortSelect').value : 'ending_soonest';
+  const sort = document.getElementById('sortSelect') ? document.getElementById('sortSelect').value : (userPreferences.defaultSort || 'watchlist');
 
   let positiveTerms = [];
   let negativeTerms = [];
@@ -437,6 +472,8 @@ function updateItemsProgressively(newItems, isDeltaSync = false) {
   populateCategoryDropdown(allItems);
   recalculateNextClosingTarget(allItems);
   evaluateNotificationTriggers(newItems, !isDeltaSync);
+  autoCleanEndedFavorites();
+  updateScraperProgressUI(null, allItems.length);
   applyFilters(false);
   saveCatalogToIndexedDB(allItems);
 }
@@ -474,7 +511,7 @@ async function triggerDeepScan(maxPages = 60) {
   if (scanBtn) scanBtn.classList.add('loading');
 
   try {
-    const res = await fetch(`/api/scrape?deep=true&maxPages=${maxPages}`);
+    const res = await fetch(`/api/scrape?extend=true&deep=true&maxPages=${maxPages}`);
     const data = await res.json();
     if (data.items && Array.isArray(data.items)) {
       updateItemsProgressively(data.items, false);
@@ -506,21 +543,13 @@ function initSSEStream() {
   source.addEventListener('progress_update', (evt) => {
     try {
       const progress = JSON.parse(evt.data);
-      const widget = document.getElementById('progressWidget');
-      const bar = document.getElementById('progressBarFill');
-      const statusText = document.getElementById('progressStatusText');
-
-      if (progress.isScraping) {
-        if (widget) widget.style.display = 'flex';
-        if (bar) bar.style.width = `${progress.progressPct || 10}%`;
-        if (statusText) statusText.innerText = progress.status || 'Scanning...';
-      } else {
-        if (widget) widget.style.display = 'none';
-      }
+      updateScraperProgressUI(progress, allItems.length);
     } catch (e) {}
   });
 
   source.onerror = () => {
+    console.warn('[SSE] stream disconnected, enabling fast poll fallback');
+    startProgressPolling();
     source.close();
     setTimeout(initSSEStream, 10000);
   };
@@ -629,6 +658,9 @@ async function syncLiveWatchlist() {
 async function initApp() {
   loadStorageState();
   loadNotificationsFromStorage();
+  if (userPreferences.defaultSort && document.getElementById('sortSelect')) {
+    document.getElementById('sortSelect').value = userPreferences.defaultSort;
+  }
   setViewMode(currentViewMode);
   renderSidebarTags();
 
@@ -643,6 +675,7 @@ async function initApp() {
 
   // Initialize live SSE stream
   initSSEStream();
+  startProgressPolling();
 
   // Check account connection status
   checkAuthStatus();
@@ -655,3 +688,92 @@ async function initApp() {
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
+
+/**
+ * FEATURE PARITY: Fallback Polling & Cleanup
+ */
+function updateScraperProgressUI(progress, totalIndexed) {
+  const pctText = document.getElementById('progressPctText');
+  const barFill = document.getElementById('progressBarFill');
+  const statusMsg = document.getElementById('progressStatusMsg');
+  const spinner = document.getElementById('progressSpinner');
+
+  const count = totalIndexed || allItems.length;
+
+  if (progress && progress.isScraping) {
+    const pct = progress.progressPct || 15;
+    if (pctText) pctText.innerText = `${pct}%`;
+    if (barFill) barFill.style.width = `${pct}%`;
+    if (statusMsg) statusMsg.innerText = `${progress.status || progress.currentAuction || 'Scanning...'} (${count} items loaded)`;
+    if (spinner) spinner.style.display = 'inline-block';
+  } else {
+    if (pctText) pctText.innerText = '100%';
+    if (barFill) barFill.style.width = '100%';
+    if (statusMsg) statusMsg.innerText = `Ingestion Complete (${count} items ready)`;
+    if (spinner) spinner.style.display = 'none';
+  }
+}
+
+function startProgressPolling() {
+  if (progressPollTimer) clearInterval(progressPollTimer);
+  pollProgress();
+  progressPollTimer = setInterval(pollProgress, 1000);
+}
+
+async function pollProgress() {
+  try {
+    const res = await fetch('/api/progress');
+    const data = await res.json();
+    updateScraperProgressUI(data, data.totalIndexed);
+
+    if (data.isScraping || allItems.length < (data.totalIndexed || 0)) {
+      fetchCatalog(false);
+    }
+
+    if (!data.isScraping && progressPollTimer) {
+      clearInterval(progressPollTimer);
+      progressPollTimer = null;
+    }
+  } catch (e) {
+    console.error('[POLL] Error polling progress', e);
+  }
+}
+
+function autoCleanEndedFavorites() {
+  if (savedFavoriteUrls.size === 0 || allItems.length === 0) return;
+  let removedCount = 0;
+  const nowMs = Date.now();
+  const BUFFER_MS = 2 * 60 * 60 * 1000; // 2 hours
+
+  const itemMap = new Map();
+  allItems.forEach(item => itemMap.set(item.url, item));
+
+  Array.from(savedFavoriteUrls).forEach(url => {
+    const item = itemMap.get(url);
+    if (!item) {
+      savedFavoriteUrls.delete(url);
+      removedCount++;
+    } else {
+      let isPast = true;
+      const endsMs = item.endsAt ? new Date(item.endsAt).getTime() : NaN;
+      if (!isNaN(endsMs) && (endsMs + BUFFER_MS > nowMs)) {
+        isPast = false;
+      }
+      if (item.closingDate) {
+        const closingEndMs = new Date(`${item.closingDate}T23:59:59-04:00`).getTime();
+        if (!isNaN(closingEndMs) && closingEndMs >= nowMs) {
+          isPast = false;
+        }
+      }
+      if (isPast) {
+        savedFavoriteUrls.delete(url);
+        removedCount++;
+      }
+    }
+  });
+
+  if (removedCount > 0 && typeof saveFavoritesState === 'function') {
+    console.log(`[FAVORITES AUTO-PURGE] Purged ${removedCount} stale/orphan favorite URLs.`);
+    saveFavoritesState();
+  }
+}

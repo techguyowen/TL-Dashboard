@@ -42,7 +42,8 @@ function getEDTDateString(d = new Date()) {
 function calculateFinancials(rawBid, rawRetail) {
   const currentBid = parseFloat(rawBid) || 0;
   const buyerPremium = Math.round((currentBid * 0.15) * 100) / 100;
-  const subtotal = Math.round((currentBid + buyerPremium) * 100) / 100;
+  const lotFee = currentBid > 0 ? 1.00 : 0.00;
+  const subtotal = Math.round((currentBid + buyerPremium + lotFee) * 100) / 100;
   const salesTax = Math.round((subtotal * 0.0725) * 100) / 100;
   const ccFee = Math.round(((subtotal + salesTax) * 0.03) * 100) / 100;
   const totalCost = Math.round((subtotal + salesTax + ccFee) * 100) / 100;
@@ -58,6 +59,7 @@ function calculateFinancials(rawBid, rawRetail) {
   return {
     currentBid: currentBid.toFixed(2),
     buyerPremium: buyerPremium.toFixed(2),
+    lotFee: lotFee.toFixed(2),
     subtotal: subtotal.toFixed(2),
     salesTax: salesTax.toFixed(2),
     ccFee: ccFee.toFixed(2),
@@ -77,7 +79,8 @@ function calculateDealScore(rawBid, rawRetail, rawCondition, rawBrand) {
   const currentBid = parseFloat(rawBid) || 0;
   const retailPrice = parseFloat(rawRetail) || null;
   const buyerPremium = Math.round((currentBid * 0.15) * 100) / 100;
-  const subtotal = Math.round((currentBid + buyerPremium) * 100) / 100;
+  const lotFee = currentBid > 0 ? 1.00 : 0.00;
+  const subtotal = Math.round((currentBid + buyerPremium + lotFee) * 100) / 100;
   const salesTax = Math.round((subtotal * 0.0725) * 100) / 100;
   const ccFee = Math.round(((subtotal + salesTax) * 0.03) * 100) / 100;
   const totalCost = Math.round((subtotal + salesTax + ccFee) * 100) / 100;
@@ -860,7 +863,7 @@ function ensureEndsAt(item) {
 
 // API Endpoint for Live Items with ETag Caching & Incremental Delta Support
 app.get('/api/scrape', async (req, res) => {
-  const extend = req.query.extend === 'true';
+  const extend = req.query.extend === 'true' || req.query.deep === 'true';
   const force = req.query.force === 'true';
   const refresh = req.query.refresh === 'true' || force;
   const since = parseInt(req.query.since || '0', 10);

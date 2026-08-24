@@ -2,23 +2,18 @@ const test = require('node:test');
 const assert = require('node:assert');
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 const { calculateFinancials } = require('../server.js');
 
-// Extract calcFin dynamically from public/index.html for client-side comparison
-const htmlPath = path.join(__dirname, '../public/index.html');
-const htmlContent = fs.readFileSync(htmlPath, 'utf8');
+// Load calcFin dynamically from public/js/config.js
+const configPath = path.join(__dirname, '../public/js/config.js');
+const configContent = fs.readFileSync(configPath, 'utf8');
+const context = {};
+vm.createContext(context);
+vm.runInContext(configContent, context);
+const calcFin = context.calcFin;
 
-const startIndex = htmlContent.indexOf('function calcFin(bid, retail) {');
-const endIndex = htmlContent.indexOf('function isWatchlistMatch(title)');
-
-if (startIndex === -1 || endIndex === -1) {
-  throw new Error('Could not find calcFin in public/index.html');
-}
-
-const calcFinCode = htmlContent.slice(startIndex, endIndex).trim();
-const calcFin = eval('(' + calcFinCode + ')');
-
-test('Financial Edge Cases: $0.01, $1.99, $100.00, $999.99 exact cent rounding match across server.js and public/index.html', () => {
+test('Financial Edge Cases: $0.01, $1.99, $100.00, $999.99 exact cent rounding match across server.js and public/js/config.js', () => {
   const cases = [
     {
       bid: 0.01,
@@ -26,11 +21,12 @@ test('Financial Edge Cases: $0.01, $1.99, $100.00, $999.99 exact cent rounding m
       expected: {
         currentBid: '0.01',
         buyerPremium: '0.00',
-        subtotal: '0.01',
-        salesTax: '0.00',
-        ccFee: '0.00',
-        totalCost: '0.01',
-        totalCostNum: 0.01
+        lotFee: '1.00',
+        subtotal: '1.01',
+        salesTax: '0.07',
+        ccFee: '0.03',
+        totalCost: '1.11',
+        totalCostNum: 1.11
       }
     },
     {
@@ -39,11 +35,12 @@ test('Financial Edge Cases: $0.01, $1.99, $100.00, $999.99 exact cent rounding m
       expected: {
         currentBid: '1.99',
         buyerPremium: '0.30',
-        subtotal: '2.29',
-        salesTax: '0.17',
-        ccFee: '0.07',
-        totalCost: '2.53',
-        totalCostNum: 2.53
+        lotFee: '1.00',
+        subtotal: '3.29',
+        salesTax: '0.24',
+        ccFee: '0.11',
+        totalCost: '3.64',
+        totalCostNum: 3.64
       }
     },
     {
@@ -52,11 +49,12 @@ test('Financial Edge Cases: $0.01, $1.99, $100.00, $999.99 exact cent rounding m
       expected: {
         currentBid: '100.00',
         buyerPremium: '15.00',
-        subtotal: '115.00',
-        salesTax: '8.34',
-        ccFee: '3.70',
-        totalCost: '127.04',
-        totalCostNum: 127.04
+        lotFee: '1.00',
+        subtotal: '116.00',
+        salesTax: '8.41',
+        ccFee: '3.73',
+        totalCost: '128.14',
+        totalCostNum: 128.14
       }
     },
     {
@@ -65,11 +63,12 @@ test('Financial Edge Cases: $0.01, $1.99, $100.00, $999.99 exact cent rounding m
       expected: {
         currentBid: '999.99',
         buyerPremium: '150.00',
-        subtotal: '1149.99',
-        salesTax: '83.37',
-        ccFee: '37.00',
-        totalCost: '1270.36',
-        totalCostNum: 1270.36
+        lotFee: '1.00',
+        subtotal: '1150.99',
+        salesTax: '83.45',
+        ccFee: '37.03',
+        totalCost: '1271.47',
+        totalCostNum: 1271.47
       }
     }
   ];
@@ -81,6 +80,7 @@ test('Financial Edge Cases: $0.01, $1.99, $100.00, $999.99 exact cent rounding m
     // Verify Server calculations against exact step-by-step cent rounding expected values
     assert.strictEqual(serverRes.currentBid, tc.expected.currentBid, `Server currentBid mismatch for $${tc.bid}`);
     assert.strictEqual(serverRes.buyerPremium, tc.expected.buyerPremium, `Server buyerPremium mismatch for $${tc.bid}`);
+    assert.strictEqual(serverRes.lotFee, tc.expected.lotFee, `Server lotFee mismatch for $${tc.bid}`);
     assert.strictEqual(serverRes.subtotal, tc.expected.subtotal, `Server subtotal mismatch for $${tc.bid}`);
     assert.strictEqual(serverRes.salesTax, tc.expected.salesTax, `Server salesTax mismatch for $${tc.bid}`);
     assert.strictEqual(serverRes.ccFee, tc.expected.ccFee, `Server ccFee mismatch for $${tc.bid}`);
@@ -88,22 +88,22 @@ test('Financial Edge Cases: $0.01, $1.99, $100.00, $999.99 exact cent rounding m
     assert.strictEqual(serverRes.totalCostNum, tc.expected.totalCostNum, `Server totalCostNum mismatch for $${tc.bid}`);
 
     // Verify Client calculations against exact step-by-step cent rounding expected values
-    assert.strictEqual(clientRes.bid, tc.expected.currentBid, `Client bid mismatch for $${tc.bid}`);
-    assert.strictEqual(clientRes.bp, tc.expected.buyerPremium, `Client bp mismatch for $${tc.bid}`);
-    assert.strictEqual(clientRes.sub, tc.expected.subtotal, `Client sub mismatch for $${tc.bid}`);
-    assert.strictEqual(clientRes.tax, tc.expected.salesTax, `Client tax mismatch for $${tc.bid}`);
-    assert.strictEqual(clientRes.cc, tc.expected.ccFee, `Client cc mismatch for $${tc.bid}`);
-    assert.strictEqual(clientRes.total, tc.expected.totalCost, `Client total mismatch for $${tc.bid}`);
+    assert.strictEqual(clientRes.bidFormatted, `$${tc.expected.currentBid}`, `Client bid mismatch for $${tc.bid}`);
+    assert.strictEqual(clientRes.bpAmount, `$${tc.expected.buyerPremium}`, `Client bp mismatch for $${tc.bid}`);
+    assert.strictEqual(clientRes.lotFeeAmount, `$${tc.expected.lotFee}`, `Client lotFee mismatch for $${tc.bid}`);
+    assert.strictEqual(clientRes.taxAmount, `$${tc.expected.salesTax}`, `Client tax mismatch for $${tc.bid}`);
+    assert.strictEqual(clientRes.ccAmount, `$${tc.expected.ccFee}`, `Client cc mismatch for $${tc.bid}`);
+    assert.strictEqual(clientRes.totalCost, `$${tc.expected.totalCost}`, `Client total mismatch for $${tc.bid}`);
     assert.strictEqual(clientRes.totalNum, tc.expected.totalCostNum, `Client totalNum mismatch for $${tc.bid}`);
 
     // Verify exact parity between Server and Client outputs
-    assert.strictEqual(serverRes.currentBid, clientRes.bid, `Parity bid mismatch for $${tc.bid}`);
-    assert.strictEqual(serverRes.buyerPremium, clientRes.bp, `Parity buyerPremium mismatch for $${tc.bid}`);
-    assert.strictEqual(serverRes.subtotal, clientRes.sub, `Parity subtotal mismatch for $${tc.bid}`);
-    assert.strictEqual(serverRes.salesTax, clientRes.tax, `Parity salesTax mismatch for $${tc.bid}`);
-    assert.strictEqual(serverRes.ccFee, clientRes.cc, `Parity ccFee mismatch for $${tc.bid}`);
-    assert.strictEqual(serverRes.totalCost, clientRes.total, `Parity totalCost mismatch for $${tc.bid}`);
+    assert.strictEqual(`$${serverRes.currentBid}`, clientRes.bidFormatted, `Parity bid mismatch for $${tc.bid}`);
+    assert.strictEqual(`$${serverRes.buyerPremium}`, clientRes.bpAmount, `Parity buyerPremium mismatch for $${tc.bid}`);
+    assert.strictEqual(`$${serverRes.lotFee}`, clientRes.lotFeeAmount, `Parity lotFee mismatch for $${tc.bid}`);
+    assert.strictEqual(`$${serverRes.salesTax}`, clientRes.taxAmount, `Parity salesTax mismatch for $${tc.bid}`);
+    assert.strictEqual(`$${serverRes.ccFee}`, clientRes.ccAmount, `Parity ccFee mismatch for $${tc.bid}`);
+    assert.strictEqual(`$${serverRes.totalCost}`, clientRes.totalCost, `Parity totalCost mismatch for $${tc.bid}`);
     assert.strictEqual(serverRes.totalCostNum, clientRes.totalNum, `Parity totalCostNum mismatch for $${tc.bid}`);
-    assert.strictEqual(serverRes.savingsPct, clientRes.savingsPct, `Parity savingsPct mismatch for $${tc.bid}`);
+    assert.strictEqual(String(serverRes.savingsPct), String(clientRes.savingsPct), `Parity savingsPct mismatch for $${tc.bid}`);
   }
 });

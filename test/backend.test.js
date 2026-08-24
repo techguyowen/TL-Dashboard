@@ -48,13 +48,14 @@ test('Backend: calculateFinancials accurately computes out-of-pocket costs and s
   const { calculateFinancials } = require('../server');
 
   // Test case: $100 bid with $400 retail MSRP
-  // BP = $15.00, Sub = $115.00, Tax = $8.34, CC = $3.70, Total = $127.04
+  // BP = $15.00, Lot Fee = $1.00, Sub = $116.00, Tax = $8.41, CC = $3.73, Total = $128.14
   const fin = calculateFinancials(100, 400);
   assert.strictEqual(fin.currentBid, '100.00');
   assert.strictEqual(fin.buyerPremium, '15.00');
-  assert.strictEqual(fin.salesTax, '8.34');
-  assert.strictEqual(fin.ccFee, '3.70');
-  assert.strictEqual(fin.totalCost, '127.04');
+  assert.strictEqual(fin.lotFee, '1.00');
+  assert.strictEqual(fin.salesTax, '8.41');
+  assert.strictEqual(fin.ccFee, '3.73');
+  assert.strictEqual(fin.totalCost, '128.14');
   assert.strictEqual(fin.retailPrice, '400.00');
   assert.strictEqual(fin.savingsPct, 68);
 });
@@ -74,8 +75,8 @@ test('Backend: calculateDealScore produces accurate dynamic ratings (0-100) and 
   assert.strictEqual(great.tier, 'GREAT DEAL');
   assert.strictEqual(great.badgeClass, 'deal-great');
 
-  // 3. Good Value (Score 50-74): Used Generic, $15 bid, $65 MSRP (71% savings)
-  const good = calculateDealScore(15, 65, 'Used - Working Condition', 'Generic');
+  // 3. Good Value (Score 50-74): Used Generic, $12 bid, $70 MSRP (76% savings)
+  const good = calculateDealScore(12, 70, 'Used - Working Condition', 'Generic');
   assert.ok(good.score >= 50 && good.score < 75, `Good value score should be 50-74, got ${good.score}`);
   assert.strictEqual(good.tier, 'GOOD VALUE');
   assert.strictEqual(good.badgeClass, 'deal-good');
